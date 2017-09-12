@@ -9751,28 +9751,45 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var HelloWorld = _react2.default.createClass({
-  displayName: "HelloWorld",
+  displayName: 'HelloWorld',
+
+  getInitialState: function getInitialState() {
+    return { name: "Student" };
+  },
+
+  handleChange: function handleChange(event) {
+    this.setState({ name: event.target.value });
+  },
 
   render: function render() {
     return _react2.default.createElement(
-      "p",
+      'div',
       null,
-      "Hello, ",
-      this.props.greetTarget,
-      "!"
+      _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement('input', { type: 'text', value: this.state.name, onChange: this.handleChange })
+      ),
+      _react2.default.createElement(
+        'h2',
+        null,
+        'Hello'
+      ),
+      _react2.default.createElement(
+        'p',
+        null,
+        'Hello, ',
+        this.state.name,
+        '!'
+      )
     );
   }
 });
 
 _reactDom2.default.render(_react2.default.createElement(
-  "div",
+  'div',
   null,
-  _react2.default.createElement(HelloWorld, { greetTarget: "Batman" }),
-  _react2.default.createElement(HelloWorld, { greetTarget: "Iron Man" }),
-  _react2.default.createElement(HelloWorld, { greetTarget: "Nicolas Cage" }),
-  _react2.default.createElement(HelloWorld, { greetTarget: "Mega Man" }),
-  _react2.default.createElement(HelloWorld, { greetTarget: "Bono" }),
-  _react2.default.createElement(HelloWorld, { greetTarget: "Catwoman" })
+  _react2.default.createElement(HelloWorld, null)
 ), document.querySelector("#container"));
 
 /***/ }),
