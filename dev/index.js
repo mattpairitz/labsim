@@ -1,15 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+let Child = require('./child.js').Child;
 
-var Child = React.createClass({
-  render: function() {
-    return( <div>
-      <h3>{this.props.childName} Here!</h3>
-    </div> );
-  }
-});
-
-var Root = React.createClass({
+var Index = React.createClass({
 
   getInitialState: function(){
     return {name: this.props.name};
@@ -22,7 +15,7 @@ var Root = React.createClass({
   render: function() {
     return (
       <div>
-      <Child childName={this.state.name}/>
+        <div><Child name={this.state.name}/></div>
         <div>
             <input type="text" value={this.state.name} onChange={this.handleChange} />
         </div>
@@ -31,6 +24,6 @@ var Root = React.createClass({
       </div>
       );
   }
-});   
+});
 
-ReactDOM.render(<Root name="Matt"/>,document.querySelector("#container"));
+ReactDOM.render(<div><Index name="Matt"/></div>, document.getElementById("container"))
