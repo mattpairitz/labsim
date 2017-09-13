@@ -8,13 +8,18 @@ var config = {
   entry: DEV + "/index.js",
   output: {
     path: OUTPUT,
-    filename: "myCode.js"
+    filename: "root.js"
   },
 
   module: {
     loaders: [{
         include: DEV,
+        test: /\.js$/,
+        exclude: /node_modules/,
         loader: "babel-loader",
+        query: {
+          presets: ['es2015', 'react']
+        }
     }]
   }
 

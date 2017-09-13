@@ -9750,11 +9750,29 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var HelloWorld = _react2.default.createClass({
-  displayName: 'HelloWorld',
+var Child = _react2.default.createClass({
+  displayName: 'Child',
+
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        'h3',
+        null,
+        this.props.childName,
+        ' Here!'
+      )
+    );
+  }
+});
+
+var Root = _react2.default.createClass({
+  displayName: 'Root',
+
 
   getInitialState: function getInitialState() {
-    return { name: "Student" };
+    return { name: this.props.name };
   },
 
   handleChange: function handleChange(event) {
@@ -9765,6 +9783,7 @@ var HelloWorld = _react2.default.createClass({
     return _react2.default.createElement(
       'div',
       null,
+      _react2.default.createElement(Child, { childName: this.state.name }),
       _react2.default.createElement(
         'div',
         null,
@@ -9786,11 +9805,7 @@ var HelloWorld = _react2.default.createClass({
   }
 });
 
-_reactDom2.default.render(_react2.default.createElement(
-  'div',
-  null,
-  _react2.default.createElement(HelloWorld, null)
-), document.querySelector("#container"));
+_reactDom2.default.render(_react2.default.createElement(Root, { name: 'Matt' }), document.querySelector("#container"));
 
 /***/ }),
 /* 82 */
