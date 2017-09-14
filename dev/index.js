@@ -1,29 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-let Child = require('./child.js').Child;
+require('webpack-jquery-ui');
+require('webpack-jquery-ui/css');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const Checkbox = require('./checkbox.js').Checkbox;
 
-var Index = React.createClass({
+const Index = React.createClass({
 
   getInitialState: function(){
-    return {name: this.props.name};
+    var list = ["HA/NaA", "HF/NaF", "HClO/NaClO", "NH\u2083/NH\u2084Cl"];
+    return {buffer: "HA/NaA", buffers: list};
   },
 
-  handleChange: function(event) {
-    this.setState({name: event.target.value});
+  changeBuffer: function(event){
+    this.setState({buffer: event.currentTarget.value});
   },
 
   render: function() {
     return (
       <div>
-        <div><Child name={this.state.name}/></div>
         <div>
-            <input type="text" value={this.state.name} onChange={this.handleChange} />
+            <p>Selected: {this.state.buffer}</p>
         </div>
-      <h2>Hello</h2>
-      <p>Hello, {this.state.name}!</p>
+      <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} onClick={this.changeBuffer}/></div>
       </div>
       );
   }
 });
 
-ReactDOM.render(<div><Index name="Matt"/></div>, document.getElementById("container"))
+ReactDOM.render(<div><Index /></div>, document.getElementById("container"))

@@ -5,13 +5,19 @@ var DEV = path.resolve(__dirname, "dev");
 var OUTPUT = path.resolve(__dirname, "output");
 
 var config = {
-  entry: {Index : DEV + "/index.js", Child: DEV + "/child.js"},
+  entry: {
+    Index : DEV + "/index.js", 
+    Checkbox: DEV + "/checkbox.js"
+  },
   output: {
     path: OUTPUT,
     filename: "[name].js",
   },
 
-  plugins: [ new webpack.optimize.CommonsChunkPlugin("lib/Library") ],
+  plugins: [ 
+    new webpack.optimize.CommonsChunkPlugin({name: 'index', filename: "bundle.js", minChunks: Infinity}), 
+    new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery", "window.jQuery": "jquery'", "window.$": "jquery"})
+  ],
 
   module: {
     loaders: [{
@@ -22,7 +28,20 @@ var config = {
       query: {
         presets: ['es2015', 'react']
       }
-    }]
+    },
+    {
+      test: /\.(jpe?g|png|gif)$/i,
+      loader:"file-loader",
+      query:{
+        name:'[name].[ext]',
+        outputPath:'images/'
+      }
+    },
+    {
+      test: /\.css$/,
+      loaders: ["style-loader","css-loader"]
+    } 
+    ]
   },
 
 };
