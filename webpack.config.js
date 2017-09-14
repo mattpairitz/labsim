@@ -14,11 +14,6 @@ var config = {
     filename: "[name].js",
   },
 
-  plugins: [ 
-    new webpack.optimize.CommonsChunkPlugin({name: 'index', filename: "bundle.js", minChunks: Infinity}), 
-    new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery", "window.jQuery": "jquery'", "window.$": "jquery"})
-  ],
-
   module: {
     loaders: [{
       include: DEV,
@@ -43,6 +38,12 @@ var config = {
     } 
     ]
   },
+
+  plugins: [ 
+    new webpack.optimize.CommonsChunkPlugin({name: 'index', filename: "bundle.js", minChunks: Infinity}), 
+    new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery", "window.jQuery": "jquery'", "window.$": "jquery"})
+  ]
+
 
 };
 

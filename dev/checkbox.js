@@ -1,7 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+const React = require('react');
+const ReactDOM = require('react-dom');
+var createReactClass = require('create-react-class');
 
-export const Checkbox = React.createClass({
+export var Checkbox = createReactClass({
         getInitialState: function(){
             return { options: this.props.buffers, currentOption: this.props.currentOption}
         },

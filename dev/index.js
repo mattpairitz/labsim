@@ -1,10 +1,11 @@
-require('webpack-jquery-ui');
-require('webpack-jquery-ui/css');
 const React = require('react');
 const ReactDOM = require('react-dom');
+const createReactClass = require('create-react-class');
 const Checkbox = require('./checkbox.js').Checkbox;
+require('webpack-jquery-ui');
+require('webpack-jquery-ui/css');
 
-const Index = React.createClass({
+var Index = createReactClass({
 
   getInitialState: function(){
     var list = ["HA/NaA", "HF/NaF", "HClO/NaClO", "NH\u2083/NH\u2084Cl"];
