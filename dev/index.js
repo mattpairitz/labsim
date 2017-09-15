@@ -4,6 +4,7 @@ const createReactClass = require('create-react-class');
 const Checkbox = require('./checkbox.js').Checkbox;
 require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
+require("./stylesheet.css");
 
 var Index = createReactClass({
 

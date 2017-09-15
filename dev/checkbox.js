@@ -8,7 +8,7 @@ export var Checkbox = createReactClass({
         },
 
         componentDidMount: function(){
-        	$(".acid-picker").controlgroup( {
+        	$("selector").controlgroup( {
               direction: "vertical"
             } ); 
         },
@@ -16,7 +16,7 @@ export var Checkbox = createReactClass({
         render: function(){
            var acidPicker = this.props.options.map(function(listValue, index){
                return (<div key={index}>
-                   <input type="radio" name="acid" 
+                   <input type="radio" name="option" 
                                        value={listValue} 
                                        checked={this.props.currentOption === listValue} 
                                        onChange={this.props.onClick}/>{listValue}
@@ -24,10 +24,10 @@ export var Checkbox = createReactClass({
                );
            }, this);
            return (
-               <fieldset>
+            <div className='selector'>
                 <legend>Select a buffer: </legend>
                     {acidPicker}
-               </fieldset>        
+            </div>       
            );
       }
     });

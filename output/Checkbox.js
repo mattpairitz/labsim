@@ -32634,7 +32634,7 @@ var Checkbox = exports.Checkbox = createReactClass({
     },
 
     componentDidMount: function componentDidMount() {
-        $(".acid-picker").controlgroup({
+        $("selector").controlgroup({
             direction: "vertical"
         });
     },
@@ -32644,7 +32644,7 @@ var Checkbox = exports.Checkbox = createReactClass({
             return React.createElement(
                 'div',
                 { key: index },
-                React.createElement('input', { type: 'radio', name: 'acid',
+                React.createElement('input', { type: 'radio', name: 'option',
                     value: listValue,
                     checked: this.props.currentOption === listValue,
                     onChange: this.props.onClick }),
@@ -32652,8 +32652,8 @@ var Checkbox = exports.Checkbox = createReactClass({
             );
         }, this);
         return React.createElement(
-            'fieldset',
-            null,
+            'div',
+            { className: 'selector' },
             React.createElement(
                 'legend',
                 null,
