@@ -6,8 +6,7 @@ var OUTPUT = path.resolve(__dirname, "output");
 
 var config = {
   entry: {
-    Index : DEV + "/index.js", 
-    Checkbox: DEV + "/checkbox.js"
+    Index : DEV + "/index.js" 
   },
   output: {
     path: OUTPUT,

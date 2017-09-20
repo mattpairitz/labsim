@@ -8,9 +8,8 @@ export var Checkbox = createReactClass({
         },
 
         componentDidMount: function(){
-        	$("selector").controlgroup( {
-              direction: "vertical"
-            } ); 
+            $("buffer-select").checkboxradio();
+           
         },
 
         render: function(){
@@ -19,14 +18,16 @@ export var Checkbox = createReactClass({
                    <input type="radio" name="option" 
                                        value={listValue} 
                                        checked={this.props.currentOption === listValue} 
-                                       onChange={this.props.onClick}/>{listValue}
+                                       onChange={this.props.onClick}/> {listValue}
                    </div>
                );
            }, this);
            return (
-            <div className='selector'>
-                <legend>Select a buffer: </legend>
-                    {acidPicker}
+            <div className="buffer-select">
+                <fieldset>
+                    <legend>Select a buffer: </legend>
+                        {acidPicker}
+                </fieldset>
             </div>       
            );
       }

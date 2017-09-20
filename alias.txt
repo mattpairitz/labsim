@@ -1,0 +1,4 @@
+Run this command to use 'output' for webpack:
+alias output="./node_modules/.bin/webpack"
+
+add --watch for on-save reloading 
