@@ -29,3 +29,8 @@
       }
       .row.content {height:auto;} 
     }
+
+    #graph-well {
+      height: 400px;
+      width: 300px;
+    }

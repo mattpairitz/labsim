@@ -34,7 +34,11 @@ var config = {
     {
       test: /\.css$/,
       loaders: ["style-loader", "css-loader"]
-    } 
+    },
+    {
+        test: /\.coffee$/,
+        use: [ 'coffee-loader' ]
+    }
     ]
   },
 
