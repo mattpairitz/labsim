@@ -1,11 +1,21 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const createReactClass = require('create-react-class');
-const Checkbox = require('./checkbox.js').Checkbox;
-const {Graph} = require('./graph.js');
+/*
+  Node dependencies
+*/
+var React = require('react');
+var ReactDOM = require('react-dom');
+var createReactClass = require('create-react-class');
+
+/*
+  Components
+*/
+var {Checkbox} = require('./checkbox.js');
+var {Graph} = require('./graph.js');
+import Slider from "rc-slider";
+
+/*
+  CSS
+*/
 require("./stylesheet.css");
-require('webpack-jquery-ui');
-require('webpack-jquery-ui/css');
 
 var Index = createReactClass({
 
@@ -78,6 +88,9 @@ var Index = createReactClass({
                 <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} onClick={this.changeBuffer}/></div>
               </div>
             </div>
+            <div className="well">
+              <div><Slider  min={0} max={20} defaultValue={3}/></div>
+            </div>
             </div>
           </div>
         </div>
@@ -86,7 +99,6 @@ var Index = createReactClass({
       );
   }
 });
-
 ReactDOM.render(<div><Index 
   list={["H/Na", "HF/NaF", "HCl/NaCl", "NH\u2083/NH\u2084Cl"] }/></div>, 
   document.getElementById("container"))
