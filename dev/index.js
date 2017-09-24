@@ -16,6 +16,7 @@ import Slider from "rc-slider";
   CSS
 */
 require("./stylesheet.css");
+import 'rc-slider/assets/index.css';
 
 var Index = createReactClass({
 
