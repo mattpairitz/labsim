@@ -23,8 +23,8 @@ class Canvas extends React.Component {
       // React will be sure that the rotation has now updated.
       this.setState({
         cubeRotation: new THREE.Euler(
-          this.state.cubeRotation.x + 0.1,
-          this.state.cubeRotation.y + 0.1,
+          this.state.cubeRotation.x + 0.01,
+          this.state.cubeRotation.y + 0.01,
           0
         ),
       });
@@ -32,8 +32,8 @@ class Canvas extends React.Component {
   }
 
   render() {
-    const width = window.innerWidth; // canvas width
-    const height = window.innerHeight; // canvas height
+    const width = 300; // canvas width
+    const height = 300; // canvas height
 
     return (<React3
       mainCamera="camera" // this points to the perspectiveCamera which has the name set to "camera" below
@@ -55,10 +55,10 @@ class Canvas extends React.Component {
         <mesh
           rotation={this.state.cubeRotation}
         >
-          <boxGeometry
-            width={1}
-            height={1}
-            depth={1}
+          <sphereGeometry
+            radius={2}
+            widthSegments={10}
+            heightSegments={10}
           />
           <meshBasicMaterial
             color={0x00ff00}
@@ -69,4 +69,4 @@ class Canvas extends React.Component {
   }
 }
 
-//ReactDOM.render(<Canvas/>, document.getElementById('canvas-well'));
+ReactDOM.render(<Canvas/>, document.body);

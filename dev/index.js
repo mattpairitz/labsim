@@ -85,7 +85,7 @@ var Index = createReactClass({
                 <p>Vol 2: {this.state.AAmount}</p>
                 <p>Strong: {this.state.strong}</p>
                 <p>Strong Vol: {this.state.strongAmount}</p>
-                
+
               <div id='graph-well'>
 
               <div id="viz"></div>
