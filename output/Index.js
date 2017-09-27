@@ -42181,12 +42181,19 @@ var Index = createReactClass({
 
 
   getInitialState: function getInitialState() {
-    return { secondsElapsed: 0, buffer: this.props.list[0],
-      buffers: this.props.list, data: json, HAmount: 500, AAmount: 500 };
+    return { secondsElapsed: 0,
+      buffer: this.props.buffers[0], buffers: this.props.buffers,
+      strongs: this.props.strongs, strong: this.props.strongs[0],
+      data: json, HAmount: 500, AAmount: 500, strongAmount: 500 };
   },
 
-  changeBuffer: function changeBuffer(event) {
-    this.setState({ buffer: event.currentTarget.name });
+  changeCheckbox: function changeCheckbox(event) {
+    // add else ifs to target additional checkboxes by id
+    if (event.currentTarget.id == 'buffer') {
+      this.setState({ buffer: event.currentTarget.name });
+    } else {
+      this.setState({ strong: event.currentTarget.name });
+    }
   },
 
   changeHAVolume: function changeHAVolume(value) {
@@ -42195,6 +42202,10 @@ var Index = createReactClass({
 
   changeAVolume: function changeAVolume(value) {
     this.setState({ AAmount: value });
+  },
+
+  changeStrongVolume: function changeStrongVolume(value) {
+    this.setState({ strongAmount: value });
   },
 
   render: function render() {
@@ -42259,6 +42270,30 @@ var Index = createReactClass({
               this.state.buffer
             ),
             React.createElement(
+              'p',
+              null,
+              'Vol 1: ',
+              this.state.HAmount
+            ),
+            React.createElement(
+              'p',
+              null,
+              'Vol 2: ',
+              this.state.AAmount
+            ),
+            React.createElement(
+              'p',
+              null,
+              'Strong: ',
+              this.state.strong
+            ),
+            React.createElement(
+              'p',
+              null,
+              'Strong Vol: ',
+              this.state.strongAmount
+            ),
+            React.createElement(
               'div',
               { id: 'graph-well' },
               React.createElement('div', { id: 'viz' }),
@@ -42285,17 +42320,12 @@ var Index = createReactClass({
                 React.createElement(
                   'p',
                   null,
-                  'Buffer: ',
-                  this.state.buffer
-                )
-              ),
-              React.createElement(
-                'div',
-                null,
+                  ' Buffer '
+                ),
                 React.createElement(
                   'div',
                   null,
-                  React.createElement(Checkbox, { options: this.state.buffers, currentOption: this.state.buffer, onClick: this.changeBuffer })
+                  React.createElement(Checkbox, { options: this.state.buffers, currentOption: this.state.buffer, id: 'buffer', onClick: this.changeCheckbox })
                 )
               )
             ),
@@ -42305,7 +42335,12 @@ var Index = createReactClass({
               React.createElement(
                 'div',
                 null,
-                React.createElement(SlideBar, { min: 0, max: 1000, step: 50, buffer: this.state.buffer, amount: this.state.HAmount, onChange: this.changeHAVolume })
+                React.createElement(
+                  'p',
+                  null,
+                  ' Vol 1 '
+                ),
+                React.createElement(SlideBar, { min: 0, max: 1000, step: 50, buffer: 'HA', amount: this.state.HAmount, onChange: this.changeHAVolume })
               )
             ),
             React.createElement(
@@ -42314,7 +42349,36 @@ var Index = createReactClass({
               React.createElement(
                 'div',
                 null,
-                React.createElement(SlideBar, { min: 0, max: 1000, step: 50, buffer: this.state.buffer, amount: this.state.AAmount, onChange: this.changeAVolume })
+                React.createElement(
+                  'p',
+                  null,
+                  ' Vol 2 '
+                ),
+                React.createElement(SlideBar, { min: 0, max: 1000, step: 50, buffer: 'A', amount: this.state.AAmount, onChange: this.changeAVolume })
+              )
+            ),
+            React.createElement(
+              'div',
+              { className: 'well' },
+              React.createElement(
+                'div',
+                null,
+                React.createElement(
+                  'p',
+                  null,
+                  ' Strong Acid/Base '
+                ),
+                React.createElement(
+                  'div',
+                  null,
+                  React.createElement(Checkbox, { options: this.props.strongs, currentOption: this.state.strong, id: 'strong', onClick: this.changeCheckbox })
+                ),
+                React.createElement(
+                  'div',
+                  null,
+                  React.createElement('br', null),
+                  React.createElement(SlideBar, { min: 0, max: 2000, step: 50, buffer: this.state.strong, amount: this.state.strongAmount, onChange: this.changeStrongVolume })
+                )
               )
             )
           )
@@ -42327,7 +42391,8 @@ ReactDOM.render(React.createElement(
   'div',
   null,
   React.createElement(Index, {
-    list: ["0.10 M HA + 0.10 M NaA", "0.10 M HF + 0.10 M NaF", "0.10 M HClO + 0.10 M NaClO", '0.10 M NH\u2084Cl + 0.10 M NH\u2083'] })
+    buffers: ["0.10 M HA + 0.10 M NaA", "0.10 M HF + 0.10 M NaF", "0.10 M HClO + 0.10 M NaClO", '0.10 M NH\u2084Cl + 0.10 M NH\u2083'],
+    strongs: ['HCL', 'NaOH'] })
 ), document.getElementById("container"));
 
 /***/ }),
@@ -59868,7 +59933,7 @@ var Checkbox = exports.Checkbox = createReactClass({
       return React.createElement(
         'div',
         { className: 'input-row', key: index },
-        React.createElement('input', { type: 'radio', name: listValue,
+        React.createElement('input', { id: this.props.id, type: 'radio', name: listValue,
           checked: this.props.currentOption === listValue,
           onChange: this.props.onClick }),
         React.createElement(
@@ -89368,7 +89433,7 @@ var SlideBar = exports.SlideBar = createReactClass({
       React.createElement(
         'span',
         null,
-        'mL'
+        ' mL'
       )
     );
   }

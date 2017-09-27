@@ -11,7 +11,7 @@ export var Checkbox = createReactClass({
    var acidPicker = this.props.options.map(function(listValue, index){
      return (
       <div className="input-row" key={index}>
-      <input type="radio" name={listValue} 
+      <input id={this.props.id} type="radio" name={listValue} 
       checked={this.props.currentOption === listValue} 
       onChange={this.props.onClick}/>
       <label htmlFor={'radio-'+index}> {listValue} </label>

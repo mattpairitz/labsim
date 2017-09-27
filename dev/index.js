@@ -27,12 +27,19 @@ const json = require('./data.json');
 var Index = createReactClass({
 
   getInitialState: function(){
-    return {secondsElapsed: 0, buffer: this.props.list[0], 
-            buffers: this.props.list, data: json, HAmount: 500, AAmount: 500};
-  },
+    return {secondsElapsed: 0, 
+            buffer: this.props.buffers[0], buffers: this.props.buffers, 
+            strongs: this.props.strongs, strong: this.props.strongs[0],
+            data: json, HAmount: 500, AAmount: 500, strongAmount: 500};
+    },
 
-  changeBuffer: function(event){
-    this.setState({buffer: event.currentTarget.name});
+  changeCheckbox: function(event){
+    // add else ifs to target additional checkboxes by id
+    if(event.currentTarget.id=='buffer'){
+      this.setState({buffer: event.currentTarget.name});
+    } else {
+      this.setState({strong: event.currentTarget.name});
+    }
   },
 
   changeHAVolume: function(value){
@@ -41,6 +48,10 @@ var Index = createReactClass({
 
   changeAVolume: function(value){
     this.setState({AAmount: value});
+  },
+
+  changeStrongVolume: function(value){
+    this.setState({strongAmount: value})
   },
 
   render: function() {
@@ -69,6 +80,10 @@ var Index = createReactClass({
             <div className="col-sm-9 text-left"> 
               <h1>The Reaction Space</h1>
                 <p>Buffer: {this.state.buffer}</p>
+                <p>Vol 1: {this.state.HAmount}</p>
+                <p>Vol 2: {this.state.AAmount}</p>
+                <p>Strong: {this.state.strong}</p>
+                <p>Strong Vol: {this.state.strongAmount}</p>
               <div id='graph-well'>
 
               <div id="viz"></div>
@@ -80,24 +95,35 @@ var Index = createReactClass({
             <div className="col-sm-3 sidenav">
               <div className="well">
                 <div>
-                  <p>Buffer: {this.state.buffer}</p>
-                </div>
-                <div>
-                  <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} onClick={this.changeBuffer}/></div>
+                  <p> Buffer </p>
+                  <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} id='buffer' onClick={this.changeCheckbox}/></div>
                 </div>
               </div>
 
               <div className="well" id='HA-slider'>
                   <div>
-                    <SlideBar min={0} max={1000} step={50} buffer={this.state.buffer} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
+                    <p> Vol 1 </p>
+                    <SlideBar min={0} max={1000} step={50} buffer={'HA'} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
                   </div>
               </div>
 
               <div className="well" id='A-slider'>
                 <div>
-                  <SlideBar min={0} max={1000} step={50} buffer={this.state.buffer} amount={this.state.AAmount} onChange={this.changeAVolume}/>
+                  <p> Vol 2 </p>
+                  <SlideBar min={0} max={1000} step={50} buffer={'A'} amount={this.state.AAmount} onChange={this.changeAVolume}/>
                 </div>
               </div>
+              
+              <div className="well">
+                  <div>
+                    <p> Strong Acid/Base </p>
+                    <div><Checkbox options={this.props.strongs} currentOption={this.state.strong} id={'strong'} onClick={this.changeCheckbox}/></div>
+                    <div><br/>
+                      <SlideBar min={0} max={2000} step={50} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume}/>
+                    </div>
+                  </div>
+                </div>
+            
             </div>
           </div>
         </div>
@@ -107,7 +133,8 @@ var Index = createReactClass({
   }
 });
 ReactDOM.render(<div><Index 
-  list={["0.10 M HA + 0.10 M NaA", "0.10 M HF + 0.10 M NaF",  "0.10 M HClO + 0.10 M NaClO", "0.10 M NH\u2084Cl + 0.10 M NH\u2083"] }/></div>, 
+  buffers={["0.10 M HA + 0.10 M NaA", "0.10 M HF + 0.10 M NaF",  "0.10 M HClO + 0.10 M NaClO", "0.10 M NH\u2084Cl + 0.10 M NH\u2083"]} 
+  strongs ={['HCL', 'NaOH']}/></div>, 
   document.getElementById("container"))
 
 

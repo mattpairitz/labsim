@@ -26,7 +26,7 @@ export var SlideBar = createReactClass({
        onChange={this.props.onChange} defaultValue={this.state.amount}/></div>
 	    <span>{this.props.buffer} </span>
 	      <input className='slider' type="number" value={this.state.amount}/>
-	    <span>mL</span>  
+	    <span> mL</span>  
     </div>    
     );
  }
