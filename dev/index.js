@@ -10,6 +10,7 @@ var createReactClass = require('create-react-class');
 */
 var {Checkbox} = require('./checkbox.js');
 var {Graph} = require('./graph.js');
+var {SlideBar} = require('./slider.js');
 import Slider from "rc-slider";
 
 /*
@@ -18,32 +19,28 @@ import Slider from "rc-slider";
 require("./stylesheet.css");
 import 'rc-slider/assets/index.css';
 
+/*
+  Data import
+*/
+const json = require('./data.json');
+
 var Index = createReactClass({
 
   getInitialState: function(){
-    return {secondsElapsed: 0, buffer: "H/Na", buffers: this.props.list, data: [{id: "alpha", x: 4, y:  7}]};
-  },
-
-  componentWillMount: function(){
-    this.interval = setInterval(this.tick, 1000);
+    return {secondsElapsed: 0, buffer: this.props.list[0], 
+            buffers: this.props.list, data: json, HAmount: 500, AAmount: 500};
   },
 
   changeBuffer: function(event){
     this.setState({buffer: event.currentTarget.name});
   },
 
-   tick: function() {
-     var add =   [{id: "alpha", x: 5, y: 25},
-        {id: "alpha", x: 6, y: 13},
-        {id: "beta",  x: 4, y: 17},
-        {id: "beta",  x: 5, y:  8},
-        {id: "beta",  x: 6, y: 13}]
-    var data = this.state.data;
-    if(this.state.secondsElapsed<5){
-      data.push(add[this.state.secondsElapsed]);
-      this.setState({data: data});
-      this.setState({secondsElapsed: this.state.secondsElapsed + 1});
-    }
+  changeHAVolume: function(value){
+    this.setState({HAmount: value});
+  },
+
+  changeAVolume: function(value){
+    this.setState({AAmount: value});
   },
 
   render: function() {
@@ -81,17 +78,26 @@ var Index = createReactClass({
               </div>
             </div>
             <div className="col-sm-3 sidenav">
-            <div className="well">
-              <div>
-                <p>Selected: {this.state.buffer}</p>
+              <div className="well">
+                <div>
+                  <p>Buffer: {this.state.buffer}</p>
+                </div>
+                <div>
+                  <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} onClick={this.changeBuffer}/></div>
+                </div>
               </div>
-              <div>
-                <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} onClick={this.changeBuffer}/></div>
+
+              <div className="well" id='HA-slider'>
+                  <div>
+                    <SlideBar min={0} max={1000} step={50} buffer={this.state.buffer} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
+                  </div>
               </div>
-            </div>
-            <div className="well">
-              <div><Slider  min={0} max={20} defaultValue={3}/></div>
-            </div>
+
+              <div className="well" id='A-slider'>
+                <div>
+                  <SlideBar min={0} max={1000} step={50} buffer={this.state.buffer} amount={this.state.AAmount} onChange={this.changeAVolume}/>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -101,7 +107,7 @@ var Index = createReactClass({
   }
 });
 ReactDOM.render(<div><Index 
-  list={["H/Na", "HF/NaF", "HCl/NaCl", "NH\u2083/NH\u2084Cl"] }/></div>, 
+  list={["0.10 M HA + 0.10 M NaA", "0.10 M HF + 0.10 M NaF",  "0.10 M HClO + 0.10 M NaClO", "0.10 M NH\u2084Cl + 0.10 M NH\u2083"] }/></div>, 
   document.getElementById("container"))
 
 

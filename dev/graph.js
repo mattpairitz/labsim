@@ -1,7 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const createReactClass = require('create-react-class');
-import {LinePlot} from "d3plus-react";
+import {BarChart} from "d3plus-react";
 
 export var Graph = createReactClass({
   getInitialState: function(){
@@ -18,7 +18,7 @@ export var Graph = createReactClass({
 
   render: function(){  
    var data = this.state.config;          
-   return (<div><LinePlot config={{data}} /></div>);
+   return (<div><BarChart config={{data}} /></div>);
  }
 });
 

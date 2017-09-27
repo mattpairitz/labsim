@@ -34,3 +34,28 @@
       height: 400px;
       width: 300px;
     }
+
+    [data-role="fieldcontain"] {
+      display: table;
+    }
+
+    .input-row {
+      display: table-row;
+    }
+
+    input {
+      display: table-cell;
+    }
+
+    label {
+      display: table-cell;
+      cursor: pointer;
+      padding-left: 10px;
+      margin-right: 10px;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .slider {
+      width: 50px;
+    }

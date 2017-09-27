@@ -43,7 +43,11 @@
     "css-loader": "^0.28.7",
     "d3plus": "^1.9.8",
     "d3plus-react": "^0.2.15",
+    "json-loader": "^0.5.7",
     "rc-slider": "^8.3.1",
-    "style-loader": "^0.18.2"
+    "react-three": "^0.9.7",
+    "react-three-renderer": "^3.2.1",
+    "style-loader": "^0.18.2",
+    "three": "^0.87.1"
   }
 }

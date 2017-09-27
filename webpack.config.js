@@ -8,9 +8,14 @@ var config = {
   entry: {
     Index : DEV + "/index.js" 
   },
+
   output: {
     path: OUTPUT,
     filename: "[name].js",
+  },
+
+  resolve: {
+      extensions: ['.js', '.jsx', '.json']
   },
 
   module: {
@@ -38,6 +43,10 @@ var config = {
     {
         test: /\.coffee$/,
         use: [ 'coffee-loader' ]
+    },
+    {
+        test: /\.json$/,
+        loader: 'json-loader'
     }
     ]
   },
