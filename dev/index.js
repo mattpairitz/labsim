@@ -11,7 +11,9 @@ var createReactClass = require('create-react-class');
 var {Checkbox} = require('./checkbox.js');
 var {Graph} = require('./graph.js');
 var {SlideBar} = require('./slider.js');
+//var {Canvas} = require('./canvas.js');
 import Slider from "rc-slider";
+import Canvas from "./canvas.js";
 
 /*
   CSS
@@ -84,6 +86,10 @@ var Index = createReactClass({
                 <p>Vol 2: {this.state.AAmount}</p>
                 <p>Strong: {this.state.strong}</p>
                 <p>Strong Vol: {this.state.strongAmount}</p>
+
+              <div id='canvas-well'> 
+                  <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount}/></div>
+              </div>
               <div id='graph-well'>
 
               <div id="viz"></div>
