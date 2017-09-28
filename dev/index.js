@@ -11,18 +11,17 @@ var createReactClass = require('create-react-class');
 var {Checkbox} = require('./checkbox.js');
 var {Graph} = require('./graph.js');
 var {SlideBar} = require('./slider.js');
-import Slider from "rc-slider";
 
 /*
   CSS
 */
-require("./stylesheet.css");
+import './stylesheet.css';
 import 'rc-slider/assets/index.css';
 
 /*
   Data import
 */
-const json = require('./data.json');
+const json = require('./data.json')
 
 var Index = createReactClass({
 
@@ -30,7 +29,7 @@ var Index = createReactClass({
     return {secondsElapsed: 0, 
             buffer: this.props.buffers[0], buffers: this.props.buffers, 
             strongs: this.props.strongs, strong: this.props.strongs[0],
-            data: json, HAmount: 500, AAmount: 500, strongAmount: 500};
+            data: json, HAmount: '500', AAmount: '500', strongAmount: '500'};
     },
 
   changeCheckbox: function(event){
@@ -88,11 +87,15 @@ var Index = createReactClass({
 
               <div id="viz"></div>
                 <div>
-                  <div><Graph config={this.state.data}/></div>
+                   <div><Graph config={this.state.data}/></div>
                 </div>
               </div>
             </div>
             <div className="col-sm-3 sidenav">
+            <h2>Basic Panel</h2>
+              <div className="panel panel-default">
+                <div className="panel-body">A Basic Panel</div>
+               
               <div className="well">
                 <div>
                   <p> Buffer </p>
@@ -125,6 +128,7 @@ var Index = createReactClass({
                 </div>
             
             </div>
+            </div>  
           </div>
         </div>
       </div>
