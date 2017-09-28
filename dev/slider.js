@@ -8,22 +8,22 @@ export var SlideBar = createReactClass({
     return { min: null, max: null, step: null, amount: null}
   },
   
-  componentWillMount: function(){
+  componentWillMount(){
   	this.setState({min: this.props.min})
   	this.setState({max: this.props.max})
   	this.setState({step: this.props.step})
   	this.setState({amount: this.props.amount})
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
   	this.setState({amount: nextProps.amount})
   },
 
-  overwriteAmount: function(event){
+  overwriteAmount(event){
     this.setState({amount: event.currentTarget.value})
   },
 
-  render: function(){
+  render(){
     var min = this.state.min;
     var max = this.state.max;
     var step = this.state.step;
