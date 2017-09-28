@@ -11,31 +11,29 @@ var createReactClass = require('create-react-class');
 var {Checkbox} = require('./checkbox.js');
 var {Graph} = require('./graph.js');
 var {SlideBar} = require('./slider.js');
-//var {Canvas} = require('./canvas.js');
-import Slider from "rc-slider";
-import Canvas from "./canvas.js";
+var {Canvas} = require('./canvas.js');
 
 /*
   CSS
 */
-require("./stylesheet.css");
+import './stylesheet.css';
 import 'rc-slider/assets/index.css';
 
 /*
   Data import
 */
-const json = require('./data.json');
+const json = require('./data.json')
 
 var Index = createReactClass({
 
-  getInitialState: function(){
+  getInitialState(){
     return {secondsElapsed: 0, 
             buffer: this.props.buffers[0], buffers: this.props.buffers, 
             strongs: this.props.strongs, strong: this.props.strongs[0],
             data: json, HAmount: 500, AAmount: 500, strongAmount: 500};
     },
 
-  changeCheckbox: function(event){
+  changeCheckbox(event){
     // add else ifs to target additional checkboxes by id
     if(event.currentTarget.id=='buffer'){
       this.setState({buffer: event.currentTarget.name});
@@ -44,19 +42,19 @@ var Index = createReactClass({
     }
   },
 
-  changeHAVolume: function(value){
+  changeHAVolume(value){
     this.setState({HAmount: value});
   },
 
-  changeAVolume: function(value){
+  changeAVolume(value){
     this.setState({AAmount: value});
   },
 
-  changeStrongVolume: function(value){
+  changeStrongVolume(value){
     this.setState({strongAmount: value})
   },
 
-  render: function() {
+  render() {
     return (
       <div>
         <nav className="navbar navbar-inverse">
@@ -79,26 +77,28 @@ var Index = createReactClass({
 
         <div className="container-fluid text-center">    
           <div className="row content">
-            <div className="col-sm-9 text-left"> 
-              <h1>The Reaction Space</h1>
-                <p>Buffer: {this.state.buffer}</p>
-                <p>Vol 1: {this.state.HAmount}</p>
-                <p>Vol 2: {this.state.AAmount}</p>
-                <p>Strong: {this.state.strong}</p>
-                <p>Strong Vol: {this.state.strongAmount}</p>
+            <div className="col-sm-6 text-left"> 
+                <h1>The Reaction Space</h1>
+                  <p>Buffer: {this.state.buffer}</p>
+                  <p>Vol 1: {this.state.HAmount}</p>
+                  <p>Vol 2: {this.state.AAmount}</p>
+                  <p>Strong: {this.state.strong}</p>
+                  <p>Strong Vol: {this.state.strongAmount}</p>
 
-              <div id='canvas-well'> 
-                  <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount}/></div>
-              </div>
-              <div id='graph-well'>
-
-              <div id="viz"></div>
-                <div>
-                  <div><Graph config={this.state.data}/></div>
+                <div id='canvas-well'> 
+                    <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount}/></div>
                 </div>
-              </div>
             </div>
+            <div className="col-sm-3"> 
+                <div id="viz"></div>
+                  <div>
+                     <div><Graph config={this.state.data}/></div>
+                  </div>
+              </div>
             <div className="col-sm-3 sidenav">
+              <div className="panel panel-default">
+                <div className="panel-body">Selection</div>
+               
               <div className="well">
                 <div>
                   <p> Buffer </p>
@@ -131,6 +131,7 @@ var Index = createReactClass({
                 </div>
             
             </div>
+            </div>  
           </div>
         </div>
       </div>

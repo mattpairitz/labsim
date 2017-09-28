@@ -8,24 +8,32 @@ export var SlideBar = createReactClass({
     return { min: null, max: null, step: null, amount: null}
   },
   
-  componentWillMount: function(){
+  componentWillMount(){
   	this.setState({min: this.props.min})
   	this.setState({max: this.props.max})
   	this.setState({step: this.props.step})
   	this.setState({amount: this.props.amount})
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
   	this.setState({amount: nextProps.amount})
   },
 
-  render: function(){
+  overwriteAmount(event){
+    this.setState({amount: event.currentTarget.value})
+  },
+
+  render(){
+    var min = this.state.min;
+    var max = this.state.max;
+    var step = this.state.step;
+    var amount = this.state.amount;
    return (
     <div>
-      <div><Slider min={this.state.min} max={this.state.max} step={this.state.step}
-       onChange={this.props.onChange} defaultValue={this.state.amount}/></div>
+      <div><Slider min={min} max={max} step={step}
+       onChange={this.props.onChange} value={amount}/></div>
 	    <span>{this.props.buffer} </span>
-	      <input className='slider' type="number" value={this.state.amount}/>
+	      <input className='slider' type="number" value={amount} onChange={this.overwriteAmount}/>
 	    <span> mL</span>  
     </div>    
     );
