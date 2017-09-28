@@ -11,6 +11,7 @@ var createReactClass = require('create-react-class');
 var {Checkbox} = require('./checkbox.js');
 var {Graph} = require('./graph.js');
 var {SlideBar} = require('./slider.js');
+import Canvas from "./canvas.js";
 
 /*
   CSS
@@ -29,7 +30,7 @@ var Index = createReactClass({
     return {secondsElapsed: 0, 
             buffer: this.props.buffers[0], buffers: this.props.buffers, 
             strongs: this.props.strongs, strong: this.props.strongs[0],
-            data: json, HAmount: '500', AAmount: '500', strongAmount: '500'};
+            data: json, HAmount: 500, AAmount: 500, strongAmount: 500};
     },
 
   changeCheckbox: function(event){
@@ -83,6 +84,10 @@ var Index = createReactClass({
                 <p>Vol 2: {this.state.AAmount}</p>
                 <p>Strong: {this.state.strong}</p>
                 <p>Strong Vol: {this.state.strongAmount}</p>
+
+              <div id='canvas-well'> 
+                  <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount}/></div>
+              </div>
               <div id='graph-well'>
 
               <div id="viz"></div>
