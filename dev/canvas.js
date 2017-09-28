@@ -2,71 +2,41 @@ import React from 'react';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 import ReactDOM from 'react-dom';
+var createReactClass = require('create-react-class');
 
 class Canvas extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+    componentDidMount() {
+        const canvas = this.refs.canvas
+        const ctx = canvas.getContext("2d")
 
-    // construct the position vector here, because if we use 'new' within render,
-    // React will think that things have changed when they have not.
-    this.cameraPosition = new THREE.Vector3(0, 0, 5);
+        /* Fill Rectangle */
+        ctx.fillStyle = "#ccffe5";
+        ctx.fillRect(50, 250, 200, -100);
 
-    this.state = {
-      cubeRotation: new THREE.Euler(),
-    };
+        /* Draw rectangle on canvas */
+        ctx.moveTo(50,50);
+        ctx.lineTo(250, 50);
+        ctx.stroke();
 
-    this._onAnimate = () => {
-      // we will get this callback every frame
+        ctx.moveTo(250, 50);
+        ctx.lineTo(250, 250);
+        ctx.stroke();
 
-      // pretend cubeRotation is immutable.
-      // this helps with updates and pure rendering.
-      // React will be sure that the rotation has now updated.
-      this.setState({
-        cubeRotation: new THREE.Euler(
-          this.state.cubeRotation.x + 0.01,
-          this.state.cubeRotation.y + 0.01,
-          0
-        ),
-      });
-    };
-  }
+        ctx.moveTo(250, 250);
+        ctx.lineTo(50, 250);
+        ctx.stroke();
 
-  render() {
-    const width = 300; // canvas width
-    const height = 300; // canvas height
-
-    return (<React3
-      mainCamera="camera" // this points to the perspectiveCamera which has the name set to "camera" below
-      width={width}
-      height={height}
-
-      onAnimate={this._onAnimate}
-    >
-      <scene>
-        <perspectiveCamera
-          name="camera"
-          fov={75}
-          aspect={width / height}
-          near={0.1}
-          far={1000}
-
-          position={this.cameraPosition}
-        />
-        <mesh
-          rotation={this.state.cubeRotation}
-        >
-          <sphereGeometry
-            radius={2}
-            widthSegments={10}
-            heightSegments={10}
-          />
-          <meshBasicMaterial
-            color={0x00ff00}
-          />
-        </mesh>
-      </scene>
-    </React3>);
-  }
-}
-
-ReactDOM.render(<Canvas/>, document.body);
+        ctx.moveTo(50, 250);
+        ctx.lineTo(50, 50);
+        ctx.stroke();
+    }
+        
+    render() {
+        return(
+          <div>
+            <canvas ref="canvas" width={300} height={300} />
+          </div>
+        )
+      }
+    }
+export default Canvas
