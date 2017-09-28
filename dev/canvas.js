@@ -13,14 +13,10 @@ export var Canvas = createReactClass ({
     componentDidMount() {
         const canvas = this.refs.canvas
         const ctx = canvas.getContext("2d")
-        //const height = this.props.volume1
-
-       // this.setState({volume1: this.props.volume1});
-       // this.setState({volume2: this.props.volume2});
 
         /* Fill Rectangle */
         ctx.fillStyle = "#ccffe5";
-        ctx.fillRect(50, 250, 200, -100);
+        ctx.fillRect(50, 250, 200, -50);
        // ctx.fillRect(0, 500, 500, -100);
 
         /* Fill Text */
@@ -48,7 +44,20 @@ export var Canvas = createReactClass ({
         const canvas = this.refs.canvas
         const ctx = canvas.getContext("2d")
         console.log(nextProps)
-        ctx.fillRect(50, 250, 200, nextProps.volume1)
+        const intialVolume = 50;
+
+        /* mL to pixels */
+        var amount1 = nextProps.volume1;
+        var amount2 = nextProps.volume2;
+        amount1 = (amount1 / 20);
+        amount2 = (amount2 / 20);
+        var total = (amount1 + amount2 + intialVolume);
+
+        console.log(amount1);
+        console.log(amount2);
+        console.log(total);
+
+        ctx.fillRect(50, 250, 200, - total);
     },
         
     render(){
