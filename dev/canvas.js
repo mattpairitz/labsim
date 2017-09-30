@@ -1,30 +1,35 @@
 import React from 'react';
-import React3 from 'react-three-renderer';
-import * as THREE from 'three';
 import ReactDOM from 'react-dom';
 var createReactClass = require('create-react-class');
 
 export var Canvas = createReactClass ({
     
     getInitialState() {
-        return {volume1: this.props.volume1, volume2: this.props.volume2, combinedVolume: null}
+        return {volume1: this.props.volume1, volume2: this.props.volume2, volume3: this.props.volume3}
     },
 
     componentDidMount() {
         const canvas = this.refs.canvas
         const ctx = canvas.getContext("2d")
-        //const height = this.props.volume1
-
-       // this.setState({volume1: this.props.volume1});
-       // this.setState({volume2: this.props.volume2});
 
         /* Fill Rectangle */
         ctx.fillStyle = "#ccffe5";
-        ctx.fillRect(50, 250, 200, -100);
-       // ctx.fillRect(0, 500, 500, -100);
 
-        /* Fill Text */
-        //ctx.strokeText(this.props.volume1, 100, 100);
+        /* mL to pixels: grabbing intial slider values */
+        var amount1 = this.props.volume1;
+        var amount2 = this.props.volume2;
+        var amount3 = this.props.volume3;
+        amount1 = (amount1 / 20);
+        amount2 = (amount2 / 20);
+        amount3 = (amount3 / 20);
+        var total = (amount1 + amount2 + amount3);
+
+        console.log(amount1);
+        console.log(amount2);
+        console.log(amount3);
+        console.log(total);
+
+        ctx.fillRect(50, 250, 200, - total);
 
         /* Draw rectangle on canvas */
         ctx.moveTo(50,50);
@@ -48,7 +53,22 @@ export var Canvas = createReactClass ({
         const canvas = this.refs.canvas
         const ctx = canvas.getContext("2d")
         console.log(nextProps)
-        ctx.fillRect(50, 250, 200, nextProps.volume1)
+
+        /* mL to pixels: grabbing new slider values */
+        var amount1 = nextProps.volume1;
+        var amount2 = nextProps.volume2;
+        var amount3 = nextProps.volume3;
+        amount1 = (amount1 / 20);
+        amount2 = (amount2 / 20);
+        amount3 = (amount3 / 20);
+        var total = (amount1 + amount2 + amount3);
+
+        console.log(amount1);
+        console.log(amount2);
+        console.log(amount3);
+        console.log(total);
+
+        ctx.fillRect(50, 250, 200, - total);
     },
         
     render(){
