@@ -1,5 +1,6 @@
 var webpack = require("webpack");
 var path = require("path");
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var DEV = path.resolve(__dirname, "dev");
 var OUTPUT = path.resolve(__dirname, "output");
@@ -53,7 +54,8 @@ var config = {
 
   plugins: [ 
     new webpack.optimize.CommonsChunkPlugin({name: 'index', filename: "bundle.js", minChunks: Infinity}), 
-    new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery", "window.jQuery": "jquery'", "window.$": "jquery"})
+    // uncomment to run analysis on bundle.js
+    // new BundleAnalyzerPlugin()
   ]
 
 
