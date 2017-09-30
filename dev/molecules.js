@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {DrawMolecules} from './drawMolecules.js';
 var createReactClass = require('create-react-class');
 
 export var Molecules = createReactClass ({
@@ -12,24 +13,6 @@ export var Molecules = createReactClass ({
         
     },
 
-/*
-    drawMolecules(mole1, mole2) {
-        const canvas = this.refs.canvas
-        const ctx = canvas.getContext("2d")
-
-        if(mole1.localCompare("HA") == 0) {
-            ctx.beginPath();
-            ctx.arc(100, 75, 50, 0, 2 * Math.PI);
-            ctx.stroke();
-        }
-
-        if(mole2.localCompare("NaA") == 0) {
-            ctx.beginPath();
-            ctx.arc(100, 75, 50, 0, 2 * Math.PI);
-            ctx.stroke();
-        }
-    },
-*/
     componentDidMount() {
         const canvas = this.refs.canvas
         const ctx = canvas.getContext("2d")
