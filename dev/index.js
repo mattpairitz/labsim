@@ -12,6 +12,7 @@ var {Checkbox} = require('./checkbox.js');
 var {Graph} = require('./graph.js');
 var {SlideBar} = require('./slider.js');
 var {Canvas} = require('./canvas.js');
+var {Molecules} = require('./molecules.js');
 
 /*
   CSS
@@ -86,7 +87,8 @@ var Index = createReactClass({
                   <p>Strong Vol: {this.state.strongAmount}</p>
 
                 <div id='canvas-well'> 
-                    <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount}/></div>
+                    <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/></div>
+                    <div><Molecules buffer={this.state.buffer}/></div>
                 </div>
             </div>
             <div className="col-sm-3"> 
