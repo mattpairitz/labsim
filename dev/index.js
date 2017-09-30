@@ -28,8 +28,9 @@ const json = require('./data.json')
 var Index = createReactClass({
 
   getInitialState(){
-    return {secondsElapsed: 0, 
-            buffer: this.props.buffers[0], buffers: this.props.buffers, 
+    return {secondsElapsed: 0,
+            equation: this.props.equations[0], equations: this.props.equations,
+            buffer: this.props.buffers[0], buffers: this.props.buffers,
             strongs: this.props.strongs, strong: this.props.strongs[0],
             data: json, HAmount: 500, AAmount: 500, strongAmount: 500};
     },
@@ -90,6 +91,9 @@ var Index = createReactClass({
                     <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/></div>
                     <div><Molecules buffer={this.state.buffer}/></div>
                 </div>
+                <div id='equation-well'>
+                    <div><h2>Equation: {this.state.equation}</h2></div>
+                </div>
             </div>
             <div className="col-sm-3"> 
                 <div id="viz"></div>
@@ -141,9 +145,10 @@ var Index = createReactClass({
       );
   }
 });
-ReactDOM.render(<div><Index 
+ReactDOM.render(<div><Index
+  equations={["HA + H\u2082O<-> A- + H\u2083O+", "H+ + A- -> HA"]}
   buffers={["0.10 M HA + 0.10 M NaA", "0.10 M HF + 0.10 M NaF",  "0.10 M HClO + 0.10 M NaClO", "0.10 M NH\u2084Cl + 0.10 M NH\u2083"]} 
-  strongs ={['HCL', 'NaOH']}/></div>, 
+  strongs ={['None', 'HCL', 'NaOH']}/></div>,
   document.getElementById("container"))
 
 
