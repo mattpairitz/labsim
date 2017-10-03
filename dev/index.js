@@ -32,13 +32,14 @@ var Index = createReactClass({
             equation: this.props.equations[0], equations: this.props.equations,
             buffer: this.props.buffers[0], buffers: this.props.buffers,
             strongs: this.props.strongs, strong: this.props.strongs[0],
-            data: json, HAmount: 500, AAmount: 500, strongAmount: 500};
+            data: json, HAmount: 500, AAmount: 500, strongAmount: 0};
     },
 
   changeCheckbox(event){
     // add else ifs to target additional checkboxes by id
     if(event.currentTarget.id=='buffer'){
       this.setState({buffer: event.currentTarget.name});
+      this.changeEquation(event.currentTarget.name);
     } else {
       this.setState({strong: event.currentTarget.name});
     }
@@ -53,8 +54,26 @@ var Index = createReactClass({
   },
 
   changeStrongVolume(value){
-    this.setState({strongAmount: value})
+    this.setState({strongAmount: value});
   },
+
+  changeEquation(value) {
+    switch(value){
+        case (this.props.buffers[0]):
+            this.setState({equation: this.props.equations[0]});
+            break;
+        case (this.props.buffers[1]):
+            this.setState({equation: this.props.equations[1]});
+            break;
+        case (this.props.buffers[2]):
+            this.setState({equation: this.props.equations[2]});
+            break;
+        case (this.props.buffers[3]):
+            this.setState({equation: this.props.equations[3]});
+
+    }
+  },
+
 
   render() {
     return (
@@ -92,7 +111,7 @@ var Index = createReactClass({
                     <div><Molecules buffer={this.state.buffer}/></div>
                 </div>
                 <div id='equation-well'>
-                    <div><h2>Equation: {this.state.equation}</h2></div>
+                    <div><h3>Equation: {this.state.equation}</h3></div>
                 </div>
             </div>
             <div className="col-sm-3"> 
@@ -129,9 +148,9 @@ var Index = createReactClass({
               <div className="well">
                   <div>
                     <p> Strong Acid/Base </p>
-                    <div><Checkbox options={this.props.strongs} currentOption={this.state.strong} id={'strong'} onClick={this.changeCheckbox}/></div>
+                    <div><Checkbox options={this.props.strongs} currentOption={this.state.strong} id='strong' onClick={this.changeCheckbox}/></div>
                     <div><br/>
-                      <SlideBar min={0} max={2000} step={50} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume}/>
+                      <SlideBar min={0} max={200} step={50} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume} />
                     </div>
                   </div>
                 </div>
@@ -146,7 +165,7 @@ var Index = createReactClass({
   }
 });
 ReactDOM.render(<div><Index
-  equations={["HA + H\u2082O<-> A- + H\u2083O+", "H+ + A- -> HA"]}
+  equations={["1", "2", "3", "4"]}
   buffers={["0.10 M HA + 0.10 M NaA", "0.10 M HF + 0.10 M NaF",  "0.10 M HClO + 0.10 M NaClO", "0.10 M NH\u2084Cl + 0.10 M NH\u2083"]} 
   strongs ={['None', 'HCL', 'NaOH']}/></div>,
   document.getElementById("container"))
