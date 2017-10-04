@@ -32715,12 +32715,13 @@ var Index = createReactClass({
       equation: this.props.equations[0], equations: this.props.equations,
       buffer: this.props.buffers[0], buffers: this.props.buffers,
       strongs: this.props.strongs, strong: this.props.strongs[0],
-      data: json, HAmount: 500, AAmount: 500, strongAmount: 500 };
+      data: json, HAmount: 500, AAmount: 500, strongAmount: 0 };
   },
   changeCheckbox: function changeCheckbox(event) {
     // add else ifs to target additional checkboxes by id
     if (event.currentTarget.id == 'buffer') {
       this.setState({ buffer: event.currentTarget.name });
+      this.changeEquation(event.currentTarget.name);
     } else {
       this.setState({ strong: event.currentTarget.name });
     }
@@ -32733,6 +32734,22 @@ var Index = createReactClass({
   },
   changeStrongVolume: function changeStrongVolume(value) {
     this.setState({ strongAmount: value });
+  },
+  changeEquation: function changeEquation(value) {
+    switch (value) {
+      case this.props.buffers[0]:
+        this.setState({ equation: this.props.equations[0] });
+        break;
+      case this.props.buffers[1]:
+        this.setState({ equation: this.props.equations[1] });
+        break;
+      case this.props.buffers[2]:
+        this.setState({ equation: this.props.equations[2] });
+        break;
+      case this.props.buffers[3]:
+        this.setState({ equation: this.props.equations[3] });
+
+    }
   },
   render: function render() {
     return React.createElement(
@@ -32840,7 +32857,7 @@ var Index = createReactClass({
                 'div',
                 null,
                 React.createElement(
-                  'h2',
+                  'h3',
                   null,
                   'Equation: ',
                   this.state.equation
@@ -32939,7 +32956,7 @@ var Index = createReactClass({
                     'div',
                     null,
                     React.createElement('br', null),
-                    React.createElement(SlideBar, { min: 0, max: 2000, step: 50, buffer: this.state.strong, amount: this.state.strongAmount, onChange: this.changeStrongVolume })
+                    React.createElement(SlideBar, { min: 0, max: 200, step: 50, buffer: this.state.strong, amount: this.state.strongAmount, onChange: this.changeStrongVolume })
                   )
                 )
               )
@@ -32954,7 +32971,7 @@ ReactDOM.render(React.createElement(
   'div',
   null,
   React.createElement(Index, {
-    equations: ['HA + H\u2082O<-> A- + H\u2083O+', "H+ + A- -> HA"],
+    equations: ["1", "2", "3", "4"],
     buffers: ["0.10 M HA + 0.10 M NaA", "0.10 M HF + 0.10 M NaF", "0.10 M HClO + 0.10 M NaClO", '0.10 M NH\u2084Cl + 0.10 M NH\u2083'],
     strongs: ['None', 'HCL', 'NaOH'] })
 ), document.getElementById("container"));
@@ -86659,30 +86676,48 @@ var DrawMolecules = exports.DrawMolecules = createReactClass({
 
                 break;
         }
+
+        this.drawH20(250, 50, ctx);
+        this.drawH30(250, 250, ctx);
+        this.drawHCL(200, 150, ctx);
+        this.drawNaOH(50, 275, ctx);
     },
 
 
-    /***************************** H20 MOLECULE ********
-    drawH20(xPos, yPos, size, ctx) {
-       const numH = 2;
-       this.drawO(250, 100, 20, ctx);
-        const xPos = [220, 100, 280];
-       const yPos = [100, 130, 100];
-        for (var i = 0; i < numH; i++) {
-           this.drawH(xPos[i], yPos[i], 10, ctx);
-       }
+    /***************************** H20 MOLECULE ********/
+    drawH20: function drawH20(xPos, yPos, ctx) {
+        this.drawO(xPos, yPos, 20, ctx);
+        this.drawH(xPos - 25, yPos + 15, 10, ctx);
+        this.drawH(xPos + 25, yPos + 15, 10, ctx);
     },
-    /****************************** H30 MOLECULE ********
-    drawH30(xPos, yPos, size, ctx) {
-       const numH = 3;
-       this.drawO(250, 100, 20, ctx);
-        const xPos = [220, 100, 280];
-       const yPos = [100, 130, 100];
-        for (var i = 0; i < numH; i++) {
-           this.drawH(xPos[i], yPos[i], 10, ctx);
-       }
+
+
+    /****************************** H30 MOLECULE ********/
+    drawH30: function drawH30(xPos, yPos, ctx) {
+        this.drawO(xPos, yPos, 20, ctx);
+        this.drawPosCharge(xPos, yPos, ctx);
+        this.drawH(xPos - 30, yPos, 10, ctx);
+        this.drawH(xPos, yPos + 30, 10, ctx);
+        this.drawH(xPos + 30, yPos, 10, ctx);
     },
-     /***************************** H MOLECULE ***********/
+
+
+    /****************************** HCL MOLECULE *********/
+    drawHCL: function drawHCL(xPos, yPos, ctx) {
+        this.drawH(xPos, yPos, 10, ctx);
+        this.drawCl(xPos + 30, yPos, 20, ctx);
+    },
+
+
+    /****************************** NaOH MOLECULE *********/
+    drawNaOH: function drawNaOH(xPos, yPos, ctx) {
+        this.drawNa(xPos, yPos, 20, ctx);
+        this.drawO(xPos + 30, yPos, 20, ctx);
+        this.drawH(xPos + 60, yPos, 10, ctx);
+    },
+
+
+    /***************************** H MOLECULE ***********/
     drawH: function drawH(xPos, yPos, size, ctx) {
         /* H Molecule */
         ctx.beginPath();

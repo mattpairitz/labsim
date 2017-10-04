@@ -30,7 +30,6 @@ getInitialState() {
 
     ctx.clearRect(0, 0, 300, 300);
     this.drawGroups(mole1, mole2, ctx);
-
  },
 
  /***************************** FIND + DRAW GROUPS OF MOLES *********/
@@ -106,34 +105,45 @@ getInitialState() {
 
         break;
     }
+
+    this.drawH20(250, 50, ctx);
+    this.drawH30(250, 250, ctx);
+    this.drawHCL(200, 150, ctx);
+    this.drawNaOH(50, 275, ctx);
  },
 
 
- /***************************** H20 MOLECULE ********
-drawH20(xPos, yPos, size, ctx) {
-    const numH = 2;
-    this.drawO(250, 100, 20, ctx);
-
-    const xPos = [220, 100, 280];
-    const yPos = [100, 130, 100];
-
-    for (var i = 0; i < numH; i++) {
-        this.drawH(xPos[i], yPos[i], 10, ctx);
-    }
+ /***************************** H20 MOLECULE ********/
+drawH20(xPos, yPos, ctx) {
+    this.drawO(xPos, yPos, 20, ctx);
+    this.drawH(xPos - 25, yPos + 15, 10, ctx);
+    this.drawH(xPos + 25, yPos + 15, 10, ctx);
 },
 
-/****************************** H30 MOLECULE ********
-drawH30(xPos, yPos, size, ctx) {
-    const numH = 3;
-    this.drawO(250, 100, 20, ctx);
-
-    const xPos = [220, 100, 280];
-    const yPos = [100, 130, 100];
-
-    for (var i = 0; i < numH; i++) {
-        this.drawH(xPos[i], yPos[i], 10, ctx);
-    }
+/****************************** H30 MOLECULE ********/
+drawH30(xPos, yPos, ctx) {
+    this.drawO(xPos, yPos, 20, ctx);
+    this.drawPosCharge(xPos, yPos, ctx);
+    this.drawH(xPos - 30, yPos, 10, ctx);
+    this.drawH(xPos, yPos + 30, 10, ctx);
+    this.drawH(xPos + 30, yPos, 10, ctx);
 },
+
+/****************************** HCL MOLECULE *********/
+drawHCL(xPos, yPos, ctx) {
+    this.drawH(xPos, yPos, 10, ctx);
+    this.drawCl(xPos + 30, yPos, 20, ctx);
+},
+
+
+/****************************** NaOH MOLECULE *********/
+drawNaOH(xPos, yPos, ctx) {
+    this.drawNa(xPos, yPos, 20, ctx);
+    this.drawO(xPos + 30, yPos, 20, ctx);
+    this.drawH(xPos + 60, yPos, 10, ctx);
+},
+
+
 
  /***************************** H MOLECULE ***********/
  drawH(xPos, yPos, size, ctx) {
