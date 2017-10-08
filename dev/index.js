@@ -108,7 +108,7 @@ var Index = createReactClass({
 
                 <div id='canvas-well'> 
                     <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/></div>
-                    <div><Molecules buffer={this.state.buffer}/></div>
+                    <div><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
                 </div>
                 <div id='equation-well'>
                     <div><h3>Equation: {this.state.equation}</h3></div>
