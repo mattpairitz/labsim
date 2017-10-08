@@ -18,7 +18,7 @@ getInitialState() {
     var mole2 = this.state.mole2;
     var mole3 = this.state.mole3;
 
-    this.drawGroups(mole1, mole2, ctx);
+    this.drawGroups(mole1, mole2, mole3, ctx);
  },
 
  componentWillReceiveProps(nextProps) {
@@ -31,11 +31,11 @@ getInitialState() {
     var mole3 = nextProps.mole3;
 
     ctx.clearRect(0, 0, 300, 300);
-    this.drawGroups(mole1, mole2, ctx);
+    this.drawGroups(mole1, mole2, mole3, ctx);
  },
 
  /***************************** FIND + DRAW GROUPS OF MOLES *********/
- drawGroups(mole1, mole2, ctx) {
+ drawGroups(mole1, mole2, mole3, ctx) {
 
     switch (mole1) {
         case "HA":
@@ -108,10 +108,22 @@ getInitialState() {
         break;
     }
 
-    this.drawH20(250, 50, ctx);
-    this.drawH30(250, 250, ctx);
-    this.drawHCL(200, 150, ctx);
-    this.drawNaOH(50, 275, ctx);
+    switch (mole3) {
+        case "None":
+            this.drawH20(250, 50, ctx);
+        break;
+
+        case "HCL":
+            this.drawHCL(200, 150, ctx);
+
+        break;
+
+        case "NaOH":
+            this.drawNaOH(50, 275, ctx);
+        break;
+    }
+
+    //this.drawH30(250, 250, ctx);
  },
 
 

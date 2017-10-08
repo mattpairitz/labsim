@@ -12,36 +12,10 @@ export var Molecules = createReactClass ({
     componentWillMount() {
         this.setState({mole1: this.props.mole1})
         this.setState({mole2: this.props.mole2})
-        this.setState({mole3: this.props.mole3})
-        
-    },
-
-    drawCanvas() {
-        const canvas = this.refs.canvas
-        const ctx = canvas.getContext("2d")
-
-        /* Draw rectangle on canvas */
-        ctx.strokeStyle = "#000000";
-        ctx.moveTo(50,50);
-        ctx.lineTo(250, 50);
-        ctx.stroke();
-
-        ctx.moveTo(250, 50);
-        ctx.lineTo(250, 250);
-        ctx.stroke();
-
-        ctx.moveTo(250, 250);
-        ctx.lineTo(50, 250);
-        ctx.stroke();
-
-        ctx.moveTo(50, 250);
-        ctx.lineTo(50, 50);
-        ctx.stroke();
-
+        this.setState({mole3: this.props.mole3})     
     },
 
     componentDidMount() {
-
         /* Split inoming equations into Molecule types */
         var buffer = this.props.buffer;
         var split = buffer.split(" ");
@@ -52,11 +26,9 @@ export var Molecules = createReactClass ({
         console.log(mole1);
         console.log(mole2);
         console.log(mole3);
-
     },
 
     componentWillReceiveProps(nextProps) {
-
         /* Split inoming equations into Molecule types */
         var buffer = nextProps.buffer;
         var split = buffer.split(" ");
@@ -67,7 +39,6 @@ export var Molecules = createReactClass ({
         console.log(mole1);
         console.log(mole2);
         console.log(mole3);
-
     },
     
     render() {
