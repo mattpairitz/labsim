@@ -5,7 +5,7 @@ var createReactClass = require('create-react-class');
 export var DrawMolecules = createReactClass ({
 
 getInitialState() {
-     return {mole1: this.props.mole1, mole2: this.props.mole2}
+     return {mole1: this.props.mole1, mole2: this.props.mole2, mole3: this.props.mole3}
  },
 
  componentDidMount() {
@@ -16,6 +16,7 @@ getInitialState() {
 
     var mole1 = this.state.mole1;
     var mole2 = this.state.mole2;
+    var mole3 = this.state.mole3;
 
     this.drawGroups(mole1, mole2, ctx);
  },
@@ -27,6 +28,7 @@ getInitialState() {
     /* Split inoming equations into Molecule types */
     var mole1 = nextProps.mole1;
     var mole2 = nextProps.mole2;
+    var mole3 = nextProps.mole3;
 
     ctx.clearRect(0, 0, 300, 300);
     this.drawGroups(mole1, mole2, ctx);
