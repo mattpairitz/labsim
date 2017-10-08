@@ -42,8 +42,8 @@ var Index = createReactClass({
       this.changeEquation(event.currentTarget.name);
     } else {
       this.setState({strong: event.currentTarget.name});
-    }
-  },
+        }
+    },
 
   changeHAVolume(value){
     this.setState({HAmount: value});
@@ -165,7 +165,7 @@ var Index = createReactClass({
   }
 });
 ReactDOM.render(<div><Index
-  equations={["1", "2", "3", "4"]}
+  equations={["HA + H\u2082O \u21CC H\u2083O\u207A + A\u207B", "HF + H\u2082O \u21CC H\u2083O\u207A + A\u207B", "HClO + H\u2082O \u21CC H\u2083O\u207A + ClO\u207B", "NH\u2083 + H\u2082O \u21CC OH\u207B + NH\u2084\u207A"]}
   buffers={["0.10 M HA + 0.10 M NaA", "0.10 M HF + 0.10 M NaF",  "0.10 M HClO + 0.10 M NaClO", "0.10 M NH\u2084Cl + 0.10 M NH\u2083"]} 
   strongs ={['None', 'HCL', 'NaOH']}/></div>,
   document.getElementById("container"))
