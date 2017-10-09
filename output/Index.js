@@ -32732,6 +32732,16 @@ var Index = createReactClass({
   changeStrongVolume: function changeStrongVolume(value) {
     this.setState({ strongAmount: value });
   },
+  toggleSwitch: function toggleSwitch() {
+    var toggle = document.getElementById('toggle').value;
+    toggle = toggle === 'on' ? 'off' : 'on';
+    document.getElementById('toggle').value = toggle;
+    if (toggle === 'off') {
+      document.getElementById('react-state').style.display = 'inline';
+    } else {
+      document.getElementById('react-state').style.display = '';
+    }
+  },
   changeEquation: function changeEquation(value) {
     switch (value) {
       case this.props.buffers[0]:
@@ -32805,40 +32815,61 @@ var Index = createReactClass({
           React.createElement(
             'div',
             { className: 'col-sm-4 text-left' },
+            React.createElement('br', null),
             React.createElement(
-              'h1',
+              'div',
               null,
-              'Reaction State'
+              React.createElement(
+                'label',
+                { className: 'switch' },
+                React.createElement('input', { id: 'toggle', type: 'checkbox', onClick: this.toggleSwitch }),
+                React.createElement('span', { className: 'check round' })
+              ),
+              React.createElement(
+                'h5',
+                null,
+                'Component Toggle'
+              )
             ),
+            React.createElement('br', null),
             React.createElement(
-              'p',
-              null,
-              'Buffer: ',
-              this.state.buffer
-            ),
-            React.createElement(
-              'p',
-              null,
-              'Vol 1: ',
-              this.state.HAmount
-            ),
-            React.createElement(
-              'p',
-              null,
-              'Vol 2: ',
-              this.state.AAmount
-            ),
-            React.createElement(
-              'p',
-              null,
-              'Strong: ',
-              this.state.strong
-            ),
-            React.createElement(
-              'p',
-              null,
-              'Strong Vol: ',
-              this.state.strongAmount
+              'div',
+              { id: 'react-state' },
+              React.createElement(
+                'h1',
+                null,
+                'The Reaction State'
+              ),
+              React.createElement(
+                'p',
+                null,
+                'Buffer: ',
+                this.state.buffer
+              ),
+              React.createElement(
+                'p',
+                null,
+                'Vol 1: ',
+                this.state.HAmount
+              ),
+              React.createElement(
+                'p',
+                null,
+                'Vol 2: ',
+                this.state.AAmount
+              ),
+              React.createElement(
+                'p',
+                null,
+                'Strong: ',
+                this.state.strong
+              ),
+              React.createElement(
+                'p',
+                null,
+                'Strong Vol: ',
+                this.state.strongAmount
+              )
             ),
             React.createElement('br', null),
             React.createElement(
@@ -32855,7 +32886,7 @@ var Index = createReactClass({
                 React.createElement(
                   'div',
                   null,
-                  React.createElement(Graph, { volume1: this.state.HAmount, volume2: this.state.AAmount, buffer: this.state.buffer, strong: this.state.strong })
+                  React.createElement(Graph, { volume1: this.state.HAmount, volume2: this.state.AAmount, volume3: this.state.strongAmount, buffer: this.state.buffer, strong: this.state.strong })
                 )
               )
             ),
@@ -32884,7 +32915,7 @@ var Index = createReactClass({
               React.createElement(
                 'h3',
                 null,
-                'Molecule View'
+                'Beaker View'
               ),
               React.createElement('br', null),
               React.createElement(
@@ -32892,6 +32923,12 @@ var Index = createReactClass({
                 null,
                 React.createElement(Canvas, { volume1: this.state.HAmount, volume2: this.state.AAmount, volume3: this.state.strongAmount })
               ),
+              React.createElement(
+                'h3',
+                null,
+                'Molecule View'
+              ),
+              React.createElement('br', null),
               React.createElement(
                 'div',
                 null,
@@ -33036,7 +33073,7 @@ exports = module.exports = __webpack_require__(206)(undefined);
 
 
 // module
-exports.push([module.i, "/* Remove the navbar's default margin-bottom and rounded borders */ \n    .navbar {\n      margin-bottom: 0;\n      border-radius: 0;\n    }\n    \n    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */\n    .row.content {height: 800px}\n    \n    /* Set gray background color and 100% height */\n    .sidenav {\n      padding-top: 20px;\n      background-color: #f1f1f1;\n      height: 100%;\n    }\n    \n    /* Set black background color, white text and some padding */\n    footer {\n      background-color: #555;\n      color: white;\n      padding: 15px;\n    }\n    \n    /* On small screens, set height to 'auto' for sidenav and grid */\n    @media screen and (max-width: 767px) {\n      .sidenav {\n        height: auto;\n        padding: 15px;\n      }\n      .row.content {height:auto;} \n    }\n\n    #viz {\n      height: 400px;\n      width: 300px;\n    }\n\n    [data-role=\"fieldcontain\"] {\n      display: table;\n    }\n\n    .input-row {\n      display: table-row;\n    }\n\n    input {\n      display: table-cell;\n    }\n\n    label {\n      display: table-cell;\n      cursor: pointer;\n      padding-left: 10px;\n      margin-right: 10px;\n      font-size: 13px;\n      text-align: left;\n    }\n\n    .slider {\n      width: 50px;\n    }\n", ""]);
+exports.push([module.i, "/* Remove the navbar's default margin-bottom and rounded borders */ \n    .navbar {\n      margin-bottom: 0;\n      border-radius: 0;\n    }\n    \n    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */\n    .row.content {height: 800px}\n    \n    /* Set gray background color and 100% height */\n    .sidenav {\n      padding-top: 20px;\n      background-color: #f1f1f1;\n      height: 100%;\n    }\n    \n    /* Set black background color, white text and some padding */\n    footer {\n      background-color: #555;\n      color: white;\n      padding: 15px;\n    }\n    \n    /* On small screens, set height to 'auto' for sidenav and grid */\n    @media screen and (max-width: 767px) {\n      .sidenav {\n        height: auto;\n        padding: 15px;\n      }\n      .row.content {height:auto;} \n    }\n\n    #viz {\n      height: 400px;\n      width: 300px;\n    }\n\n    [data-role=\"fieldcontain\"] {\n      display: table;\n    }\n\n    .input-row {\n      display: table-row;\n    }\n\n    input {\n      display: table-cell;\n    }\n\n    label {\n      display: table-cell;\n      cursor: pointer;\n      padding-left: 10px;\n      margin-right: 10px;\n      font-size: 13px;\n      text-align: left;\n    }\n\n    .slider {\n      width: 50px;\n    }\n\n    #react-state {\n      display: none;\n    }\n\n    /* CSS for toggle buttons */\n\n    /* The switch - the box around the slider */\n.switch {\n  position: relative;\n  display: inline-block;\n  width: 60px;\n  height: 34px;\n}\n\n/* Hide default HTML checkbox */\n.check input {display:none;}\n\n/* The slider */\n.check {\n  position: absolute;\n  cursor: pointer;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: #ccc;\n  -webkit-transition: .4s;\n  transition: .4s;\n}\n\n.check:before {\n  position: absolute;\n  content: \"\";\n  height: 26px;\n  width: 26px;\n  left: 4px;\n  bottom: 4px;\n  background-color: white;\n  -webkit-transition: .4s;\n  transition: .4s;\n}\n\ninput:checked + .check {\n  background-color: #2196F3;\n}\n\ninput:focus + .check {\n  box-shadow: 0 0 1px #2196F3;\n}\n\ninput:checked + .check:before {\n  -webkit-transform: translateX(26px);\n  -ms-transform: translateX(26px);\n  transform: translateX(26px);\n}\n\n/* Rounded sliders */\n.check.round {\n  border-radius: 34px;\n}\n\n.check.round:before {\n  border-radius: 50%;\n}\n\n", ""]);
 
 // exports
 
@@ -47379,19 +47416,22 @@ var Checkbox = exports.Checkbox = createReactClass({
 
 
   render: function render() {
-    var acidPicker = this.props.options.map(function (option, index) {
+    var Picker = this.props.options.map(function (option, index) {
       var _option$split = option.split(" "),
           _option$split2 = _slicedToArray(_option$split, 2),
           left = _option$split2[0],
           right = _option$split2[1];
 
-      return React.createElement(
-        'div',
-        { className: 'input-row', key: index },
-        React.createElement('input', { id: this.props.id, type: 'radio', name: option,
-          checked: this.props.currentOption === option,
-          onChange: this.props.onClick }),
-        React.createElement(
+      var label = null;
+      if (this.props.id === "strong") {
+        label = React.createElement(
+          'label',
+          { htmlFor: 'radio-' + index },
+          ' ',
+          left
+        );
+      } else {
+        label = React.createElement(
           'label',
           { htmlFor: 'radio-' + index },
           ' 0.10M ',
@@ -47399,7 +47439,15 @@ var Checkbox = exports.Checkbox = createReactClass({
           ' + 0.10M ',
           right,
           ' '
-        )
+        );
+      }
+      return React.createElement(
+        'div',
+        { className: 'input-row', key: index },
+        React.createElement('input', { id: this.props.id, type: 'radio', name: option,
+          checked: this.props.currentOption === option,
+          onChange: this.props.onClick }),
+        label
       );
     }, this);
     return React.createElement(
@@ -47412,7 +47460,7 @@ var Checkbox = exports.Checkbox = createReactClass({
         React.createElement(
           'fieldset',
           null,
-          acidPicker
+          Picker
         )
       )
     );
@@ -47441,39 +47489,49 @@ var createReactClass = __webpack_require__(40);
 var Graph = exports.Graph = createReactClass({
   displayName: 'Graph',
   getInitialState: function getInitialState() {
-    return { volume1: this.props.volume1, volume2: this.props.volume2,
-      buffer: this.props.buffer, config: [] };
+    return { volume1: this.props.volume1, volume2: this.props.volume2, volume3: this.props.volume3,
+      buffer: this.props.buffer, strong: this.props.strong, config: [] };
   },
   componentWillMount: function componentWillMount() {
     var volume1 = this.state.volume1;
     var volume2 = this.state.volume2;
+    var volume3 = this.state.volume3;
     var buffer = this.state.buffer;
+    var strong = this.state.strong;
 
     var _buffer$split = buffer.split(" "),
         _buffer$split2 = _slicedToArray(_buffer$split, 2),
         b_left = _buffer$split2[0],
         b_right = _buffer$split2[1];
 
-    this.makeGraphConfig(b_left, b_right, volume1, volume2);
+    this.makeGraphConfig(b_left, b_right, strong, volume1, volume2, volume3);
   },
   shouldComponentUpdate: function shouldComponentUpdate(nextProps) {
     var volume1 = nextProps.volume1;
     var volume2 = nextProps.volume2;
+    var volume3 = nextProps.volume3;
     var buffer = nextProps.buffer;
+    var strong = nextProps.strong;
 
     var _buffer$split3 = buffer.split(" "),
         _buffer$split4 = _slicedToArray(_buffer$split3, 2),
         b_left = _buffer$split4[0],
         b_right = _buffer$split4[1];
 
-    this.makeGraphConfig(b_left, b_right, volume1, volume2);
+    this.makeGraphConfig(b_left, b_right, strong, volume1, volume2, volume3);
     return true;
   },
-  makeGraphConfig: function makeGraphConfig(b_left, b_right, volume1, volume2) {
+  makeGraphConfig: function makeGraphConfig(b_left, b_right, strong, volume1, volume2, volume3) {
 
     var array = this.state.config;
+    if (strong !== 'None') {
+      array[2] = { id: strong, x: strong, y: volume3 };
+    } else {
+      array.pop();
+    }
     array[0] = { id: b_left, x: b_left, y: volume1 };
     array[1] = { id: b_right, x: b_right, y: volume2 };
+
     this.setState({ config: array });
   },
   render: function render() {

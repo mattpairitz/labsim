@@ -52,6 +52,18 @@ var Index = createReactClass({
     this.setState({strongAmount: value});
   },
 
+  toggleSwitch(){
+    let toggle = document.getElementById('toggle').value;
+    toggle = toggle==='on' ? 'off' : 'on';
+    document.getElementById('toggle').value = toggle;
+    if(toggle==='off'){
+      document.getElementById('react-state').style.display = 'inline';
+    } else {
+      document.getElementById('react-state').style.display = '';
+    }
+    
+  },
+
   changeEquation(value) {
     switch(value){
         case (this.props.buffers[0]):
@@ -96,18 +108,32 @@ var Index = createReactClass({
         <div className="container-fluid text-center">    
           <div className="row content">
             <div className="col-sm-4 text-left"> 
+
+            <br/>
+              <div>
+                 <label className="switch"> 
+                  <input id='toggle' type="checkbox" onClick={this.toggleSwitch}/>
+                  <span className="check round"></span>
+                </label>
+                
+                 <h5>Component Toggle</h5>
+              </div>
+              <br/>
+
+
+              <div id='react-state'>
                 <h1>The Reaction State</h1>
                   <p>Buffer: {this.state.buffer}</p>
                   <p>Vol 1: {this.state.HAmount}</p>
                   <p>Vol 2: {this.state.AAmount}</p>
                   <p>Strong: {this.state.strong}</p>
                   <p>Strong Vol: {this.state.strongAmount}</p>
-
+              </div>
                 <br/>
                 <h3>Graph View</h3>
                 <div id="viz">
                   <div>
-                     <div><Graph volume1={this.state.HAmount} volume2={this.state.AAmount} buffer={this.state.buffer} strong={this.state.strong}/></div>
+                     <div><Graph volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} buffer={this.state.buffer} strong={this.state.strong}/></div>
                   </div>
                 </div>
                 <br/>
@@ -115,10 +141,12 @@ var Index = createReactClass({
                     <div><h3>Equation: {this.state.equation}</h3></div>
                 </div>
             </div>
+
             <div className="col-sm-5 text-center"> 
               <div id='canvas-well'> 
-                  <h3>Molecule View</h3><br/>
+                  <h3>Beaker View</h3><br/>
                     <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/></div>
+                   <h3>Molecule View</h3><br/>  
                     <div><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
                 </div>
               </div>
@@ -157,7 +185,7 @@ var Index = createReactClass({
                   </div>
                 </div>
             
-            </div>
+              </div>
             </div>  
           </div>
         </div>
