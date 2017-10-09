@@ -25,11 +25,6 @@ export var Canvas = createReactClass ({
         amount3 = (amount3 / 15);
         var total = (amount1 + amount2 + amount3);
 
-        console.log(amount1);
-        console.log(amount2);
-        console.log(amount3);
-        console.log(total);
-
         //ctx.fillStyle = "#000000";
         //ctx.fillRect(50, 50, 200, (200 - total));
         ctx.clearRect(50, 50, 200, 200);
@@ -41,7 +36,6 @@ export var Canvas = createReactClass ({
     componentWillReceiveProps(nextProps) {
         const canvas = this.refs.canvas
         const ctx = canvas.getContext("2d")
-        console.log(nextProps)
 
         /* mL to pixels: grabbing new slider values */
         var amount1 = nextProps.volume1;
@@ -51,11 +45,6 @@ export var Canvas = createReactClass ({
         amount2 = (amount2 / 15);
         amount3 = (amount3 / 15);
         var total = (amount1 + amount2 + amount3);
-
-        console.log(amount1);
-        console.log(amount2);
-        console.log(amount3);
-        console.log(total);
 
         //ctx.fillStyle = "#000000";
         //ctx.fillRect(50, 50, 200, total);

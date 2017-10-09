@@ -7,14 +7,19 @@ export var Checkbox = createReactClass({
     return { options: this.props.buffers, currentOption: this.props.currentOption}
   },
 
+  componentWillMount(){
+
+  },
+
   render: function(){
-   var acidPicker = this.props.options.map(function(listValue, index){
+   var acidPicker = this.props.options.map(function(option, index){
+   let [left, right] = option.split(" ");
      return (
       <div className="input-row" key={index}>
-      <input id={this.props.id} type="radio" name={listValue} 
-      checked={this.props.currentOption === listValue} 
+      <input id={this.props.id} type="radio" name={option}
+      checked={this.props.currentOption === option} 
       onChange={this.props.onClick}/>
-      <label htmlFor={'radio-'+index}> {listValue} </label>
+      <label htmlFor={'radio-'+index}> 0.10M {left} + 0.10M {right} </label>
       </div>
       );
    }, this);
