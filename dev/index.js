@@ -96,7 +96,7 @@ var Index = createReactClass({
         <div className="container-fluid text-center">    
           <div className="row content">
             <div className="col-sm-4 text-left"> 
-                <h1>Reaction State</h1>
+                <h1>The Reaction State</h1>
                   <p>Buffer: {this.state.buffer}</p>
                   <p>Vol 1: {this.state.HAmount}</p>
                   <p>Vol 2: {this.state.AAmount}</p>
