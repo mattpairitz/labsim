@@ -31,7 +31,6 @@ export var Molecules = createReactClass ({
     },
     
     render() {
-
         return(
           <div>
             <DrawMolecules mole1={this.state.mole1} mole2={this.state.mole2} mole3={this.state.mole3}/>
