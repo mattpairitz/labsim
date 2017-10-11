@@ -41,7 +41,7 @@ var Index = createReactClass({
       }
     else {
         this.setState({strong: event.currentTarget.name});
-        this.changeReaction(event.currentTarget.name);
+        this.changeReaction(event.currentTarget.name)``;
       }
     },
 
@@ -90,44 +90,32 @@ var Index = createReactClass({
       if(value == this.state.strongs[0]){
           this.setState({reaction: this.state.reactions[0]});
       }
-      else {
-          switch (this.state.buffer) {
-              case(this.state.buffers[0]):
-                  if (value == this.state.strongs[1]) {
-                      this.setState({reaction: this.props.reactions[1]});
-                      break;
-                  }
-                  if (value == this.state.strongs[2]) {
-                      this.setState({reaction: this.props.reactions[5]});
-                      break;
-                  }
-              case(this.state.buffers[1]):
-                  if (value == this.state.strongs[1]) {
-                      this.setState({reaction: this.props.reactions[2]});
-                      break;
-                  }
-                  if (value == this.state.strongs[2]) {
-                      this.setState({reaction: this.props.reactions[6]});
-                      break;
-                  }
-              case(this.state.buffers[2]):
-                  if (value == this.state.strongs[1]) {
-                      this.setState({reaction: this.props.reactions[3]});
-                      break;
-                  }
-                  if (value == this.state.strongs[2]) {
-                      this.setState({reaction: this.props.reactions[7]});
-                      break;
-                  }
-              case(this.state.buffers[3]):
-                  if (value == this.state.strongs[1]) {
-                      this.setState({reaction: this.props.reactions[4]});
-                      break;
-                  }
-                  if (value == this.state.strongs[2]) {
-                      this.setState({reaction: this.props.reactions[8]});
-                      break;
-                  }
+      if(value == this.state.strongs[1]){
+          if(this.state.buffer == this.state.buffers[0]){
+              this.setState({reaction: this.state.reactions[1]});
+          }
+          if(this.state.buffer == this.state.buffers[1]){
+              this.setState({reaction: this.state.reactions[2]});
+          }
+          if(this.state.buffer == this.state.buffers[2]){
+              this.setState({reaction: this.state.reactions[3]});
+          }
+          if(this.state.buffer == this.state.buffers[3]) {
+              this.setState({reaction: this.state.reactions[4]});
+          }
+      }
+      if(value == this.state.strongs[2]){
+          if(this.state.buffer == this.state.buffers[0]){
+              this.setState({reaction: this.state.reactions[5]});
+          }
+          if(this.state.buffer == this.state.buffers[1]){
+              this.setState({reaction: this.state.reactions[6]});
+          }
+          if(this.state.buffer == this.state.buffers[2]){
+              this.setState({reaction: this.state.reactions[7]});
+          }
+          if(this.state.buffer == this.state.buffers[3]) {
+              this.setState({reaction: this.state.reactions[8]});
           }
       }
   },
@@ -216,7 +204,7 @@ var Index = createReactClass({
               <div className="well" id='HA-slider'>
                   <div>
                     <p> Volume 1 </p>
-                    <SlideBar min={0} max={1000} step={50} buffer={buffer_left} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
+                    <SlideBar min={0} max={1000} step={1} buffer={buffer_left} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
                   </div>
               </div>
 
@@ -251,7 +239,10 @@ ReactDOM.render(<div><Index
   "HF + H\u2082O \u21CC H\u2083O\u207A + A\u207B",
   "HClO + H\u2082O \u21CC H\u2083O\u207A + ClO\u207B",
   "NH\u2083 + H\u2082O \u21CC OH\u207B + NH\u2084\u207A"]}
-  reactions={["0", "1", "2", "3", "4", "5", "6", "7", "8"]}
+  reactions={[" ", "H\u207A + A\u207B \u21CC HA", "H\u207A + F\u207B \u21CC HF",
+  "H\u207A + ClO\u207B \u21CC HClO", "H\u207A + NH\u2083 \u21CC NH\u2084\u207A",
+  "OH\u207B + HA \u21CC H\u2082O + A\u207B", "OH\u207B + HF \u21CC H\u2082O + F\u207B",
+  "OH\u207B + HClO \u21CC H\u2082O + ClO\u207B", "OH\u207B + NH\u2084\u207A \u21CC H\u2082O + NH\u2083"]}
   buffers={["HA NaA", "HF NaF",  "HClO NaClO", "NH\u2084Cl NH\u2083"]} 
   strongs ={['None', 'HCL', 'NaOH']}/></div>,
   document.getElementById("container"))

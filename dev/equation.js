@@ -23,7 +23,7 @@ export var Equation = createReactClass ({
        return(
        <div>
            <h3>Buffer: {this.state.equation}</h3>
-           <h3>Reaction: {this.state.reaction}</h3>
+           <h3>{this.state.reaction}</h3>
        </div>
        );
    }
