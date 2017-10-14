@@ -17,6 +17,8 @@ export var Molecules = createReactClass ({
         var mole3 = this.props.strong;
 
         this.cameraPosition = new THREE.Vector3(0, 0, 5);
+
+        
         this._onAnimate = () => {
               this.setState({
                 cubeRotation: new THREE.Euler(
@@ -26,6 +28,7 @@ export var Molecules = createReactClass ({
                 ),
               });
         };
+        
        // this.animate();
     },
 
@@ -45,6 +48,7 @@ export var Molecules = createReactClass ({
     },
     
     render() {
+
         var width = 300;
         var height = 300;
 
@@ -53,7 +57,7 @@ export var Molecules = createReactClass ({
               width={width}
               height={height}
 
-              onAnimate={this._onAnimate()}
+              onAnimate={this._onAnimate}
             >
               <scene>
                 <perspectiveCamera
