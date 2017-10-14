@@ -7,14 +7,25 @@ export var Checkbox = createReactClass({
     return { options: this.props.buffers, currentOption: this.props.currentOption}
   },
 
+  componentWillMount(){
+
+  },
+
   render: function(){
-   var acidPicker = this.props.options.map(function(listValue, index){
+   var Picker = this.props.options.map(function(option, index){
+   let [left, right] = option.split(" ");
+   let label = null;
+   if(this.props.id==="strong"){
+        label = <label htmlFor={'radio-'+index}> {left}</label>
+      } else {
+        label = <label htmlFor={'radio-'+index}> 0.10M {left} + 0.10M {right} </label>
+      }
      return (
       <div className="input-row" key={index}>
-      <input id={this.props.id} type="radio" name={listValue} 
-      checked={this.props.currentOption === listValue} 
+      <input id={this.props.id} type="radio" name={option}
+      checked={this.props.currentOption === option} 
       onChange={this.props.onClick}/>
-      <label htmlFor={'radio-'+index}> {listValue} </label>
+      {label}
       </div>
       );
    }, this);
@@ -23,7 +34,7 @@ export var Checkbox = createReactClass({
       <div ref="buffer-select"></div>
       <div data-role="fieldcontain">
       <fieldset>
-          {acidPicker}
+          {Picker}
       </fieldset>
       </div>   
     </div>    
