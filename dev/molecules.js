@@ -8,7 +8,8 @@ var createReactClass = require('create-react-class');
 export var Molecules = createReactClass ({
 
     getInitialState() {
-       return {mole1: null, mole2: null, mole3: null, cubeRotation: new THREE.Euler()}
+       return {mole1: null, mole2: null, mole3: null, mole1Rotation: new THREE.Euler(), mole2Rotation: new THREE.Euler(),
+                mole1Animation: new THREE.Euler()}
     },
 
     componentWillMount() {
@@ -17,19 +18,28 @@ export var Molecules = createReactClass ({
         var mole3 = this.props.strong;
 
         this.cameraPosition = new THREE.Vector3(0, 0, 5);
-
+        this.mole1Position = new THREE.Vector3(-2, 0, 0);
+        this.mole2Position = new THREE.Vector3(-1.25, 0, 0);
+        this.mole3Position = new THREE.Vector3(2, 0, 0);
+        this.mole4Position = new THREE.Vector3(1.25, 0, 0);
         
         this._onAnimate = () => {
               this.setState({
-                cubeRotation: new THREE.Euler(
-                  this.state.cubeRotation.x + 0.1,
-                  this.state.cubeRotation.y + 0.1,
+                mole1Animation: new THREE.Euler(
+                  this.state.mole1Animation.x + 0.01,
+                  this.state.mole1Animation.y + 0.01,
+                  0
+                ),
+              });
+
+              this.setState({
+                mole2Rotation: new THREE.Euler(
+                  this.state.mole2Rotation.x + 0.01,
+                  this.state.mole2Rotation.y + 0.01,
                   0
                 ),
               });
         };
-        
-       // this.animate();
     },
 
     componentWillReceiveProps(nextProps) {
@@ -38,7 +48,6 @@ export var Molecules = createReactClass ({
         var [mole1, mole2] = buffer.split(" ");
         var mole3 = nextProps.strong;
         this.updateState(mole1, mole2, mole3);
-        //this.animate();
     },
 
     updateState(mole1, mole2, mole3){
@@ -46,44 +55,180 @@ export var Molecules = createReactClass ({
         this.setState({mole2: mole2})
         this.setState({mole3: mole3})    
     },
+
+    drawBufferScene(width, height) {
+
+        return (this.drawBuffer1(width, height));
+
+        /*
+        switch () {
+            case "HA": return (this.drawBuffer1(width, height));
+            case "HF": return (this.drawBuffer2(width, height));
+        }
+        */
+    },
+
+    drawBuffer1(width, height) {
+        return (<React3
+                mainCamera="camera" // this points to the perspectiveCamera below
+                width={width}
+                height={height}
+
+                onAnimate={this._onAnimate}
+            >
+            <scene>
+                <perspectiveCamera
+                    name="camera"
+                    fov={75}
+                    aspect={width / height}
+                    near={0.1}
+                    far={1000}
+
+                    position={this.cameraPosition}
+                />
+                <mesh
+                    position = {this.mole1Position}
+                    rotation = {this.state.mole2Rotation} 
+                >
+                    <circleGeometry
+                        radius = {0.25}
+                        segments = {20}
+                        thetaStart = {0}
+                        thetaLength = {Math.PI * 2}
+                    />
+                    <meshBasicMaterial
+                        color={0xFFFFFF}
+                    />
+                </mesh>
+                <mesh
+                    position = {this.mole2Position}
+                    rotation={this.state.mole2Rotation}
+                >
+                    <circleGeometry
+                        radius = {0.5}
+                        segments = {20}
+                        thetaStart = {0}
+                        thetaLength = {Math.PI * 2}
+                    />
+                    <meshBasicMaterial
+                        color={0xFF1493}
+                    />
+                </mesh>
+                <mesh
+                    position = {this.mole3Position}
+                    rotation={this.state.mole1Animation}
+                >
+                    <circleGeometry
+                        radius = {0.5}
+                        segments = {20}
+                        thetaStart = {0}
+                        thetaLength = {Math.PI * 2}
+                    />
+                    <meshBasicMaterial
+                        color={0xAB5CF2}
+                    />
+                </mesh>
+                <mesh
+                    position = {this.mole4Position}
+                    rotation={this.state.mole2Rotation}
+                >
+                    <circleGeometry
+                        radius = {0.5}
+                        segments = {20}
+                        thetaStart = {0}
+                        thetaLength = {Math.PI * 2}
+                    />
+                    <meshBasicMaterial
+                        color={0xFF1493}
+                    />
+                </mesh>
+              </scene>
+            </React3>)
+    },
+
+    drawBuffer2(width, height) {
+        return (<React3
+                mainCamera="camera" // this points to the perspectiveCamera below
+                width={width}
+                height={height}
+
+                onAnimate={this._onAnimate}
+            >
+            <scene>
+                <perspectiveCamera
+                    name="camera"
+                    fov={75}
+                    aspect={width / height}
+                    near={0.1}
+                    far={1000}
+
+                    position={this.cameraPosition}
+                />
+                <mesh
+                    position = {this.mole1Position}
+                    rotation = {this.state.mole2Rotation} 
+                >
+                    <circleGeometry
+                        radius = {0.25}
+                        segments = {20}
+                        thetaStart = {0}
+                        thetaLength = {Math.PI * 2}
+                    />
+                    <meshBasicMaterial
+                        color={0xFFFFFF}
+                    />
+                </mesh>
+                <mesh
+                    position = {this.mole2Position}
+                    rotation={this.state.mole2Rotation}
+                >
+                    <circleGeometry
+                        radius = {0.5}
+                        segments = {20}
+                        thetaStart = {0}
+                        thetaLength = {Math.PI * 2}
+                    />
+                    <meshBasicMaterial
+                        color={0xFF1493}
+                    />
+                </mesh>
+                <mesh
+                    position = {this.mole3Position}
+                    rotation={this.state.mole1Animation}
+                >
+                    <circleGeometry
+                        radius = {0.5}
+                        segments = {20}
+                        thetaStart = {0}
+                        thetaLength = {Math.PI * 2}
+                    />
+                    <meshBasicMaterial
+                        color={0xAB5CF2}
+                    />
+                </mesh>
+                <mesh
+                    position = {this.mole4Position}
+                    rotation={this.state.mole2Rotation}
+                >
+                    <circleGeometry
+                        radius = {0.5}
+                        segments = {20}
+                        thetaStart = {0}
+                        thetaLength = {Math.PI * 2}
+                    />
+                    <meshBasicMaterial
+                        color={0xFF1493}
+                    />
+                </mesh>
+              </scene>
+            </React3>)
+    },
     
     render() {
-
         var width = 300;
         var height = 300;
 
-        return (<React3
-              mainCamera="camera" // this points to the perspectiveCamera below
-              width={width}
-              height={height}
-
-              onAnimate={this._onAnimate}
-            >
-              <scene>
-                <perspectiveCamera
-                  name="camera"
-                  fov={75}
-                  aspect={width / height}
-                  near={0.1}
-                  far={1000}
-
-                  position={this.cameraPosition}
-                />
-                <mesh
-                  rotation={this.state.cubeRotation}
-                >
-                  <boxGeometry
-                    width={1}
-                    height={1}
-                    depth={1}
-                  />
-                  <meshBasicMaterial
-                    color={0x00ff00}
-                  />
-                </mesh>
-              </scene>
-            </React3>);
-
+        return(this.drawBufferScene(width, height));
         /*
         return(
           <div>
@@ -92,5 +237,4 @@ export var Molecules = createReactClass ({
         )
 */
     }
-
 });
