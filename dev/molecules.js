@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import React3 from 'react-three-renderer';
+import * as THREE from 'three';
 import {DrawMolecules} from './drawMolecules.js';
+import {DrawBufferScene} from './DrawBufferScene.js';
 var createReactClass = require('create-react-class');
 
 export var Molecules = createReactClass ({
-    
+
     getInitialState() {
        return {mole1: null, mole2: null, mole3: null}
     },
@@ -24,6 +27,7 @@ export var Molecules = createReactClass ({
         this.updateState(mole1, mole2, mole3);
     },
 
+    /******* UPDATE BUFFER SELECTION *********/
     updateState(mole1, mole2, mole3){
         this.setState({mole1: mole1})
         this.setState({mole2: mole2})
@@ -31,10 +35,14 @@ export var Molecules = createReactClass ({
     },
     
     render() {
+        var width = 300;
+        var height = 300;
+        //console.log(this.state.mole1);
+
         return(
-          <div>
-            <DrawMolecules mole1={this.state.mole1} mole2={this.state.mole2} mole3={this.state.mole3}/>
-          </div>
-        )
-      }
-    });
+                <div> 
+                    <DrawBufferScene mole1={this.state.mole1} mole3={this.state.mole3}/>
+                </div>
+            )
+    }
+});
