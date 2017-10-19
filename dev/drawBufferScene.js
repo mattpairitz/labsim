@@ -44,6 +44,8 @@ export var DrawBufferScene = createReactClass ({
         this.moleculePositions = this.randomizePositions(5);
     },
 
+    /********* Randomize Molecule Locations On Canvas **********/
+    //TO DO: Fix issues with constant randomization of any props.
     randomizePositions(num) {
         this.moleculePositions = [];
         this.moleculePositions.length = num;
@@ -54,7 +56,38 @@ export var DrawBufferScene = createReactClass ({
                 (Math.random() * 5) - 2,
                 0
             );
+
+            for (let j = 0; j < i; j++) {
+
+                //Obj1 = Current Randomized Object, Obj2 = Comparison Object
+                var obj1 = this.moleculePositions[i];
+                var obj2 = this.moleculePositions[j];
+                var radius = 0.5;
+
+                //Find area of circle for overlap
+                var x_min = obj2.x - radius;
+                var x_max = obj2.x + radius;
+                var y_min = obj2.y - radius;
+                var y_max = obj2.y + radius;
+
+                //Find overlap of obj1 in comparision to range of obj2
+                if (obj1.x > x_min && obj1.x < x_max) {
+                    console.log("X OVERLAPS");
+
+                    if (obj1.y > y_min && obj1.y < y_max) {
+
+                        console.log("COLLISION")
+                        console.log("OBJ1 at Position: " + i);
+                        console.log("OBJ2 at Position: " + j);
+
+                        obj1.x + (radius * 2);
+                        obj1.y + (radius);
+                    }
+                }
+            }
         }
+
+        //console.log(this.moleculePositions[0]);
 
         return (this.moleculePositions);
     },
@@ -63,7 +96,7 @@ export var DrawBufferScene = createReactClass ({
     drawBufferScene(width, height) {
         var buffer = this.props.mole1;
 
-        console.log(buffer);
+        //console.log(buffer);
 
         switch (buffer) {
             case "HA": 
@@ -72,7 +105,7 @@ export var DrawBufferScene = createReactClass ({
                 return (this.drawBuffer2(width, height));
             case "HClO":
                 return (this.drawBuffer3(width, height));
-            case "NH\u2083Cl":
+            case "NH\u2084Cl":
                 return (this.drawBuffer4(width, height));
         }
     },
@@ -439,7 +472,7 @@ export var DrawBufferScene = createReactClass ({
         var width = 300;
         var height = 300;
 
-        console.log(this.props.mole1);
+       // console.log(this.props.mole1);
         var scene = this.drawBufferScene(width, height);
 
         return(scene);

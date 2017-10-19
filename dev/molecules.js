@@ -46,12 +46,5 @@ export var Molecules = createReactClass ({
                     <DrawBufferScene mole1={this.state.mole1} mole3={this.state.mole3}/>
                 </div>
             )
-        /*
-        return(
-          <div>
-            <DrawMolecules mole1={this.state.mole1} mole2={this.state.mole2} mole3={this.state.mole3}/>
-          </div>
-        )
-        */
     }
 });
