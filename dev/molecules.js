@@ -16,7 +16,6 @@ export var Molecules = createReactClass ({
         var buffer = this.props.buffer;
         var [mole1, mole2] = buffer.split(" ");
         var mole3 = this.props.strong;
-
         this.updateState(mole1, mole2, mole3);
     },
 
@@ -27,7 +26,6 @@ export var Molecules = createReactClass ({
         var mole3 = nextProps.strong;
         this.updateState(mole1, mole2, mole3);
     },
-
 
     /******* UPDATE BUFFER SELECTION *********/
     updateState(mole1, mole2, mole3){
