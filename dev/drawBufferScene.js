@@ -2,42 +2,40 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
-import {DrawMolecules} from './drawMolecules.js';
+//import {DrawMolecules} from './drawMolecules.js';
+//import {Shape} from './shape.js';
 var createReactClass = require('create-react-class');
 
 export var DrawBufferScene = createReactClass ({
 
     getInitialState() {
-       return {mole1: this.props.mole1, mole3: this.props.mole3, 
-                        mole1Rotation: new THREE.Euler(), 
-                        mole2Rotation: new THREE.Euler(),
-                        mole1Animation: new THREE.Euler()}
+       return {mole1: this.props.mole1, mole3: this.props.mole3, rotation: new THREE.Euler()}
     },
 
     componentWillMount() {
         this.setState({mole1: this.props.mole1})
-        this.moleculePositions = this.randomizePositions(5);
-        this.cameraPosition = new THREE.Vector3(0, 0, 5);
-       
-       /* SIMPLE ANIMATION FUNCTION
-        this._onAnimate = () => {
-              this.setState({
-                mole1Animation: new THREE.Euler(
-                  this.state.mole1Animation.x + 0.01,
-                  this.state.mole1Animation.y + 0.01,
-                  0
-                ),
-              });
+        this.randomizePositions(5);
+        this.addPositions(this.moleculePositions);
 
-              this.setState({
-                mole2Rotation: new THREE.Euler(
-                  this.state.mole2Rotation.x + 0.01,
-                  this.state.mole2Rotation.y + 0.01,
-                  0
+        this.cameraPosition = new THREE.Vector3(0, 0, 5);
+
+       /* SIMPLE ANIMATION FUNCTION */
+        this._onAnimate = () => {
+           // for (var i = 0; i < this.moleculeAnimation.length; i++) {
+               // this.moleculeAnimation[0] = new THREE.Euler(
+               //     this.moleculeAnimation[0].x + 0.01, 0, 0);
+           // }
+
+           this.setState({
+                rotation: new THREE.Euler(
+                this.state.rotation.x + 0.01,
+                this.state.rotation.y + 0.01,
+                0
                 ),
-              });
+            });
         };
-        */
+
+        //console.log(this.moleculeAnimation);
     },
 
     componentWillReceiveProps(nextProps) {
@@ -57,6 +55,7 @@ export var DrawBufferScene = createReactClass ({
                 0
             );
 
+/*
             for (let j = 0; j < i; j++) {
 
                 //Obj1 = Current Randomized Object, Obj2 = Comparison Object
@@ -85,11 +84,26 @@ export var DrawBufferScene = createReactClass ({
                     }
                 }
             }
+    */
         }
 
-        //console.log(this.moleculePositions[0]);
+        //console.log(this.moleculePositions);
 
         return (this.moleculePositions);
+    },
+
+    addPositions(positions) {
+        this.moleculeAnimation = [];
+        this.moleculeAnimation.length = positions.length;
+
+        for (var i = 0; i < positions.length; i++) {
+            this.moleculeAnimation[i] = new THREE.Euler(
+                    positions[i].x, 
+                    positions[i].y,
+                    0);
+        }
+
+        //console.log(this.moleculeAnimation);
     },
 
     /********* DRAW BUFFER SCENE **********/
@@ -114,16 +128,17 @@ export var DrawBufferScene = createReactClass ({
     drawBuffer1(width, height) {
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
-                width={width}
-                height={height}
+                width = {width}
+                height = {height}
+                clearColor = {0xCCFFE5}
 
                 //onAnimate={this._onAnimate}
             >
             <scene>
                 <perspectiveCamera
-                    name="camera"
-                    fov={75}
-                    aspect={width / height}
+                    name = "camera"
+                    fov = {75}
+                    aspect = {width / height}
                     near={0.1}
                     far={1000}
 
@@ -131,7 +146,7 @@ export var DrawBufferScene = createReactClass ({
                 />
                 <mesh
                     position = {this.moleculePositions[0]}
-                    rotation = {this.state.mole2Rotation} 
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.25}
@@ -141,11 +156,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xFFFFFF}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[1]}
-                    rotation={this.state.mole2Rotation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -155,11 +171,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xFF1493}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[2]}
-                    rotation={this.state.mole1Animation}
+                    rotation={this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -169,11 +186,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xAB5CF2}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[3]}
-                    rotation={this.state.mole2Rotation}
+                    rotation={this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -183,6 +201,7 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xFF1493}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
               </scene>
@@ -195,6 +214,7 @@ export var DrawBufferScene = createReactClass ({
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
+                clearColor = {0xCCFFE5}
 
                 //onAnimate={this._onAnimate}
             >
@@ -210,7 +230,7 @@ export var DrawBufferScene = createReactClass ({
                 />
                 <mesh
                     position = {this.moleculePositions[0]}
-                    rotation = {this.state.mole2Rotation} 
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.25}
@@ -220,11 +240,13 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xFFFFFF}
+                        side = {THREE.DoubleSide}
+
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[1]}
-                    rotation={this.state.mole2Rotation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -234,11 +256,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0x90E050}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[2]}
-                    rotation={this.state.mole1Animation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -248,11 +271,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0x90E050}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[3]}
-                    rotation={this.state.mole2Rotation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -262,6 +286,7 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xAB5CF2}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
               </scene>
@@ -274,6 +299,7 @@ export var DrawBufferScene = createReactClass ({
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
+                clearColor = {0xCCFFE5}
 
                 //onAnimate={this._onAnimate}
             >
@@ -289,7 +315,7 @@ export var DrawBufferScene = createReactClass ({
                 />
                 <mesh
                     position = {this.moleculePositions[0]}
-                    rotation = {this.state.mole2Rotation} 
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.25}
@@ -299,11 +325,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xFFFFFF}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[1]}
-                    rotation={this.state.mole2Rotation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -313,11 +340,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0x1FF01F}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[2]}
-                    rotation={this.state.mole1Animation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -327,11 +355,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xFF0D0D}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[3]}
-                    rotation={this.state.mole2Rotation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -341,11 +370,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xAB5CF2}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[4]}
-                    rotation={this.state.mole2Rotation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -355,11 +385,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0x1FF01F}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[5]}
-                    rotation={this.state.mole2Rotation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -369,6 +400,7 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xFF0D0D}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
               </scene>
@@ -381,6 +413,7 @@ export var DrawBufferScene = createReactClass ({
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
+                clearColor = {0xCCFFE5}
 
                 //onAnimate={this._onAnimate}
             >
@@ -396,7 +429,7 @@ export var DrawBufferScene = createReactClass ({
                 />
                 <mesh
                     position = {this.moleculePositions[0]}
-                    rotation = {this.state.mole2Rotation} 
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.25}
@@ -406,11 +439,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xFFFFFF}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[1]}
-                    rotation={this.state.mole2Rotation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -420,11 +454,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0x3050F8}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[2]}
-                    rotation={this.state.mole1Animation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -434,11 +469,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0x3050F8}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[3]}
-                    rotation={this.state.mole2Rotation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -448,11 +484,12 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0x1FF01F}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
                 <mesh
                     position = {this.moleculePositions[4]}
-                    rotation={this.state.mole2Rotation}
+                    rotation = {this.state.rotation}
                 >
                     <circleGeometry
                         radius = {0.5}
@@ -462,6 +499,7 @@ export var DrawBufferScene = createReactClass ({
                     />
                     <meshBasicMaterial
                         color={0xFF0D0D}
+                        side = {THREE.DoubleSide}
                     />
                 </mesh>
               </scene>
