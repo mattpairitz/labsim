@@ -5,6 +5,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
 
+
 /*
   Components
 */
@@ -14,6 +15,7 @@ var {SlideBar} = require('./slider.js');
 var {Canvas} = require('./canvas.js');
 var {Molecules} = require('./molecules.js');
 var {Equation} = require('./equation.js');
+var {ControlPanel} = require('./controlPanel.js');
 
 /*
   CSS
@@ -24,12 +26,12 @@ import 'rc-slider/assets/index.css';
 var Index = createReactClass({
 
   getInitialState(){
-    return {secondsElapsed: 0,
-            equation: this.props.equations[0], equations: this.props.equations,
+    return {equation: this.props.equations[0], equations: this.props.equations,
             reaction: this.props.reactions[0], reactions: this.props.reactions,
             buffer: this.props.buffers[0], buffers: this.props.buffers,
             strong: this.props.strongs[0], strongs: this.props.strongs,
-            HAmount: 500, AAmount: 500, strongAmount: 0};
+            HAmount: 500, AAmount: 500, strongAmount: 0,
+            viewControl: {'graph': false, 'anim': false, 'beaker': false, 'equation': false} };
   },
 
   changeCheckbox(event){
@@ -120,10 +122,19 @@ var Index = createReactClass({
       }
   },
 
+  toggleComponentView(event){
+    let state = JSON.parse(event.target.value);
+    let id = event.target.id;
+    let newViewControl = this.state.viewControl;
+    newViewControl[id] = !state;
+    this.setState({viewControl: newViewControl})
+  },
+
 
   render() {
     let buffer = this.state.buffer;
     let [buffer_left, buffer_right] = buffer.split(" ");
+    let viewControl = this.state.viewControl;
     return (
       <div>
         <nav className="navbar navbar-inverse">
@@ -146,7 +157,7 @@ var Index = createReactClass({
 
         <div className="container-fluid text-center">    
           <div className="row content">
-            <div className="col-sm-4 text-left"> 
+            <div className="col-sm-5 text-left"> 
 
             <br/>
               <div>
@@ -154,44 +165,37 @@ var Index = createReactClass({
                   <input id='toggle' type="checkbox" onClick={this.toggleSwitch}/>
                   <span className="check round"></span>
                 </label>
-                
                  <h5>Component Toggle</h5>
               </div>
               <br/>
 
+                <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView}/>
 
-              <div id='react-state'>
-                <h1>The Reaction State</h1>
-                  <p>Buffer: {this.state.buffer}</p>
-                  <p>Strong: {this.state.strong}</p>
-                  <p>Vol 1: {this.state.HAmount}</p>
-                  <p>Vol 2: {this.state.AAmount}</p>
-                  <p>Strong: {this.state.strong}</p>
-                  <p>Strong Vol: {this.state.strongAmount}</p>
-              </div>
                 <br/>
-                <h3>Graph View</h3>
-                <div id="viz">
-                  <div>
-                     <div><Graph volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} buffer={this.state.buffer} strong={this.state.strong}/></div>
-                  </div>
-                </div>
+                <h3>Beaker View</h3><br/>
+                    <div hidden={viewControl['beaker']}><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/></div>
+                   
                 <br/>
                 <h3>Equation View</h3>
-                <div>
+                <div hidden={viewControl['equation']}>
                     <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
                 </div>
             </div>
 
             <div className="col-sm-5 text-center"> 
               <div id='canvas-well'> 
-                  <h3>Beaker View</h3><br/>
-                    <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/></div>
-                   <h3>Molecule View</h3><br/>
-                    <div><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
+                  <h3>Graph View</h3>
+                    <div hidden={viewControl['graph']} id="viz">
+                      <div>
+                         <div><Graph volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} 
+                                buffer={this.state.buffer} strong={this.state.strong}/></div>
+                      </div>
+                    </div>
+                  <h3>Molecule View</h3><br/>  
+                    <div hidden={viewControl['anim']}><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
                 </div>
               </div>
-            <div className="col-sm-3 sidenav">
+            <div className="col-sm-2 sidenav">
               <div className="panel panel-default">
                 <div className="panel-body">Selection</div>
                     <div id='buffer-selection'>
