@@ -41,7 +41,7 @@ var Index = createReactClass({
       }
     else {
         this.setState({strong: event.currentTarget.name});
-        this.changeReaction(event.currentTarget.name)``;
+        this.changeReaction(event.currentTarget.name);
       }
     },
 
@@ -163,6 +163,7 @@ var Index = createReactClass({
               <div id='react-state'>
                 <h1>The Reaction State</h1>
                   <p>Buffer: {this.state.buffer}</p>
+                  <p>Strong: {this.state.strong}</p>
                   <p>Vol 1: {this.state.HAmount}</p>
                   <p>Vol 2: {this.state.AAmount}</p>
                   <p>Strong: {this.state.strong}</p>
@@ -186,36 +187,38 @@ var Index = createReactClass({
               <div id='canvas-well'> 
                   <h3>Beaker View</h3><br/>
                     <div><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/></div>
-                   <h3>Molecule View</h3><br/>  
+                   <h3>Molecule View</h3><br/>
                     <div><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
                 </div>
               </div>
             <div className="col-sm-3 sidenav">
               <div className="panel panel-default">
                 <div className="panel-body">Selection</div>
-               
-              <div className="well">
-                <div>
-                  <p> Buffer </p>
-                  <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} id='buffer' onClick={this.changeCheckbox}/></div>
-                </div>
-              </div>
+                    <div id='buffer-selection'>
+                      <div className="well">
+                        <div>
+                          <p> Buffer </p>
+                          <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} id='buffer' onClick={this.changeCheckbox}/></div>
+                        </div>
+                      </div>
 
-              <div className="well" id='HA-slider'>
-                  <div>
-                    <p> Volume 1 </p>
-                    <SlideBar min={0} max={1000} step={1} buffer={buffer_left} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
-                  </div>
-              </div>
+                      <div className="well" id='HA-slider'>
+                          <div>
+                            <p> Volume 1 </p>
+                            <SlideBar min={0} max={1000} step={1} buffer={buffer_left} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
+                          </div>
+                      </div>
 
-              <div className="well" id='A-slider'>
-                <div>
-                  <p> Volume 2 </p>
-                  <SlideBar min={0} max={1000} step={50} buffer={buffer_right} amount={this.state.AAmount} onChange={this.changeAVolume}/>
-                </div>
-              </div>
-              
-              <div className="well">
+                      <div className="well" id='A-slider'>
+                        <div>
+                          <p> Volume 2 </p>
+                          <SlideBar min={0} max={1000} step={50} buffer={buffer_right} amount={this.state.AAmount} onChange={this.changeAVolume}/>
+                        </div>
+                      </div>
+                        <button type="button" className="btn btn-success btn-block">Confirm</button>
+                        <br/>
+                    </div>
+              <div className="well" id='strong-selection'>
                   <div>
                     <p> Strong Acid/Base </p>
                     <div><Checkbox id='strong' options={this.state.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
@@ -224,7 +227,6 @@ var Index = createReactClass({
                     </div>
                   </div>
                 </div>
-            
               </div>
             </div>  
           </div>
@@ -239,10 +241,10 @@ ReactDOM.render(<div><Index
   "HF + H\u2082O \u21CC H\u2083O\u207A + A\u207B",
   "HClO + H\u2082O \u21CC H\u2083O\u207A + ClO\u207B",
   "NH\u2083 + H\u2082O \u21CC OH\u207B + NH\u2084\u207A"]}
-  reactions={[" ", "H\u207A + A\u207B \u21CC HA", "H\u207A + F\u207B \u21CC HF",
-  "H\u207A + ClO\u207B \u21CC HClO", "H\u207A + NH\u2083 \u21CC NH\u2084\u207A",
-  "OH\u207B + HA \u21CC H\u2082O + A\u207B", "OH\u207B + HF \u21CC H\u2082O + F\u207B",
-  "OH\u207B + HClO \u21CC H\u2082O + ClO\u207B", "OH\u207B + NH\u2084\u207A \u21CC H\u2082O + NH\u2083"]}
+  reactions={[" ", "Reaction: H\u207A + A\u207B \u21CC HA", "Reaction: H\u207A + F\u207B \u21CC HF",
+  "Reaction: H\u207A + ClO\u207B \u21CC HClO", "Reaction: H\u207A + NH\u2083 \u21CC NH\u2084\u207A",
+  "Reaction: OH\u207B + HA \u21CC H\u2082O + A\u207B", "Reaction: OH\u207B + HF \u21CC H\u2082O + F\u207B",
+  "Reaction: OH\u207B + HClO \u21CC H\u2082O + ClO\u207B", "Reaction: OH\u207B + NH\u2084\u207A \u21CC H\u2082O + NH\u2083"]}
   buffers={["HA NaA", "HF NaF",  "HClO NaClO", "NH\u2084Cl NH\u2083"]} 
   strongs ={['None', 'HCL', 'NaOH']}/></div>,
   document.getElementById("container"))
