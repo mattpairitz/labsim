@@ -333,6 +333,26 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group
+                    position = {this.moleculePositions[2]}
+                    rotation = {this.state.rotation2}
+                >
+                    <mesh
+                        position = {this.moleculePositions[2]}
+                        //rotation = {this.state.rotation}
+                    >
+                        <circleGeometry
+                            radius = {0.5}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0x90E050}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                </group>
+                <group
                     position = {this.moleculePositions[3]}
                     rotation = {this.state.rotation2}
                 >

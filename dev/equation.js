@@ -14,9 +14,10 @@ export var Equation = createReactClass ({
        this.setState({reaction: this.props.reaction});
    },
 
-   componentWillReceiveProps(nextProps){
+   shouldComponentUpdate(nextProps){
        this.setState({equation: nextProps.equation});
        this.setState({reaction: nextProps.reaction});
+       return true;
    },
 
    render(){

@@ -17,10 +17,16 @@ export var SlideBar = createReactClass({
 
   componentWillReceiveProps(nextProps) {
   	this.setState({amount: nextProps.amount})
+    console.log(nextProps)
   },
 
   overwriteAmount(event){
     this.setState({amount: event.currentTarget.value})
+  },
+
+  disableOnNone(){
+    var disabled = this.props.buffer=='None' ? true : false;
+    return disabled;
   },
 
   render(){
@@ -28,12 +34,13 @@ export var SlideBar = createReactClass({
     var max = this.state.max;
     var step = this.state.step;
     var amount = this.state.amount;
+    var disabled = this.state.disabled;
    return (
     <div>
       <div><Slider min={min} max={max} step={step}
-       onChange={this.props.onChange} value={amount}/></div>
+       onChange={this.props.onChange} value={amount} disabled={this.disableOnNone()}/></div>
 	    <span>{this.props.buffer} </span>
-	      <input className='slider' type="number" value={amount} onChange={this.overwriteAmount}/>
+	      <input className='slider' disabled={this.disableOnNone()} type="number" value={amount} onChange={this.overwriteAmount}/>
 	    <span> mL</span>  
     </div>    
     );
