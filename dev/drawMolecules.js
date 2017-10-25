@@ -263,11 +263,4 @@ drawNegCharge(xPos, yPos, ctx) {
     ctx.stroke();
 },
 
-render() {
-    return(
-      <div>
-        <canvas ref="canvas" width={300} height={300} />
-      </div>
-      )
-}
 });

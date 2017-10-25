@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
-import {DrawMolecules} from './drawMolecules.js';
+//import {DrawMolecules} from './drawMolecules.js';
 import {DrawBufferScene} from './DrawBufferScene.js';
 var createReactClass = require('create-react-class');
 
