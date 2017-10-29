@@ -5,7 +5,7 @@ var createReactClass = require('create-react-class');
 export var Canvas = createReactClass ({
     
     getInitialState() {
-        return {volume1: this.props.volume1, volume2: this.props.volume2, volume3: this.props.volume3}
+        return {volume1: this.props.volume1, volume2: this.props.volume2, volume3: this.props.volume3, pH: this.props.pH}
     },
 
     componentDidMount() {
@@ -20,17 +20,18 @@ export var Canvas = createReactClass ({
         var amount1 = this.props.volume1;
         var amount2 = this.props.volume2;
         var amount3 = this.props.volume3;
+        var pH = this.props.pH;
+
         amount1 = (amount1 / 15);
         amount2 = (amount2 / 15);
         amount3 = (amount3 / 15);
         var total = (amount1 + amount2 + amount3);
 
-        //ctx.fillStyle = "#000000";
-        //ctx.fillRect(50, 50, 200, (200 - total));
         ctx.clearRect(50, 50, 200, 200);
         ctx.fillRect(50, 250, 200, - total);
 
         this.drawCanvas();
+        this.drawDropper(pH);
     },
 
     componentWillReceiveProps(nextProps) {
@@ -41,40 +42,41 @@ export var Canvas = createReactClass ({
         var amount1 = nextProps.volume1;
         var amount2 = nextProps.volume2;
         var amount3 = nextProps.volume3;
+        var pH = nextProps.pH;
+
         amount1 = (amount1 / 15);
         amount2 = (amount2 / 15);
         amount3 = (amount3 / 15);
         var total = (amount1 + amount2 + amount3);
 
-        //ctx.fillStyle = "#000000";
-        //ctx.fillRect(50, 50, 200, total);
         ctx.clearRect(50, 50, 200, 200);
         ctx.fillRect(50, 250, 200, - total);
 
         this.drawCanvas();
+        this.drawDropper(pH);
     },
 
     drawCanvas() {
-        const canvas = this.refs.canvas
-        const ctx = canvas.getContext("2d")
+        const canvas = this.refs.canvas;
+        const ctx = canvas.getContext("2d");
 
         /* Draw rectangle on canvas */
         ctx.strokeStyle = "#000000";
-        ctx.moveTo(50,50);
-        ctx.lineTo(250, 50);
-        ctx.stroke();
+        ctx.rect(50, 50, 200, 200);
+    },
 
-        ctx.moveTo(250, 50);
-        ctx.lineTo(250, 250);
-        ctx.stroke();
+    drawDropper(pH) {
+        const canvas = this.refs.canvas;
+        const ctx = canvas.getContext("2d");
 
-        ctx.moveTo(250, 250);
-        ctx.lineTo(50, 250);
+        /* Draw pH graphic with dynamic text */
+        ctx.moveTo(220, 10);
+        ctx.lineTo(220, 225);
+        ctx.lineCap = 'round';
         ctx.stroke();
-
-        ctx.moveTo(50, 250);
-        ctx.lineTo(50, 50);
+        ctx.rect(220, 5, 40, 20);
         ctx.stroke();
+        ctx.strokeText(pH, 240, 17);
     },
         
     render(){

@@ -35,6 +35,15 @@
       width: 300px;
     }
 
+    #strong-selection {
+      display: none;
+    }
+
+    #warning-message {
+      color: red;
+      font-size: 10;
+    }
+
     [data-role="fieldcontain"] {
       display: table;
     }

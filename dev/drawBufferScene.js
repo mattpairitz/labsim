@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
-//import {DrawMolecules} from './drawMolecules.js';
-//import {Shape} from './shape.js';
+import {Strong} from './drawStrongScene.js';
+
 var createReactClass = require('create-react-class');
 
 export var DrawBufferScene = createReactClass ({
@@ -15,6 +15,7 @@ export var DrawBufferScene = createReactClass ({
 
     componentWillMount() {
         this.setState({mole1: this.props.mole1})
+        this.setState({mole3: this.props.mole3})
         this.randomizePositions(5);
         this.addPositions(this.moleculePositions);
 
@@ -168,6 +169,9 @@ export var DrawBufferScene = createReactClass ({
     
 /********** BUFFER SCENE 1: HA and NaA ***********/
     drawBuffer1(width, height) {
+        //var strong = this.props.mole3;
+        //console.log(strong);
+
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width = {width}
@@ -266,7 +270,8 @@ export var DrawBufferScene = createReactClass ({
                             side = {THREE.DoubleSide}
                         />
                     </mesh>
-                </group>    
+                </group> 
+                <Strong strong={this.state.mole3}/>
               </scene>
             </React3>)
     },
@@ -732,7 +737,7 @@ export var DrawBufferScene = createReactClass ({
         var width = 300;
         var height = 300;
 
-       // console.log(this.props.mole1);
+        //console.log(this.props.mole3);
         var scene = this.drawBufferScene(width, height);
 
         return(scene);
