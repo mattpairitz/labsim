@@ -210,7 +210,6 @@ var Index = createReactClass({
                       <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/>
                       <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
                     </div>
-                    
                 <br/>
             </div>
 
