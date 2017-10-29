@@ -71,6 +71,10 @@ var Index = createReactClass({
     
   },
 
+  createStrongCheckbox(){
+    document.getElementById("strong-selection").style.display = 'block';
+  },
+
   changeEquation(value) {
     switch(value){
         case (this.props.buffers[0]):
@@ -219,7 +223,7 @@ var Index = createReactClass({
                           <SlideBar min={0} max={1000} step={50} buffer={buffer_right} amount={this.state.AAmount} onChange={this.changeAVolume}/>
                         </div>
                       </div>
-                        <button type="button" className="btn btn-success btn-block">Confirm</button>
+                        <button type="button" className="btn btn-success btn-block" onClick={this.createStrongCheckbox}>Confirm</button>
                         <br/>
                     </div>
               <div className="well" id='strong-selection'>

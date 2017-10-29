@@ -35,6 +35,10 @@
       width: 300px;
     }
 
+    #strong-selection {
+      display: none;
+    }
+
     [data-role="fieldcontain"] {
       display: table;
     }
