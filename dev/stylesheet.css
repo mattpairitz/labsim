@@ -39,6 +39,11 @@
       display: none;
     }
 
+    #warning-message {
+      color: red;
+      font-size: 10;
+    }
+
     [data-role="fieldcontain"] {
       display: table;
     }
