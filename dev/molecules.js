@@ -33,6 +33,10 @@ export var Molecules = createReactClass ({
         this.setState({mole2: mole2})
         this.setState({mole3: mole3})    
     },
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextProps.buffer !== this.props.buffer;
+    },
     
     render() {
         var width = 300;
