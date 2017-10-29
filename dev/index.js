@@ -207,7 +207,7 @@ var Index = createReactClass({
                 <br/>
                 <h3>Beaker/Equation View</h3><br/>
                     <div hidden={viewControl['beaker']}>
-                      <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/>
+                      <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} pH={7}/>
                       <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
                     </div>
                 <br/>
