@@ -30,7 +30,8 @@ var Index = createReactClass({
             reaction: this.props.reactions[0], reactions: this.props.reactions,
             buffer: this.props.buffers[0], buffers: this.props.buffers,
             strong: this.props.strongs[0], strongs: this.props.strongs,
-            HAmount: 500, AAmount: 500, strongAmount: 0,
+            warning: this.props.warnings[0], warnings: this.props.warnings,
+            HAmount: 500, AAmount: 500, strongAmount: 0, validity: true,
             viewControl: {'graph': false, 'anim': false, 'beaker': false, 'equation': false} };
   },
 
@@ -49,14 +50,40 @@ var Index = createReactClass({
 
   changeHAVolume(value){
     this.setState({HAmount: value});
+    this.checkValidity();
   },
 
   changeAVolume(value){
     this.setState({AAmount: value});
+    this.checkValidity();
   },
 
   changeStrongVolume(value){
     this.setState({strongAmount: value});
+  },
+
+  checkValidity(){
+    if (this.state.HAmount == 0 || this.state.AAmount == 0){
+      this.setState({validity: false, warning: this.state.warnings[1]});
+      this.buttonCheck();
+    }
+    else if (this.state.HAmount * 10 < this.state.AAmount || this.state.HAmount * .1 > this.state.AAmount){
+      this.setState({validity: false, warning: this.state.warnings[2]});
+      this.buttonCheck();
+    }
+    else {
+      this.setState({validity: true, warning: this.state.warnings[0]});
+      this.buttonCheck();
+    }
+  },
+
+  buttonCheck(){
+    if(this.state.validity == false){
+      document.getElementById("btn").disabled = true;
+    }
+    else{
+      document.getElementById("btn").disabled = false;
+    }
   },
 
   toggleSwitch(){
@@ -69,6 +96,12 @@ var Index = createReactClass({
       document.getElementById('react-state').style.display = '';
     }
     
+  },
+
+  buttonPress(){
+    document.getElementById("strong-selection").style.display = 'block';
+    document.getElementById("btn").style.display = 'none';
+    document.getElementById("buffer-selection").style.display = 'none';
   },
 
   changeEquation(value) {
@@ -215,10 +248,11 @@ var Index = createReactClass({
                       <div className="well" id='A-slider'>
                         <div>
                           <p> Volume 2 </p>
-                          <SlideBar min={0} max={1000} step={50} buffer={buffer_right} amount={this.state.AAmount} onChange={this.changeAVolume}/>
+                          <SlideBar min={0} max={1000} step={1} buffer={buffer_right} amount={this.state.AAmount} onChange={this.changeAVolume}/>
                         </div>
                       </div>
-                        <button type="button" className="btn btn-success btn-block">Confirm</button>
+                        <button id= "btn" type="button" className="btn btn-success btn-block" onClick={this.buttonPress}>Confirm</button>
+                        <p id="warning-message">{this.state.warning}</p>
                         <br/>
                     </div>
               <div className="well" id='strong-selection'>
@@ -226,7 +260,7 @@ var Index = createReactClass({
                     <p> Strong Acid/Base </p>
                     <div><Checkbox id='strong' options={this.state.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
-                      <SlideBar min={0} max={200} step={50} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume} />
+                      <SlideBar min={0} max={200} step={1} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume} />
                     </div>
                   </div>
                 </div>
@@ -249,7 +283,8 @@ ReactDOM.render(<div><Index
   "Reaction: OH\u207B + HA \u21CC H\u2082O + A\u207B", "Reaction: OH\u207B + HF \u21CC H\u2082O + F\u207B",
   "Reaction: OH\u207B + HClO \u21CC H\u2082O + ClO\u207B", "Reaction: OH\u207B + NH\u2084\u207A \u21CC H\u2082O + NH\u2083"]}
   buffers={["HA NaA", "HF NaF",  "HClO NaClO", "NH\u2084Cl NH\u2083"]} 
-  strongs ={['None', 'HCL', 'NaOH']}/></div>,
+  strongs ={['None', 'HCL', 'NaOH']}
+  warnings ={['', 'Buffer must contain both an acid and base!', 'Both components must be within 10x of each other in volume!']}/></div>,
   document.getElementById("container"))
 
 
