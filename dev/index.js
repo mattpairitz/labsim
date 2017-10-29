@@ -172,14 +172,13 @@ var Index = createReactClass({
                 <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView}/>
 
                 <br/>
-                <h3>Beaker View</h3><br/>
-                    <div hidden={viewControl['beaker']}><Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/></div>
-                   
+                <h3>Beaker/Equation View</h3><br/>
+                    <div hidden={viewControl['beaker']}>
+                      <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount}/>
+                      <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
+                    </div>
+                    
                 <br/>
-                <h3>Equation View</h3>
-                <div hidden={viewControl['equation']}>
-                    <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
-                </div>
             </div>
 
             <div className="col-sm-5 text-center"> 

@@ -12,9 +12,8 @@ export var ControlPanel = createReactClass({
    return (
     <div>
        <button id='graph' value={viewControl['graph']} onClick={this.props.onClick}>Graph</button>
-       <button id='beaker' value={viewControl['beaker']} onClick={this.props.onClick}>Beaker</button>
+       <button id='beaker' value={viewControl['beaker']} onClick={this.props.onClick}>Beaker/Equation</button>
        <button id='anim' value={viewControl['anim']} onClick={this.props.onClick}>Animation</button>
-       <button id='equation' value={viewControl['equation']} onClick={this.props.onClick}>Equation</button>
     </div>    
     );
  }
