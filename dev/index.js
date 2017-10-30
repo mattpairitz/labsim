@@ -16,6 +16,8 @@ var {Canvas} = require('./canvas.js');
 var {Molecules} = require('./molecules.js');
 var {Equation} = require('./equation.js');
 var {ControlPanel} = require('./controlPanel.js');
+var {Collapse} = require('react-collapse');
+var {Reset} = require('./reset.js');
 
 /*
   CSS
@@ -32,7 +34,12 @@ var Index = createReactClass({
             strong: this.props.strongs[0], strongs: this.props.strongs,
             warning: this.props.warnings[0], warnings: this.props.warnings,
             HAmount: 500, AAmount: 500, strongAmount: 0, validity: true,
-            viewControl: {'graph': false, 'anim': false, 'beaker': false, 'equation': false} };
+            viewControl: {'graph': true, 'anim': true, 'beaker': true}, 
+            lab: <Index/>};
+  },
+
+  resetLab(){
+    this.setState({lab: ()=> <Index/>})
   },
 
   changeCheckbox(event){
@@ -163,13 +170,22 @@ var Index = createReactClass({
     this.setState({viewControl: newViewControl})
   },
 
-
   render() {
     let buffer = this.state.buffer;
     let [buffer_left, buffer_right] = buffer.split(" ");
     let viewControl = this.state.viewControl;
+    var graph, animation, beaker, equation;
+    // if(viewControl['graph']){
+    //   graph = 
+    // } else if (viewControl['anim']) {
+    //   animation = 
+    // } else if (viewControl['beaker']){
+    //   beaker = 
+    // } else if(viewControl['equation']){
+    //   equation = 
+    // }
     return (
-      <div>
+      <div className="app">
         <nav className="navbar navbar-inverse">
           <div className="container-fluid">
             <div className="navbar-header">
@@ -190,47 +206,45 @@ var Index = createReactClass({
 
         <div className="container-fluid text-center">    
           <div className="row content">
-            <div className="col-sm-5 text-left"> 
-
-            <br/>
-              <div>
-                 <label className="switch"> 
-                  <input id='toggle' type="checkbox" onClick={this.toggleSwitch}/>
-                  <span className="check round"></span>
-                </label>
-                 <h5>Component Toggle</h5>
-              </div>
-              <br/>
-
-                <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView}/>
-
-                <br/>
-                <h3>Beaker/Equation View</h3><br/>
-                    <div hidden={viewControl['beaker']}>
-                      <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} pH={7}/>
-                      <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
-                    </div>
-                <br/>
-            </div>
-
-            <div className="col-sm-5 text-center"> 
-              <div id='canvas-well'> 
-                  <h3>Graph View</h3>
-                    <div hidden={viewControl['graph']} id="viz">
+            <div className="col-sm-10 text-center"> 
+              <div className="view" >
+              <Collapse isOpened={viewControl['graph']}>
+                  <div><h3>Graph View</h3>
+                    <div id="viz">
                       <div>
                          <div><Graph volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} 
                                 buffer={this.state.buffer} strong={this.state.strong}/></div>
                       </div>
                     </div>
-                  <h3>Molecule View</h3><br/>  
-                    <div hidden={viewControl['anim']}><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
                 </div>
+                </Collapse>
               </div>
+              <div><div className="view" >
+                <Collapse isOpened={viewControl['anim']}>
+                  <h3>Molecule View</h3><br/>  
+                    <div><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
+                </Collapse>
+              </div></div>
+            
+              <div><div className="view" >
+                 <Collapse isOpened={viewControl['beaker']}>
+                  <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} pH={7}/>
+                  <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
+                </Collapse>
+              </div></div>           
+              
+             
+            </div>
+
             <div className="col-sm-2 sidenav">
               <div className="panel panel-default">
-                <div className="panel-body">Selection</div>
+                <div className="panel-body"></div>
                     <div id='buffer-selection'>
                       <div className="well">
+
+                        <br/>
+                          <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView}/>
+                        <br/>
                         <div>
                           <p> Buffer </p>
                           <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} id='buffer' onClick={this.changeCheckbox}/></div>
@@ -261,12 +275,14 @@ var Index = createReactClass({
                     <div><br/>
                       <SlideBar min={0} max={200} step={1} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume} />
                     </div>
+                    <Reset reset={this.resetLab}/>
                   </div>
                 </div>
               </div>
             </div>  
           </div>
         </div>
+
       </div>
 
       );

@@ -5,13 +5,13 @@
     }
     
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 800px}
+    .row.content {height: 100%}
     
     /* Set gray background color and 100% height */
     .sidenav {
-      padding-top: 20px;
+      padding-top: 5px;
       background-color: #f1f1f1;
-      height: 100%;
+      height: 75%;
     }
     
     /* Set black background color, white text and some padding */
@@ -31,8 +31,8 @@
     }
 
     #viz {
-      height: 400px;
-      width: 300px;
+      height: 500px;
+      width: 400px;
     }
 
     #strong-selection {
@@ -59,9 +59,9 @@
     label {
       display: table-cell;
       cursor: pointer;
-      padding-left: 10px;
-      margin-right: 10px;
-      font-size: 13px;
+      padding-left: 5px;
+      margin-right: 5px;
+      font-size: 12px;
       text-align: left;
     }
 
@@ -73,64 +73,41 @@
       display: none;
     }
 
-    /* CSS for toggle buttons */
+    /* Rounded sliders */
+    .check.round {
+      border-radius: 24px;
+    }
 
-    /* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 24px;
-}
+    .check.round:before {
+      border-radius: 50%;
+    }
 
-/* Hide default HTML checkbox */
-.check input {display:none;}
+    .modal {
+        display:block;
+    }
 
-/* The slider */
-.check {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
+    .app {
+      background-color:#ADD8E6;
+      height: 100%;
+      margin: 0px;
+    }
 
-.check:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
+    .col-sm-10 {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      justify-content: center;
+     
+      -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+    }
 
-input:checked + .check {
-  background-color: #2196F3;
-}
+    .view {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
 
-input:focus + .check {
-  box-shadow: 0 0 1px #2196F3;
-}
 
-input:checked + .check:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.check.round {
-  border-radius: 24px;
-}
-
-.check.round:before {
-  border-radius: 50%;
-}
 
