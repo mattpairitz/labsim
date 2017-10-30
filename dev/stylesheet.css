@@ -16,9 +16,13 @@
     
     /* Set black background color, white text and some padding */
     footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
+      background-color: #ADD8E6;
+      color: #ADD8E6;
+      position: relative;
+      margin-top: -150px; /* negative value of footer height */
+      height: 110px;
+      clear:both;
+      padding-top:20px;
     }
     
     /* On small screens, set height to 'auto' for sidenav and grid */
@@ -61,7 +65,7 @@
       cursor: pointer;
       padding-left: 5px;
       margin-right: 5px;
-      font-size: 12px;
+      font-size: 11px;
       text-align: left;
     }
 
@@ -107,7 +111,11 @@
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
+      padding: 15px;
     }
 
-
+  html, body {
+    background-color:#ADD8E6;
+    height: 100%;
+  }
 

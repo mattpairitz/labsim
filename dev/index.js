@@ -34,12 +34,22 @@ var Index = createReactClass({
             strong: this.props.strongs[0], strongs: this.props.strongs,
             warning: this.props.warnings[0], warnings: this.props.warnings,
             HAmount: 500, AAmount: 500, strongAmount: 0, validity: true,
-            viewControl: {'graph': true, 'anim': true, 'beaker': true}, 
-            lab: <Index/>};
+            viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 7};
   },
 
-  resetLab(){
-    this.setState({lab: ()=> <Index/>})
+  restartLab(event){
+    this.setState({viewControl: {'graph': true, 'anim': true, 'beaker': true}});
+    this.setState({HAmount: 500});
+    this.setState({AAmount: 500});
+    this.setState({strongAmount: 0});
+    this.setState({equation: this.props.equations[0]});
+    this.setState({reaction: this.props.reactions[0]});
+    this.setState({buffer: this.props.buffers[0]});
+    this.setState({strong: this.props.strongs[0]});
+    this.setState({ pH: 7});
+    document.getElementById("strong-selection").style.display = 'none';
+    document.getElementById("btn").style.display = 'block';
+    document.getElementById("buffer-selection").style.display = 'block';
   },
 
   changeCheckbox(event){
@@ -56,16 +66,19 @@ var Index = createReactClass({
     },
 
   changeHAVolume(value){
+    this.calculatePH();
     this.setState({HAmount: value});
     this.checkValidity();
   },
 
   changeAVolume(value){
+    this.calculatePH();
     this.setState({AAmount: value});
     this.checkValidity();
   },
 
   changeStrongVolume(value){
+    this.calculatePH();
     this.setState({strongAmount: value});
   },
 
@@ -91,18 +104,6 @@ var Index = createReactClass({
     else{
       document.getElementById("btn").disabled = false;
     }
-  },
-
-  toggleSwitch(){
-    let toggle = document.getElementById('toggle').value;
-    toggle = toggle==='on' ? 'off' : 'on';
-    document.getElementById('toggle').value = toggle;
-    if(toggle==='off'){
-      document.getElementById('react-state').style.display = 'inline';
-    } else {
-      document.getElementById('react-state').style.display = '';
-    }
-    
   },
 
   buttonPress(){
@@ -170,6 +171,26 @@ var Index = createReactClass({
     this.setState({viewControl: newViewControl})
   },
 
+  calculatePH(){
+    var amount1 = this.state.HAmount;
+    var amount2 = this.state.AAmount;
+    var amount3 = this.state.strongAmount;
+    var total = (amount1 + amount2 + amount3);
+    var Ka = 0.00001
+    var molarityHA = this.getMolarity(amount1)
+    var molarityA = this.getMolarity(amount2)
+    var fmolesHA = molarityHA/(total/1000)
+    var fmolesA = molarityA/(total/1000)
+    var Hplus = (Ka*fmolesHA)/fmolesA
+    var pH = -Math.log(Hplus)
+    //this.setState({pH: pH})
+    console.log(pH.toPrecision(4))
+  },
+
+  getMolarity(volume){
+      return volume*.1/1000
+  },
+
   render() {
     let buffer = this.state.buffer;
     let [buffer_left, buffer_right] = buffer.split(" ");
@@ -228,7 +249,8 @@ var Index = createReactClass({
             
               <div><div className="view" >
                  <Collapse isOpened={viewControl['beaker']}>
-                  <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} pH={7}/>
+                 <h3>Beaker View</h3><br/>
+                  <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} pH={this.state.pH}/>
                   <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
                 </Collapse>
               </div></div>           
@@ -275,14 +297,14 @@ var Index = createReactClass({
                     <div><br/>
                       <SlideBar min={0} max={200} step={1} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume} />
                     </div>
-                    <Reset reset={this.resetLab}/>
+                    <Reset onClick={this.restartLab.bind(this)}/>
                   </div>
                 </div>
               </div>
             </div>  
           </div>
         </div>
-
+          <footer></footer>
       </div>
 
       );
