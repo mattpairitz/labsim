@@ -41,6 +41,7 @@ export var DrawBufferScene = createReactClass ({
         };
 
         //console.log(this.moleculeAnimation);
+        console.log(this.props.mole3);
     },
 
     componentWillReceiveProps(nextProps) {
@@ -146,8 +147,6 @@ export var DrawBufferScene = createReactClass ({
 
         return (this.hydroPosition);
     },
-
-
 
     /********* DRAW BUFFER SCENE **********/
     drawBufferScene(width, height) {
@@ -271,7 +270,6 @@ export var DrawBufferScene = createReactClass ({
                         />
                     </mesh>
                 </group> 
-                <Strong strong={this.state.mole3}/>
               </scene>
             </React3>)
     },
