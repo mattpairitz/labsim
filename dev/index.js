@@ -317,7 +317,7 @@ var Index = createReactClass({
                         <br/>
                         <div>
                           <p> Buffer </p>
-                          <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} id='buffer' onClick={this.changeCheckbox}/></div>
+                          <div><Checkbox id='buffer' options={this.state.buffers} currentOption={this.state.buffer} onClick={this.changeCheckbox}/></div>
                         </div>
                       </div>
 
