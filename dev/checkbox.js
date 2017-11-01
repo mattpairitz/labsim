@@ -3,13 +3,6 @@ const ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
 
 export var Checkbox = createReactClass({
-  getInitialState: function(){
-    return { options: this.props.buffers, currentOption: this.props.currentOption}
-  },
-
-  componentWillMount(){
-
-  },
 
   render: function(){
    var Picker = this.props.options.map(function(option, index){

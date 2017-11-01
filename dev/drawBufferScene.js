@@ -9,15 +9,17 @@ var createReactClass = require('create-react-class');
 export var DrawBufferScene = createReactClass ({
 
     getInitialState() {
-       return {mole1: this.props.mole1, mole3: this.props.mole3, 
+       return {buff1: this.props.buff1, strong: this.props.strong, 
                     rotation: new THREE.Euler(), rotation2: new THREE.Euler()}
     },
 
     componentWillMount() {
-        this.setState({mole1: this.props.mole1})
-        this.setState({mole3: this.props.mole3})
+        this.setState({buff1: this.props.buff1})
+        this.setState({strong: this.props.strong})
         this.randomizePositions(5);
         this.addPositions(this.moleculePositions);
+
+        
 
         this.cameraPosition = new THREE.Vector3(0, 0, 5);
 
@@ -39,12 +41,11 @@ export var DrawBufferScene = createReactClass ({
                 ),
             });
         };
-
-        //console.log(this.moleculeAnimation);
     },
 
     componentWillReceiveProps(nextProps) {
         this.moleculePositions = this.randomizePositions(5);
+        console.log(nextProps)
     },
 
     /********* Randomize Molecule Locations On Canvas **********/
@@ -107,8 +108,6 @@ export var DrawBufferScene = createReactClass ({
                     positions[i].y,
                     0);
         }
-
-        //console.log(this.moleculeAnimation);
     },
 
 
@@ -151,9 +150,7 @@ export var DrawBufferScene = createReactClass ({
 
     /********* DRAW BUFFER SCENE **********/
     drawBufferScene(width, height) {
-        var buffer = this.props.mole1;
-
-        //console.log(buffer);
+        var buffer = this.props.buff1;
 
         switch (buffer) {
             case "HA": 
@@ -169,8 +166,6 @@ export var DrawBufferScene = createReactClass ({
     
 /********** BUFFER SCENE 1: HA and NaA ***********/
     drawBuffer1(width, height) {
-        //var strong = this.props.mole3;
-        //console.log(strong);
 
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
@@ -271,7 +266,7 @@ export var DrawBufferScene = createReactClass ({
                         />
                     </mesh>
                 </group> 
-                <Strong strong={this.state.mole3}/>
+                <Strong strong={this.state.strong}/>
               </scene>
             </React3>)
     },
@@ -736,8 +731,6 @@ export var DrawBufferScene = createReactClass ({
     render() {
         var width = 300;
         var height = 300;
-
-        //console.log(this.props.mole3);
         var scene = this.drawBufferScene(width, height);
 
         return(scene);

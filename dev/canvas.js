@@ -20,7 +20,6 @@ export var Canvas = createReactClass ({
         var amount1 = this.props.volume1;
         var amount2 = this.props.volume2;
         var amount3 = this.props.volume3;
-        var pH = this.props.pH;
 
         amount1 = (amount1 / 15);
         amount2 = (amount2 / 15);
@@ -31,7 +30,7 @@ export var Canvas = createReactClass ({
         ctx.fillRect(50, 250, 200, - total);
 
         this.drawCanvas();
-        this.drawDropper(pH);
+        this.drawDropper(this.state.pH);
     },
 
     componentWillReceiveProps(nextProps) {

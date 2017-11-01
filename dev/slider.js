@@ -17,7 +17,6 @@ export var SlideBar = createReactClass({
 
   componentWillReceiveProps(nextProps) {
   	this.setState({amount: nextProps.amount})
-    console.log(nextProps)
   },
 
   overwriteAmount(event){
