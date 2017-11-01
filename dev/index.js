@@ -33,15 +33,14 @@ var Index = createReactClass({
             buffer: this.props.buffers[0], buffers: this.props.buffers,
             strong: this.props.strongs[0], strongs: this.props.strongs,
             warning: this.props.warnings[0], warnings: this.props.warnings,
+            volumes: {'H': 500, 'A': 500, 'strong': 0 },
             HAmount: 600, AAmount: 500, strongAmount: 0, validity: true,
             viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 7};
   },
 
   restartLab(event){
     this.setState({viewControl: {'graph': true, 'anim': true, 'beaker': true}});
-    this.setState({HAmount: 500});
-    this.setState({AAmount: 500});
-    this.setState({strongAmount: 0});
+    this.setState({volumes: {'H': 500, 'A': 500, 'strong': 0 }})
     this.setState({equation: this.props.equations[0]});
     this.setState({reaction: this.props.reactions[0]});
     this.setState({buffer: this.props.buffers[0]});
@@ -65,30 +64,24 @@ var Index = createReactClass({
       }
     },
 
-  changeHAVolume(event, value){
-    console.log("HA id: " + event.target.id)
-    this.calculatePH();
-    this.setState({HAmount: value});
+  changeVolume(id, value){
+    let volumes = this.state.volumes;
+    volumes[id] = value
+    this.setState({volumes: volumes})
+    
+    //this.calculatePH();
     this.checkValidity();
-  },
-
-  changeAVolume(value){
-    this.calculatePH();
-    this.setState({AAmount: value});
-    this.checkValidity();
-  },
-
-  changeStrongVolume(value){
-    this.calculatePH();
-    this.setState({strongAmount: value});
   },
 
   checkValidity(){
-    if (this.state.HAmount == 0 || this.state.AAmount == 0){
+    let volumes = this.state.volumes;
+    let H, A, strong;
+    ({H, A, strong} = volumes);
+    if (H == 0 || A == 0){
       this.setState({validity: false, warning: this.state.warnings[1]});
       this.buttonCheck();
     }
-    else if (this.state.HAmount * 10 < this.state.AAmount || this.state.HAmount * .1 > this.state.AAmount){
+    else if (H * 10 < A || H * .1 > A){
       this.setState({validity: false, warning: this.state.warnings[2]});
       this.buttonCheck();
     }
@@ -173,26 +166,26 @@ var Index = createReactClass({
   },
 
   calculatePH(){
-    var amount1 = this.state.HAmount;
-    var amount2 = this.state.AAmount;
-    var amount3 = this.state.strongAmount;
-    var total = (amount1 + amount2 + amount3);
+    let volumes = this.state.volumes;
+    let H, A, strong;
+    ({H, A, strong} = volumes);
+    var total = (H + A + strong);
     var Ka = 0.00001
-    var molarityHA = this.getMolarity(amount1)
-    var molarityA = this.getMolarity(amount2)
+    var molarityHA = this.getMolarity(H)
+    var molarityA = this.getMolarity(A)
     var fmolesHA = molarityHA/(total/1000)
     var fmolesA = molarityA/(total/1000)
     var Hplus = (Ka*fmolesHA)/fmolesA
     var pH = -Math.log(Hplus)
     //this.setState({pH: pH})
-    console.log(pH.toPrecision(4))
+    //console.log(pH.toPrecision(4))
   },
 
   getTotalVolume(){
-    let v1 = this.state.HAmount;
-    let v2 = this.state.AAmount;
-    let v3 = this.state.strongAmount;
-    return v1+v2+v3;
+    let volumes = this.state.volumes;
+    let H, A, strong;
+    ({H, A, strong} = volumes);
+    return H+A+strong;
   },
 
   getMolarity(volume){
@@ -204,25 +197,25 @@ var Index = createReactClass({
     var total = this.getTotalVolume()
     // if(HA>=A){
     var x = A+Ka
-    console.log("1: " + x)
+    //console.log("1: " + x)
     x = Math.pow(x, 2)
-    console.log("2: " + x)
+    //console.log("2: " + x)
     x = x + 4*HA*Ka
-    console.log("3: " + x)
+    //console.log("3: " + x)
     x = -(A+Ka) + Math.sqrt(x)
-    console.log("4: " + x)
+    //console.log("4: " + x)
     x = x/2
-    console.log("5: " + x)
+    //console.log("5: " + x)
     HA = HA-x
-    console.log("HA: " + HA)
+    //console.log("HA: " + HA)
     A = A+x
-    console.log("A: "+ A)
+    //console.log("A: "+ A)
     var a = HA/total;
     var b = A/total;
     var Hplus = Ka*a/b
-     console.log("H+: " + Hplus)
+    //console.log("H+: " + Hplus)
     pH = -Math.log(Hplus)
-    console.log("Ph: " + pH)
+    //console.log("Ph: " + pH)
     // } else {
     //   x = (-(HA+Kb)+(Math.sqrt(Math.pow(HA+Kb), 2) + 4*HA*Kb))/2
     //   pH = 14+Math.log(x)
@@ -236,12 +229,16 @@ var Index = createReactClass({
   },
 
   render() {
+    let volumes = this.state.volumes;
+    let H, A, strong;
+    ({H, A, strong} = volumes);
+
     let buffer = this.state.buffer;
     let [buffer_left, buffer_right] = buffer.split(" ");
     let viewControl = this.state.viewControl;
     
-    var imoleHA = this.getMolarity(this.state.HAmount);
-    var imoleA = this.getMolarity(this.state.AAmount);
+    var imoleHA = this.getMolarity(H);
+    var imoleA = this.getMolarity(A);
     var Ka = 0.00001 
     var Kb = 0.00000000000001
 
@@ -273,7 +270,7 @@ var Index = createReactClass({
                   <div><h3>Graph View</h3>
                     <div id="viz">
                       <div>
-                         <div><Graph volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} 
+                         <div><Graph volume1={H} volume2={A} volume3={strong} 
                                 buffer={this.state.buffer} strong={this.state.strong}/></div>
                       </div>
                     </div>
@@ -290,7 +287,7 @@ var Index = createReactClass({
               <div><div className="view" >
                  <Collapse isOpened={viewControl['beaker']}>
                  <h3>Beaker View</h3><br/>
-                  <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} pH={this.state.pH}/>
+                  <Canvas volume1={H} volume2={A} volume3={strong} pH={this.state.pH}/>
                   <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
                 </Collapse>
               </div></div>           
@@ -298,9 +295,9 @@ var Index = createReactClass({
               <br/>
              
               <div>
-                <p>HA imoles: {this.getMolarity(this.state.HAmount)}</p>
-                <p>A imoles: {this.getMolarity(this.state.AAmount)}</p>
-                <p>Strong addmoles: {this.getMolarity(this.state.strongAmount)}</p>
+                <p>HA imoles: {this.getMolarity(H)}</p>
+                <p>A imoles: {this.getMolarity(A)}</p>
+                <p>Strong addmoles: {this.getMolarity(strong)}</p>
                 <p>HA fmoles: {this.getFinal(imoleHA)}</p>
                 <p>A fmoles: {this.getFinal(imoleA)}</p>
                 <p>pH: {this.getPH(parseFloat(imoleHA), parseFloat(imoleA), Ka, Kb)}</p>
@@ -325,14 +322,14 @@ var Index = createReactClass({
                       <div className="well" id='HA-slider'>
                           <div>
                             <p> Volume 1 </p>
-                            <SlideBar min={1} max={1000} step={1} buffer={buffer_left} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
+                            <SlideBar min={1} max={1000} step={1} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
                           </div>
                       </div>
 
                       <div className="well" id='A-slider'>
                         <div>
                           <p> Volume 2 </p>
-                          <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={this.state.AAmount} onChange={this.changeAVolume}/>
+                          <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
                       </div>
                         <button id= "btn" type="button" className="btn btn-success btn-block" onClick={this.buttonPress}>Confirm</button>
@@ -344,7 +341,7 @@ var Index = createReactClass({
                     <p> Strong Acid/Base </p>
                     <div><Checkbox id='strong' options={this.state.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
-                      <SlideBar min={1} max={200} step={1} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume} />
+                      <SlideBar min={1} max={200} step={1} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
                     </div>
                     <Reset onClick={this.restartLab}/>
                   </div>

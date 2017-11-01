@@ -39,8 +39,6 @@ export var DrawBufferScene = createReactClass ({
                 ),
             });
         };
-
-        //console.log(this.moleculeAnimation);
     },
 
     componentWillReceiveProps(nextProps) {
@@ -107,8 +105,6 @@ export var DrawBufferScene = createReactClass ({
                     positions[i].y,
                     0);
         }
-
-        //console.log(this.moleculeAnimation);
     },
 
 
@@ -153,8 +149,6 @@ export var DrawBufferScene = createReactClass ({
     drawBufferScene(width, height) {
         var buffer = this.props.buff1;
 
-        //console.log(buffer);
-
         switch (buffer) {
             case "HA": 
                 return (this.drawBuffer1(width, height));
@@ -169,8 +163,6 @@ export var DrawBufferScene = createReactClass ({
     
 /********** BUFFER SCENE 1: HA and NaA ***********/
     drawBuffer1(width, height) {
-        //var strong = this.props.strong;
-        //console.log(strong);
 
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
@@ -736,8 +728,6 @@ export var DrawBufferScene = createReactClass ({
     render() {
         var width = 300;
         var height = 300;
-
-        //console.log(this.props.strong);
         var scene = this.drawBufferScene(width, height);
 
         return(scene);

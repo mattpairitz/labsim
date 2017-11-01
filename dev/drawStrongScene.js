@@ -41,7 +41,6 @@ export var Strong = createReactClass ({
 
     drawScene() {
     	var strong = this.props.strong;
-    	//console.log(strong);
 
     	switch (strong) {
     		case "None" :
@@ -149,8 +148,6 @@ export var Strong = createReactClass ({
 
 	render() {
 		var scene = this.drawScene();
-		//console.log(this.props.mole3);
-
 		return(scene);
 
 	}
