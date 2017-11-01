@@ -9,13 +9,13 @@ var createReactClass = require('create-react-class');
 export var DrawBufferScene = createReactClass ({
 
     getInitialState() {
-       return {mole1: this.props.mole1, mole3: this.props.mole3, 
+       return {buff1: this.props.buff1, strong: this.props.strong, 
                     rotation: new THREE.Euler(), rotation2: new THREE.Euler()}
     },
 
     componentWillMount() {
-        this.setState({mole1: this.props.mole1})
-        this.setState({mole3: this.props.mole3})
+        this.setState({buff1: this.props.buff1})
+        this.setState({strong: this.props.strong})
         this.randomizePositions(5);
         this.addPositions(this.moleculePositions);
 
@@ -151,7 +151,7 @@ export var DrawBufferScene = createReactClass ({
 
     /********* DRAW BUFFER SCENE **********/
     drawBufferScene(width, height) {
-        var buffer = this.props.mole1;
+        var buffer = this.props.buff1;
 
         //console.log(buffer);
 
@@ -169,7 +169,7 @@ export var DrawBufferScene = createReactClass ({
     
 /********** BUFFER SCENE 1: HA and NaA ***********/
     drawBuffer1(width, height) {
-        //var strong = this.props.mole3;
+        //var strong = this.props.strong;
         //console.log(strong);
 
         return (<React3
@@ -271,7 +271,7 @@ export var DrawBufferScene = createReactClass ({
                         />
                     </mesh>
                 </group> 
-                <Strong strong={this.state.mole3}/>
+                <Strong strong={this.state.strong}/>
               </scene>
             </React3>)
     },
@@ -737,7 +737,7 @@ export var DrawBufferScene = createReactClass ({
         var width = 300;
         var height = 300;
 
-        //console.log(this.props.mole3);
+        //console.log(this.props.strong);
         var scene = this.drawBufferScene(width, height);
 
         return(scene);
