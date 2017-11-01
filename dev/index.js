@@ -65,7 +65,8 @@ var Index = createReactClass({
       }
     },
 
-  changeHAVolume(value){
+  changeHAVolume(event, value){
+    console.log("HA id: " + event.target.id)
     this.calculatePH();
     this.setState({HAmount: value});
     this.checkValidity();
@@ -345,7 +346,7 @@ var Index = createReactClass({
                     <div><br/>
                       <SlideBar min={1} max={200} step={1} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume} />
                     </div>
-                    <Reset onClick={this.restartLab.bind(this)}/>
+                    <Reset onClick={this.restartLab}/>
                   </div>
                 </div>
               </div>
