@@ -16,6 +16,8 @@ var {Canvas} = require('./canvas.js');
 var {Molecules} = require('./molecules.js');
 var {Equation} = require('./equation.js');
 var {ControlPanel} = require('./controlPanel.js');
+var {Collapse} = require('react-collapse');
+var {Reset} = require('./reset.js');
 
 /*
   CSS
@@ -31,8 +33,23 @@ var Index = createReactClass({
             buffer: this.props.buffers[0], buffers: this.props.buffers,
             strong: this.props.strongs[0], strongs: this.props.strongs,
             warning: this.props.warnings[0], warnings: this.props.warnings,
-            HAmount: 500, AAmount: 500, strongAmount: 0, validity: true,
-            viewControl: {'graph': false, 'anim': false, 'beaker': false, 'equation': false} };
+            HAmount: 600, AAmount: 500, strongAmount: 0, validity: true,
+            viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 7};
+  },
+
+  restartLab(event){
+    this.setState({viewControl: {'graph': true, 'anim': true, 'beaker': true}});
+    this.setState({HAmount: 500});
+    this.setState({AAmount: 500});
+    this.setState({strongAmount: 0});
+    this.setState({equation: this.props.equations[0]});
+    this.setState({reaction: this.props.reactions[0]});
+    this.setState({buffer: this.props.buffers[0]});
+    this.setState({strong: this.props.strongs[0]});
+    this.setState({ pH: 7});
+    document.getElementById("strong-selection").style.display = 'none';
+    document.getElementById("btn").style.display = 'block';
+    document.getElementById("buffer-selection").style.display = 'block';
   },
 
   changeCheckbox(event){
@@ -48,17 +65,21 @@ var Index = createReactClass({
       }
     },
 
-  changeHAVolume(value){
+  changeHAVolume(event, value){
+    console.log("HA id: " + event.target.id)
+    this.calculatePH();
     this.setState({HAmount: value});
     this.checkValidity();
   },
 
   changeAVolume(value){
+    this.calculatePH();
     this.setState({AAmount: value});
     this.checkValidity();
   },
 
   changeStrongVolume(value){
+    this.calculatePH();
     this.setState({strongAmount: value});
   },
 
@@ -84,18 +105,6 @@ var Index = createReactClass({
     else{
       document.getElementById("btn").disabled = false;
     }
-  },
-
-  toggleSwitch(){
-    let toggle = document.getElementById('toggle').value;
-    toggle = toggle==='on' ? 'off' : 'on';
-    document.getElementById('toggle').value = toggle;
-    if(toggle==='off'){
-      document.getElementById('react-state').style.display = 'inline';
-    } else {
-      document.getElementById('react-state').style.display = '';
-    }
-    
   },
 
   buttonPress(){
@@ -163,13 +172,81 @@ var Index = createReactClass({
     this.setState({viewControl: newViewControl})
   },
 
+  calculatePH(){
+    var amount1 = this.state.HAmount;
+    var amount2 = this.state.AAmount;
+    var amount3 = this.state.strongAmount;
+    var total = (amount1 + amount2 + amount3);
+    var Ka = 0.00001
+    var molarityHA = this.getMolarity(amount1)
+    var molarityA = this.getMolarity(amount2)
+    var fmolesHA = molarityHA/(total/1000)
+    var fmolesA = molarityA/(total/1000)
+    var Hplus = (Ka*fmolesHA)/fmolesA
+    var pH = -Math.log(Hplus)
+    //this.setState({pH: pH})
+    console.log(pH.toPrecision(4))
+  },
+
+  getTotalVolume(){
+    let v1 = this.state.HAmount;
+    let v2 = this.state.AAmount;
+    let v3 = this.state.strongAmount;
+    return v1+v2+v3;
+  },
+
+  getMolarity(volume){
+        return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 4 }).format((volume*.1/1000));
+  },
+
+  getPH(HA, A, Ka, Kb){
+    var pH=0;
+    var total = this.getTotalVolume()
+    // if(HA>=A){
+    var x = A+Ka
+    console.log("1: " + x)
+    x = Math.pow(x, 2)
+    console.log("2: " + x)
+    x = x + 4*HA*Ka
+    console.log("3: " + x)
+    x = -(A+Ka) + Math.sqrt(x)
+    console.log("4: " + x)
+    x = x/2
+    console.log("5: " + x)
+    HA = HA-x
+    console.log("HA: " + HA)
+    A = A+x
+    console.log("A: "+ A)
+    var a = HA/total;
+    var b = A/total;
+    var Hplus = Ka*a/b
+     console.log("H+: " + Hplus)
+    pH = -Math.log(Hplus)
+    console.log("Ph: " + pH)
+    // } else {
+    //   x = (-(HA+Kb)+(Math.sqrt(Math.pow(HA+Kb), 2) + 4*HA*Kb))/2
+    //   pH = 14+Math.log(x)
+    // }
+    return pH
+
+  },
+
+  getFinal(imol){
+    return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format(imol/(this.getTotalVolume()*.001));
+  },
 
   render() {
     let buffer = this.state.buffer;
     let [buffer_left, buffer_right] = buffer.split(" ");
     let viewControl = this.state.viewControl;
+    
+    var imoleHA = this.getMolarity(this.state.HAmount);
+    var imoleA = this.getMolarity(this.state.AAmount);
+    var Ka = 0.00001 
+    var Kb = 0.00000000000001
+
     return (
-      <div>
+      <div className="app">
         <nav className="navbar navbar-inverse">
           <div className="container-fluid">
             <div className="navbar-header">
@@ -190,64 +267,72 @@ var Index = createReactClass({
 
         <div className="container-fluid text-center">    
           <div className="row content">
-            <div className="col-sm-5 text-left"> 
-
-            <br/>
-              <div>
-                 <label className="switch"> 
-                  <input id='toggle' type="checkbox" onClick={this.toggleSwitch}/>
-                  <span className="check round"></span>
-                </label>
-                 <h5>Component Toggle</h5>
-              </div>
-              <br/>
-
-                <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView}/>
-
-                <br/>
-                <h3>Beaker/Equation View</h3><br/>
-                    <div hidden={viewControl['beaker']}>
-                      <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} pH={7}/>
-                      <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
-                    </div>
-                <br/>
-            </div>
-
-            <div className="col-sm-5 text-center"> 
-              <div id='canvas-well'> 
-                  <h3>Graph View</h3>
-                    <div hidden={viewControl['graph']} id="viz">
+            <div className="col-sm-10 text-center"> 
+              <div className="view" >
+              <Collapse isOpened={viewControl['graph']}>
+                  <div><h3>Graph View</h3>
+                    <div id="viz">
                       <div>
                          <div><Graph volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} 
                                 buffer={this.state.buffer} strong={this.state.strong}/></div>
                       </div>
                     </div>
-                  <h3>Molecule View</h3><br/>  
-                    <div hidden={viewControl['anim']}><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
                 </div>
+                </Collapse>
               </div>
+              <div><div className="view" >
+                <Collapse isOpened={viewControl['anim']}>
+                  <h3>Molecule View</h3><br/>  
+                    <div><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
+                </Collapse>
+              </div></div>
+            
+              <div><div className="view" >
+                 <Collapse isOpened={viewControl['beaker']}>
+                 <h3>Beaker View</h3><br/>
+                  <Canvas volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} pH={this.state.pH}/>
+                  <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
+                </Collapse>
+              </div></div>           
+              
+              <br/>
+             
+              <div>
+                <p>HA imoles: {this.getMolarity(this.state.HAmount)}</p>
+                <p>A imoles: {this.getMolarity(this.state.AAmount)}</p>
+                <p>Strong addmoles: {this.getMolarity(this.state.strongAmount)}</p>
+                <p>HA fmoles: {this.getFinal(imoleHA)}</p>
+                <p>A fmoles: {this.getFinal(imoleA)}</p>
+                <p>pH: {this.getPH(parseFloat(imoleHA), parseFloat(imoleA), Ka, Kb)}</p>
+              </div>
+            </div>
+
             <div className="col-sm-2 sidenav">
               <div className="panel panel-default">
-                <div className="panel-body">Selection</div>
+                <div className="panel-body"></div>
                     <div id='buffer-selection'>
                       <div className="well">
+
+                        <br/>
+                          <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView}/>
+                        <br/>
                         <div>
                           <p> Buffer </p>
-                          <div><Checkbox options={this.state.buffers} currentOption={this.state.buffer} id='buffer' onClick={this.changeCheckbox}/></div>
+                          <div><Checkbox id='buffer' options={this.state.buffers} currentOption={this.state.buffer} onClick={this.changeCheckbox}/></div>
                         </div>
                       </div>
 
                       <div className="well" id='HA-slider'>
                           <div>
                             <p> Volume 1 </p>
-                            <SlideBar min={0} max={1000} step={1} buffer={buffer_left} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
+                            <SlideBar min={1} max={1000} step={1} buffer={buffer_left} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
                           </div>
                       </div>
 
                       <div className="well" id='A-slider'>
                         <div>
                           <p> Volume 2 </p>
-                          <SlideBar min={0} max={1000} step={1} buffer={buffer_right} amount={this.state.AAmount} onChange={this.changeAVolume}/>
+                          <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={this.state.AAmount} onChange={this.changeAVolume}/>
                         </div>
                       </div>
                         <button id= "btn" type="button" className="btn btn-success btn-block" onClick={this.buttonPress}>Confirm</button>
@@ -259,14 +344,16 @@ var Index = createReactClass({
                     <p> Strong Acid/Base </p>
                     <div><Checkbox id='strong' options={this.state.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
-                      <SlideBar min={0} max={200} step={1} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume} />
+                      <SlideBar min={1} max={200} step={1} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume} />
                     </div>
+                    <Reset onClick={this.restartLab}/>
                   </div>
                 </div>
               </div>
             </div>  
           </div>
         </div>
+          <footer></footer>
       </div>
 
       );

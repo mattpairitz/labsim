@@ -31,16 +31,24 @@ export var Graph = createReactClass({
     return true;
   },
 
+  getMolarity(volume){
+    return volume*.1/1000
+  },
+
   makeGraphConfig(b_left, b_right, strong, volume1, volume2, volume3){
+
+    let molarity1 = this.getMolarity(volume1)
+    let molarity2 = this.getMolarity(volume2)
+    let molarity3 = this.getMolarity(volume3)
 
     let array = this.state.config;
     if(strong!=='None'){
-      array[2] = {id: strong, x: strong, y: volume3};
+      array[2] = {id: strong, x: strong, y: molarity3};
     } else {
       array.pop();
     }
-    array[0] = {id: b_left, x: b_left, y: volume1};
-    array[1] = {id: b_right, x: b_right, y: volume2};
+    array[0] = {id: b_left, x: b_left, y: molarity1};
+    array[1] = {id: b_right, x: b_right, y: molarity2};
 
     this.setState({config: array});
   },
