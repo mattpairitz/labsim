@@ -3,10 +3,6 @@ const ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
 
 export var ControlPanel = createReactClass({
-  getInitialState(){
-    return {  }
-  },
-
   render(){
   let viewControl = this.props.viewControl;
    return (

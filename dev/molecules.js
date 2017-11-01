@@ -40,13 +40,8 @@ export var Molecules = createReactClass ({
     render() {
         var width = 300;
         var height = 300;
-<<<<<<< HEAD
-        
-        console.log(this.state.mole3);
-=======
         //console.log(this.state.buff1);
->>>>>>> origin/master
-
+        
         return(
                 <div> 
                     <DrawBufferScene buff1={this.state.buff1} strong={this.state.strong}/>
