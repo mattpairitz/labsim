@@ -34,13 +34,14 @@ export var Molecules = createReactClass ({
     },
 
     shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.buffer !== this.props.buffer;
+        console.log("Current Strong: " + this.props.strong);
+        console.log("Next Strong: " + nextProps.strong);
+        return (nextProps.buffer !== this.props.buffer || nextProps.strong !== this.props.strong);
     },
     
     render() {
         var width = 300;
         var height = 300;
-        //console.log(this.state.buff1);
         
         return(
                 <div> 
