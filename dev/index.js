@@ -34,6 +34,7 @@ var Index = createReactClass({
             strong: this.props.strongs[0], strongs: this.props.strongs,
             warning: this.props.warnings[0], warnings: this.props.warnings,
             volumes: {'H': 500, 'A': 500, 'strong': 0 },
+            open: true,
             HAmount: 600, AAmount: 500, strongAmount: 0, validity: true,
             viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 7};
   },
@@ -45,10 +46,8 @@ var Index = createReactClass({
     this.setState({reaction: this.props.reactions[0]});
     this.setState({buffer: this.props.buffers[0]});
     this.setState({strong: this.props.strongs[0]});
-    this.setState({ pH: 7});
-    document.getElementById("strong-selection").style.display = 'none';
-    document.getElementById("btn").style.display = 'block';
-    document.getElementById("buffer-selection").style.display = 'block';
+    this.setState({pH: 7});
+    this.setState({open: true});
   },
 
   changeCheckbox(event){
@@ -98,12 +97,6 @@ var Index = createReactClass({
     else{
       document.getElementById("btn").disabled = false;
     }
-  },
-
-  buttonPress(){
-    document.getElementById("strong-selection").style.display = 'block';
-    document.getElementById("btn").style.display = 'none';
-    document.getElementById("buffer-selection").style.display = 'none';
   },
 
   changeEquation(value) {
@@ -307,12 +300,11 @@ var Index = createReactClass({
             <div className="col-sm-2 sidenav">
               <div className="panel panel-default">
                 <div className="panel-body"></div>
+                  <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView}/>
+                  <br/>
                     <div id='buffer-selection'>
+                    <Collapse isOpened={this.state.open}>
                       <div className="well">
-
-                        <br/>
-                          <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView}/>
-                        <br/>
                         <div>
                           <p> Buffer </p>
                           <div><Checkbox id='buffer' options={this.state.buffers} currentOption={this.state.buffer} onClick={this.changeCheckbox}/></div>
@@ -332,10 +324,12 @@ var Index = createReactClass({
                           <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
                       </div>
-                        <button id= "btn" type="button" className="btn btn-success btn-block" onClick={this.buttonPress}>Confirm</button>
+                        <button id= "btn" type="button" className="btn btn-success btn-block" onClick={() => this.setState({open: false})}>Continue</button>
                         <p id="warning-message">{this.state.warning}</p>
                         <br/>
+                      </Collapse>
                     </div>
+
               <div className="well" id='strong-selection'>
                   <div>
                     <p> Strong Acid/Base </p>
