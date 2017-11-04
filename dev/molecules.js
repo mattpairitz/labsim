@@ -36,7 +36,7 @@ export var Molecules = createReactClass ({
     shouldComponentUpdate(nextProps, nextState) {
         console.log("Current Strong: " + this.props.strong);
         console.log("Next Strong: " + nextProps.strong);
-        return (nextProps.buffer !== this.props.buffer || nextProps.strong !== this.props.strong);
+        return (nextProps.buffer !== this.props.buffer || nextState.strong !== this.state.strong);
     },
     
     render() {
