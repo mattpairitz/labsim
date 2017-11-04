@@ -19,8 +19,6 @@ export var DrawBufferScene = createReactClass ({
         this.randomizePositions(5);
         this.addPositions(this.moleculePositions);
 
-        
-
         this.cameraPosition = new THREE.Vector3(0, 0, 5);
 
        /* SIMPLE ANIMATION FUNCTION */
@@ -45,7 +43,8 @@ export var DrawBufferScene = createReactClass ({
 
     componentWillReceiveProps(nextProps) {
         this.moleculePositions = this.randomizePositions(5);
-        console.log(nextProps)
+        this.setState({strong: nextProps.strong});
+
     },
 
     /********* Randomize Molecule Locations On Canvas **********/
@@ -93,8 +92,6 @@ export var DrawBufferScene = createReactClass ({
     */
         }
 
-        //console.log(this.moleculePositions);
-
         return (this.moleculePositions);
     },
 
@@ -112,41 +109,59 @@ export var DrawBufferScene = createReactClass ({
 
 
 
-/********* CALCULATE POSITIONS OF HYDROGENS for NH4 & NH3 **********/
+/********* CALCULATE POSITIONS OF HYDROGENS for NH4 & NH3 & H2O **********/
     addHydrogen(molecule, num) {
         this.hydroPosition = [];
         var radius = 0.75;
 
-        //LEFT CIRCLE
-        this.hydroPosition.push(new THREE.Vector3(
-                molecule.x - radius,
-                molecule.y,
-                molecule.z));
-
-        //RIGHT CIRCLE
-        this.hydroPosition.push(new THREE.Vector3(
-                molecule.x + radius,
-                molecule.y,
-                molecule.z));
-
-        //DOWN CIRCLE
-        this.hydroPosition.push(new THREE.Vector3(
-                molecule.x,
-                molecule.y - radius,
-                molecule.z));
-
-        //UP CIRCLE
-        if (num == 4) {
+        if (num == 3) {
+            //LEFT CIRCLE
             this.hydroPosition.push(new THREE.Vector3(
-                molecule.x,
-                molecule.y + radius,
-                molecule.z));
+                    molecule.x - radius,
+                    molecule.y,
+                    molecule.z));
+
+            //RIGHT CIRCLE
+            this.hydroPosition.push(new THREE.Vector3(
+                    molecule.x + radius,
+                    molecule.y,
+                    molecule.z));
+
+            //DOWN CIRCLE
+            this.hydroPosition.push(new THREE.Vector3(
+                    molecule.x,
+                    molecule.y - radius,
+                    molecule.z));
+
+            //UP CIRCLE
+            if (num == 4) {
+                this.hydroPosition.push(new THREE.Vector3(
+                    molecule.x,
+                    molecule.y + radius,
+                    molecule.z));
+            }
+
+            return (this.hydroPosition);
+
+        } else if (num == 2) {
+            //LEFT CIRCLE
+            this.hydroPosition.push(new THREE.Vector3(
+                    molecule.x - (radius / 2),
+                    molecule.y - (radius / 2),
+                    molecule.z));
+
+            //RIGHT CIRCLE
+            this.hydroPosition.push(new THREE.Vector3(
+                    molecule.x + (radius / 2),
+                    molecule.y - (radius / 2),
+                    molecule.z));
+
+            return (this.hydroPosition);
+
+        } else { 
+            return (this.hydroPosition);
         }
-
-        return (this.hydroPosition);
     },
-
-
 
     /********* DRAW BUFFER SCENE **********/
     drawBufferScene(width, height) {
@@ -166,6 +181,8 @@ export var DrawBufferScene = createReactClass ({
     
 /********** BUFFER SCENE 1: HA and NaA ***********/
     drawBuffer1(width, height) {
+        //var strong = this.state.strong;
+        var hydroPos1 = this.addHydrogen(this.moleculePositions[4], 2);
 
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
@@ -266,7 +283,56 @@ export var DrawBufferScene = createReactClass ({
                         />
                     </mesh>
                 </group> 
-                <Strong strong={this.state.strong}/>
+                <group
+                    position = {this.moleculePositions[4]}
+                    rotation = {this.state.rotation}
+                > 
+                    <mesh
+                        position = {hydroPos1[0]}
+                    >
+                        <circleGeometry
+                            radius = {0.25}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xFFFFFF}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                    <mesh
+                        position = {hydroPos1[1]}
+                    >
+                        <circleGeometry
+                            radius = {0.25}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xFFFFFF}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                    <mesh
+                        position = {this.moleculePositions[4]}
+                    >
+                        <circleGeometry
+                            radius = {0.5}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xFF0D0D}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                </group>
+                <group>
+                    <Strong strong={this.state.strong}/>
+                </group>
               </scene>
             </React3>)
     },
@@ -391,6 +457,9 @@ export var DrawBufferScene = createReactClass ({
                             side = {THREE.DoubleSide}
                         />
                     </mesh>
+                </group>
+                <group>
+                    <Strong strong={this.state.strong}/>
                 </group>
               </scene>
             </React3>)
@@ -535,6 +604,9 @@ export var DrawBufferScene = createReactClass ({
                             side = {THREE.DoubleSide}
                         />
                     </mesh>
+                </group>
+                <group>
+                    <Strong strong={this.state.strong}/>
                 </group>
               </scene>
             </React3>)
@@ -723,6 +795,9 @@ export var DrawBufferScene = createReactClass ({
                             side = {THREE.DoubleSide}
                         />
                     </mesh>
+                </group>
+                <group>
+                    <Strong strong={this.state.strong}/>
                 </group>
               </scene>
             </React3>)

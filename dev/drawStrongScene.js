@@ -11,9 +11,9 @@ export var Strong = createReactClass ({
 
 	componentWillMount() {
         this.setState({strong: this.props.strong})
-        this.randomizePositions(3);
+        this.randomizePositions(1);
 
-       /* SIMPLE ANIMATION FUNCTION */
+       /* SIMPLE ANIMATION FUNCTION 
         this._onAnimate = () => {
            this.setState({
                 rotation: new THREE.Euler(
@@ -23,6 +23,13 @@ export var Strong = createReactClass ({
                 ),
             });
         };
+        */
+
+        console.log("Intial State: " + this.props.strong);
+    },
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({strong: nextProps.strong});
     },
 
     randomizePositions(num) {
@@ -39,22 +46,14 @@ export var Strong = createReactClass ({
         }	return (this.moleculePositions);
     },
 
-    drawScene() {
-    	var strong = this.props.strong;
-
-    	switch (strong) {
-    		case "None" :
-    			return (<group></group>);
-    		case "HCl":
-    			return (this.drawAcid());
-    		case "NaOH":
-    			return (this.drawBase());
-    	}
-    },
-
 /*********** Draw Scene with HCl *********/
     drawAcid() {
-    	return(<group>
+        var pos1 = new THREE.Vector3(
+                            this.moleculePositions[0].x + 0.6,
+                            this.moleculePositions[0].y,
+                            this.moleculePositions[0].z);
+
+    	return (<group>
                     <mesh
                         position = {this.moleculePositions[0]}
                         //rotation = {this.state.rotation}
@@ -71,7 +70,7 @@ export var Strong = createReactClass ({
                         />
                     </mesh>  
                     <mesh
-                        position = {this.moleculePositions[1]}
+                        position = {pos1}
                         //rotation = {this.state.rotation}
                     >
                         <circleGeometry
@@ -85,17 +84,23 @@ export var Strong = createReactClass ({
                             side = {THREE.DoubleSide}
                         />
                     </mesh>
-            </group>)
+            </group>
+        )
     },
 
     /********* Draw Scene with NaOH ********/
     drawBase() {
-    	var hydroPos = new THREE.Vector3(
-    						this.moleculePositions[1].x + 0.6,
-    						this.moleculePositions[1].y,
-    						this.moleculePositions[1].z);
+    	var pos1 = new THREE.Vector3(
+    						this.moleculePositions[0].x + 0.6,
+    						this.moleculePositions[0].y,
+    						this.moleculePositions[0].z);
 
-    	return(<group>
+        var pos2 = new THREE.Vector3(
+                            this.moleculePositions[0].x + 1.2,
+                            this.moleculePositions[0].y,
+                            this.moleculePositions[0].z);
+
+    	return (<group>
     			<mesh
                         position = {this.moleculePositions[0]}
                         //rotation={this.state.rotation}
@@ -111,43 +116,52 @@ export var Strong = createReactClass ({
                             side = {THREE.DoubleSide}
                         />
                     </mesh>
-                    <group>
-	                    <mesh
-	                        position = {hydroPos}
-	                        //rotation = {this.state.rotation}
-	                    >
-	                        <circleGeometry
-	                            radius = {0.25}
-	                            segments = {20}
-	                            thetaStart = {0}
-	                            thetaLength = {Math.PI * 2}
-	                        />
-	                        <meshBasicMaterial
-	                            color={0xFFFFFF}
-	                            side = {THREE.DoubleSide}
-	                        />
-	                    </mesh>
-	                    <mesh
-	                        position = {this.moleculePositions[1]}
-	                        //rotation = {this.state.rotation}
-	                    >
-	                        <circleGeometry
-	                            radius = {0.5}
-	                            segments = {20}
-	                            thetaStart = {0}
-	                            thetaLength = {Math.PI * 2}
-	                        />
-	                        <meshBasicMaterial
-	                            color={0xFF0D0D}
-	                            side = {THREE.DoubleSide}
-	                        />
-	                    </mesh>
-                    </group>
-                </group>)
+                    <mesh
+                        position = {pos1}
+                        //rotation = {this.state.rotation}
+                    >
+                        <circleGeometry
+                            radius = {0.5}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xFF0D0D}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+	                <mesh
+	                    position = {pos2}
+	                   //rotation = {this.state.rotation}
+	                >
+	                    <circleGeometry
+	                        radius = {0.25}
+	                        segments = {20}
+	                        thetaStart = {0}
+	                        thetaLength = {Math.PI * 2}
+	                    />
+	                    <meshBasicMaterial
+	                        color={0xFFFFFF}
+	                        side = {THREE.DoubleSide}
+	                    />
+	           </mesh>
+            </group>
+        )
     },
 
 	render() {
-		var scene = this.drawScene();
+        var scene;
+
+        if (this.state.strong === "HCL") {
+            scene = this.drawAcid();
+
+        } else if (this.state.strong === "NaOH") {
+            scene = this.drawBase();
+        } else {
+            scene = null;
+        }
+
 		return(scene);
 
 	}
