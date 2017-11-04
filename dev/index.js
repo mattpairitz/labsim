@@ -195,27 +195,13 @@ var Index = createReactClass({
   getPH(HA, A, Ka, Kb){
     var pH=0;
     var total = this.getTotalVolume()
-    // if(HA>=A){
-    var x = A+Ka
-    //console.log("1: " + x)
-    x = Math.pow(x, 2)
-    //console.log("2: " + x)
-    x = x + 4*HA*Ka
-    //console.log("3: " + x)
-    x = -(A+Ka) + Math.sqrt(x)
-    //console.log("4: " + x)
-    x = x/2
-    //console.log("5: " + x)
+    let x = (-(A+Ka) + Math.sqrt(Math.pow(-(A+Ka), 2)+ 4*HA*Ka))/2
     HA = HA-x
-    //console.log("HA: " + HA)
     A = A+x
-    //console.log("A: "+ A)
     var a = HA/total;
     var b = A/total;
     var Hplus = Ka*a/b
-    //console.log("H+: " + Hplus)
-    pH = -Math.log(Hplus)
-    //console.log("Ph: " + pH)
+    pH = -(Math.log(Hplus)/Math.log(10))
     // } else {
     //   x = (-(HA+Kb)+(Math.sqrt(Math.pow(HA+Kb), 2) + 4*HA*Kb))/2
     //   pH = 14+Math.log(x)
@@ -295,11 +281,6 @@ var Index = createReactClass({
               <br/>
              
               <div>
-                <p>HA imoles: {this.getMolarity(H)}</p>
-                <p>A imoles: {this.getMolarity(A)}</p>
-                <p>Strong addmoles: {this.getMolarity(strong)}</p>
-                <p>HA fmoles: {this.getFinal(imoleHA)}</p>
-                <p>A fmoles: {this.getFinal(imoleA)}</p>
                 <p>pH: {this.getPH(parseFloat(imoleHA), parseFloat(imoleA), Ka, Kb)}</p>
               </div>
             </div>
