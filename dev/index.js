@@ -28,14 +28,10 @@ import 'rc-slider/assets/index.css';
 var Index = createReactClass({
 
   getInitialState(){
-    return {equation: this.props.equations[0], equations: this.props.equations,
-            reaction: this.props.reactions[0], reactions: this.props.reactions,
-            buffer: this.props.buffers[0], buffers: this.props.buffers,
-            strong: this.props.strongs[0], strongs: this.props.strongs,
-            warning: this.props.warnings[0], warnings: this.props.warnings,
-            volumes: {'H': 500, 'A': 500, 'strong': 0 },
-            HAmount: 600, AAmount: 500, strongAmount: 0, validity: true,
-            viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 7};
+    return {equation: this.props.equations[0], reaction: this.props.reactions[0],
+            buffer: this.props.buffers[0], strong: this.props.strongs[0],
+            warning: this.props.warnings[0], volumes: {'H': 500, 'A': 500, 'strong': 0 }, 
+            validity: true, viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 7};
   },
 
   restartLab(event){
@@ -78,15 +74,15 @@ var Index = createReactClass({
     let H, A, strong;
     ({H, A, strong} = volumes);
     if (H == 0 || A == 0){
-      this.setState({validity: false, warning: this.state.warnings[1]});
+      this.setState({validity: false, warning: this.props.warnings[1]});
       this.buttonCheck();
     }
     else if (H * 10 < A || H * .1 > A){
-      this.setState({validity: false, warning: this.state.warnings[2]});
+      this.setState({validity: false, warning: this.props.warnings[2]});
       this.buttonCheck();
     }
     else {
-      this.setState({validity: true, warning: this.state.warnings[0]});
+      this.setState({validity: true, warning: this.props.warnings[0]});
       this.buttonCheck();
     }
   },
@@ -124,35 +120,35 @@ var Index = createReactClass({
   },
 
   changeReaction(value){
-      if(value == this.state.strongs[0]){
-          this.setState({reaction: this.state.reactions[0]});
+      if(value == this.props.strongs[0]){
+          this.setState({reaction: this.props.reactions[0]});
       }
-      if(value == this.state.strongs[1]){
-          if(this.state.buffer == this.state.buffers[0]){
-              this.setState({reaction: this.state.reactions[1]});
+      if(value == this.props.strongs[1]){
+          if(this.state.buffer == this.props.buffers[0]){
+              this.setState({reaction: this.props.reactions[1]});
           }
-          if(this.state.buffer == this.state.buffers[1]){
-              this.setState({reaction: this.state.reactions[2]});
+          if(this.state.buffer == this.props.buffers[1]){
+              this.setState({reaction: this.props.reactions[2]});
           }
-          if(this.state.buffer == this.state.buffers[2]){
-              this.setState({reaction: this.state.reactions[3]});
+          if(this.state.buffer == this.props.buffers[2]){
+              this.setState({reaction: this.props.reactions[3]});
           }
-          if(this.state.buffer == this.state.buffers[3]) {
-              this.setState({reaction: this.state.reactions[4]});
+          if(this.state.buffer == this.props.buffers[3]) {
+              this.setState({reaction: this.props.reactions[4]});
           }
       }
-      if(value == this.state.strongs[2]){
-          if(this.state.buffer == this.state.buffers[0]){
-              this.setState({reaction: this.state.reactions[5]});
+      if(value == this.props.strongs[2]){
+          if(this.state.buffer == this.props.buffers[0]){
+              this.setState({reaction: this.props.reactions[5]});
           }
-          if(this.state.buffer == this.state.buffers[1]){
-              this.setState({reaction: this.state.reactions[6]});
+          if(this.state.buffer == this.props.buffers[1]){
+              this.setState({reaction: this.props.reactions[6]});
           }
-          if(this.state.buffer == this.state.buffers[2]){
-              this.setState({reaction: this.state.reactions[7]});
+          if(this.state.buffer == this.props.buffers[2]){
+              this.setState({reaction: this.props.reactions[7]});
           }
-          if(this.state.buffer == this.state.buffers[3]) {
-              this.setState({reaction: this.state.reactions[8]});
+          if(this.state.buffer == this.props.buffers[3]) {
+              this.setState({reaction: this.props.reactions[8]});
           }
       }
   },
@@ -193,19 +189,15 @@ var Index = createReactClass({
   },
 
   getPH(HA, A, Ka, Kb){
-    var pH=0;
+    var pH;
     var total = this.getTotalVolume()
-    let x = (-(A+Ka) + Math.sqrt(Math.pow(-(A+Ka), 2)+ 4*HA*Ka))/2
+    let x = (-(A+Ka) + Math.sqrt(Math.pow((A+Ka), 2)+ 4*HA*Ka))/2
     HA = HA-x
     A = A+x
-    var a = HA/total;
-    var b = A/total;
-    var Hplus = Ka*a/b
+    HA = HA/total;
+    A = A/total;
+    var Hplus = Ka*HA/A
     pH = -(Math.log(Hplus)/Math.log(10))
-    // } else {
-    //   x = (-(HA+Kb)+(Math.sqrt(Math.pow(HA+Kb), 2) + 4*HA*Kb))/2
-    //   pH = 14+Math.log(x)
-    // }
     return pH
 
   },
@@ -296,7 +288,7 @@ var Index = createReactClass({
                         <br/>
                         <div>
                           <p> Buffer </p>
-                          <div><Checkbox id='buffer' options={this.state.buffers} currentOption={this.state.buffer} onClick={this.changeCheckbox}/></div>
+                          <div><Checkbox id='buffer' options={this.props.buffers} currentOption={this.state.buffer} onClick={this.changeCheckbox}/></div>
                         </div>
                       </div>
 
@@ -320,7 +312,7 @@ var Index = createReactClass({
               <div className="well" id='strong-selection'>
                   <div>
                     <p> Strong Acid/Base </p>
-                    <div><Checkbox id='strong' options={this.state.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
+                    <div><Checkbox id='strong' options={this.props.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
                       <SlideBar min={1} max={200} step={1} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
                     </div>
