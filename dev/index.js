@@ -28,7 +28,7 @@ import 'rc-slider/assets/index.css';
 var Index = createReactClass({
 
   getInitialState(){
-    return {equation: this.props.equations[0], reaction: this.props.reactions[0],
+    return {equation: this.props.equations['HA NaA'], reaction: this.props.reactions['None'],
             buffer: this.props.buffers[0], strong: this.props.strongs[0],
             warning: this.props.warnings[0], volumes: {'H': 500, 'A': 500, 'strong': 0 }, 
             validity: true, viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 7};
@@ -37,10 +37,11 @@ var Index = createReactClass({
   restartLab(event){
     this.setState({viewControl: {'graph': true, 'anim': true, 'beaker': true}});
     this.setState({volumes: {'H': 500, 'A': 500, 'strong': 0 }})
-    this.setState({equation: this.props.equations[0]});
-    this.setState({reaction: this.props.reactions[0]});
+    this.setState({equation: this.props.equations['HA NaA']});
+    this.setState({reaction: this.props.reactions['None']});
     this.setState({buffer: this.props.buffers[0]});
     this.setState({strong: this.props.strongs[0]});
+    this.setState({warning: this.props.warnings[0]});
     this.setState({ pH: 7});
     document.getElementById("strong-selection").style.display = 'none';
     document.getElementById("btn").style.display = 'block';
@@ -62,10 +63,8 @@ var Index = createReactClass({
 
   changeVolume(id, value){
     let volumes = this.state.volumes;
-    volumes[id] = value
-    this.setState({volumes: volumes})
-    
-    //this.calculatePH();
+    volumes[id] = value;
+    this.setState({volumes: volumes});
     this.checkValidity();
   },
 
@@ -103,54 +102,19 @@ var Index = createReactClass({
   },
 
   changeEquation(value) {
-    switch(value){
-        case (this.props.buffers[0]):
-            this.setState({equation: this.props.equations[0]});
-            break;
-        case (this.props.buffers[1]):
-            this.setState({equation: this.props.equations[1]});
-            break;
-        case (this.props.buffers[2]):
-            this.setState({equation: this.props.equations[2]});
-            break;
-        case (this.props.buffers[3]):
-            this.setState({equation: this.props.equations[3]});
-            break;
-    }
+    this.setState({equation: this.props.equations[value]});
   },
 
   changeReaction(value){
-      if(value == this.props.strongs[0]){
-          this.setState({reaction: this.props.reactions[0]});
+    let buffer = this.state.buffer;
+    let key = buffer+value
+
+      if(value == 'None'){
+        this.setState({reaction: this.props.reactions[value]});
+      } else {
+        this.setState({reaction: this.props.reactions[key]});
       }
-      if(value == this.props.strongs[1]){
-          if(this.state.buffer == this.props.buffers[0]){
-              this.setState({reaction: this.props.reactions[1]});
-          }
-          if(this.state.buffer == this.props.buffers[1]){
-              this.setState({reaction: this.props.reactions[2]});
-          }
-          if(this.state.buffer == this.props.buffers[2]){
-              this.setState({reaction: this.props.reactions[3]});
-          }
-          if(this.state.buffer == this.props.buffers[3]) {
-              this.setState({reaction: this.props.reactions[4]});
-          }
-      }
-      if(value == this.props.strongs[2]){
-          if(this.state.buffer == this.props.buffers[0]){
-              this.setState({reaction: this.props.reactions[5]});
-          }
-          if(this.state.buffer == this.props.buffers[1]){
-              this.setState({reaction: this.props.reactions[6]});
-          }
-          if(this.state.buffer == this.props.buffers[2]){
-              this.setState({reaction: this.props.reactions[7]});
-          }
-          if(this.state.buffer == this.props.buffers[3]) {
-              this.setState({reaction: this.props.reactions[8]});
-          }
-      }
+
   },
 
   toggleComponentView(event){
@@ -159,22 +123,6 @@ var Index = createReactClass({
     let newViewControl = this.state.viewControl;
     newViewControl[id] = !state;
     this.setState({viewControl: newViewControl})
-  },
-
-  calculatePH(){
-    let volumes = this.state.volumes;
-    let H, A, strong;
-    ({H, A, strong} = volumes);
-    var total = (H + A + strong);
-    var Ka = 0.00001
-    var molarityHA = this.getMolarity(H)
-    var molarityA = this.getMolarity(A)
-    var fmolesHA = molarityHA/(total/1000)
-    var fmolesA = molarityA/(total/1000)
-    var Hplus = (Ka*fmolesHA)/fmolesA
-    var pH = -Math.log(Hplus)
-    //this.setState({pH: pH})
-    //console.log(pH.toPrecision(4))
   },
 
   getTotalVolume(){
@@ -199,7 +147,6 @@ var Index = createReactClass({
     var Hplus = Ka*HA/A
     pH = -(Math.log(Hplus)/Math.log(10))
     return pH
-
   },
 
   getFinal(imol){
@@ -266,7 +213,7 @@ var Index = createReactClass({
                  <Collapse isOpened={viewControl['beaker']}>
                  <h3>Beaker View</h3><br/>
                   <Canvas volume1={H} volume2={A} volume3={strong} pH={this.state.pH}/>
-                  <Equation equations={this.props.equations} equation={this.state.equation} reactions={this.props.reactions} reaction={this.state.reaction} />
+                  <Equation equation={this.state.equation} reaction={this.state.reaction} />
                 </Collapse>
               </div></div>           
               
@@ -330,15 +277,13 @@ var Index = createReactClass({
   }
 });
 ReactDOM.render(<div><Index
-  equations={["HA + H\u2082O \u21CC H\u2083O\u207A + A\u207B",
-  "HF + H\u2082O \u21CC H\u2083O\u207A + A\u207B",
-  "HClO + H\u2082O \u21CC H\u2083O\u207A + ClO\u207B",
-  "NH\u2083 + H\u2082O \u21CC OH\u207B + NH\u2084\u207A"]}
-  reactions={[" ", "Reaction: H\u207A + A\u207B \u21CC HA", "Reaction: H\u207A + F\u207B \u21CC HF",
-  "Reaction: H\u207A + ClO\u207B \u21CC HClO", "Reaction: H\u207A + NH\u2083 \u21CC NH\u2084\u207A",
-  "Reaction: OH\u207B + HA \u21CC H\u2082O + A\u207B", "Reaction: OH\u207B + HF \u21CC H\u2082O + F\u207B",
-  "Reaction: OH\u207B + HClO \u21CC H\u2082O + ClO\u207B", "Reaction: OH\u207B + NH\u2084\u207A \u21CC H\u2082O + NH\u2083"]}
-  buffers={["HA NaA", "HF NaF",  "HClO NaClO", "NH\u2084Cl NH\u2083"]} 
+  reactions={{"None": " ", "HA NaAHCL": "Reaction: H\u207A + A\u207B \u21CC HA", "HF NaFHCL": "Reaction: H\u207A + F\u207B \u21CC HF",
+  "HClO NaClOHCL": "Reaction: H\u207A + ClO\u207B \u21CC HClO", "NH\u2084Cl NH\u2083HCL": "Reaction: H\u207A + NH\u2083 \u21CC NH\u2084\u207A",
+  "HA NaANaOH": "Reaction: OH\u207B + HA \u21CC H\u2082O + A\u207B", "HF NaFNaOH": "Reaction: OH\u207B + HF \u21CC H\u2082O + F\u207B",
+  "HClO NaClONaOH": "Reaction: OH\u207B + HClO \u21CC H\u2082O + ClO\u207B", "NH\u2084Cl NH\u2083NaOH": "Reaction: OH\u207B + NH\u2084\u207A \u21CC H\u2082O + NH\u2083"}}
+  equations={{"HA NaA": "HA + H\u2082O \u21CC H\u2083O\u207A + A\u207B", "HF NaF":"HF + H\u2082O \u21CC H\u2083O\u207A + A\u207B",
+  "HClO NaClO": "HClO + H\u2082O \u21CC H\u2083O\u207A + ClO\u207B", "NH\u2084Cl NH\u2083": "NH\u2083 + H\u2082O \u21CC OH\u207B + NH\u2084\u207A"}}
+  buffers={["HA NaA", "HF NaF",  "HClO NaClO", "NH\u2084Cl NH\u2083"]}
   strongs ={['None', 'HCL', 'NaOH']}
   warnings ={['', 'Buffer must contain both an acid and base!', 'Both components must be within 10x of each other in volume!']}/></div>,
   document.getElementById("container"))
