@@ -10,7 +10,8 @@ export var DrawBufferScene = createReactClass ({
 
     getInitialState() {
        return {buff1: this.props.buff1, strong: this.props.strong, 
-                    rotation: new THREE.Euler(), rotation2: new THREE.Euler()}
+                    rotation: new THREE.Euler(), rotation2: new THREE.Euler(),
+                    transform: new THREE.Vector3()}
     },
 
     componentWillMount() {
@@ -23,6 +24,16 @@ export var DrawBufferScene = createReactClass ({
 
        /* SIMPLE ANIMATION FUNCTION */
         this._onAnimate = () => {
+
+           this.setState({
+                transform: new THREE.Vector3(
+                0,
+                this.state.transform.y + 0.5,
+                0
+                ),
+            });
+
+/*
            this.setState({
                 rotation: new THREE.Euler(
                 0,
@@ -38,6 +49,7 @@ export var DrawBufferScene = createReactClass ({
                 this.state.rotation2.z - 0.0075
                 ),
             });
+*/
         };
     },
 
@@ -203,7 +215,7 @@ export var DrawBufferScene = createReactClass ({
                     position={this.cameraPosition}
                 />
                 <group
-                    position = {this.moleculePositions[0]}
+                    position = {this.state.transform}
                     rotation = {this.state.rotation}
                 >
                     <mesh
@@ -223,8 +235,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group
-                    //THIS ONE IS ROTATING AROUND ANOTHER MOVING MOLECULE
-                    position = {this.moleculePositions[0]}
+                    position = {this.moleculePositions[1]}
                     rotation = {this.state.rotation}
                 > 
                     <mesh
@@ -244,7 +255,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>  
                 <group
-                    position = {this.moleculePositions[3]}
+                    position = {this.moleculePositions[2]}
                     rotation = {this.state.rotation}
                 >  
                     <mesh
@@ -264,7 +275,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group
-                    position = {this.moleculePositions[2]}
+                    position = {this.moleculePositions[3]}
                     rotation = {this.state.rotation}
                 >    
                     <mesh
