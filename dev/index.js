@@ -141,22 +141,23 @@ var Index = createReactClass({
     var total = this.getTotalVolume()
     var x;
     if(HA>=A){
-      x = this.getIntermediatePH(A, HA)
+      x = this.getIntermediatePH(A, HA, Ka)
       HA = HA-x
       A = A+x
       HA = HA/total;
       A = A/total;
       var Hplus = Ka*HA/A
-    pH = -(Math.log(Hplus)/Math.log(10))
+      pH = -(Math.log(Hplus)/Math.log(10))
     } else {
-      x = this.getIntermediatePH(HA, A) 
-    }    
-    return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format((pH));
+      x = this.getIntermediatePH(HA, A, Kb) 
+    }
+    
+    return pH;
   },
 
-  getIntermediatePH(a, b){
-    return (-(a+Ka) + Math.sqrt(Math.pow((a+Ka), 2)+ 4*b*Ka))/2
-  }
+  getIntermediatePH(a, b, K){
+    return (-(a+K) + Math.sqrt(Math.pow((a+K), 2)+ 4*b*K))/2
+  },
 
   getFinal(imol){
     return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format(imol/(this.getTotalVolume()*.001));
@@ -200,6 +201,10 @@ var Index = createReactClass({
           <div className="row content">
             <div className="col-sm-10 text-center"> 
               <div className="view" >
+              <div>
+                <p>pH: {this.getPH(parseFloat(imoleHA), parseFloat(imoleA), Ka, Kb)}</p>
+                <p>[HA] : </p>
+              </div>
               <Collapse isOpened={viewControl['graph']}>
                   <div><h3>Graph View</h3>
                     <div id="viz">
@@ -227,11 +232,7 @@ var Index = createReactClass({
               </div></div>           
               
               <br/>
-             
-              <div>
-                <p>pH: {this.getPH(parseFloat(imoleHA), parseFloat(imoleA), Ka, Kb)}</p>
-                <p>[HA] : </p>
-              </div>
+            
             </div>
 
             <div className="col-sm-2 sidenav">
