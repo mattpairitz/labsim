@@ -323,15 +323,17 @@ var Index = createReactClass({
                           <p> Volume 2 </p>
                           <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
+
                       </div>
                         <button id= "btn" type="button" className="btn btn-success btn-block" onClick={() => this.setState({open: false})}>Continue</button>
-                        <p id="warning-message">{this.state.warning}</p>
-                        <br/>
+                        <p id="warning-message">{this.state.warning}</p> 
                       </Collapse>
-                    </div>
+                    
 
-              <div className="well" id='strong-selection'>
-                  <div>
+              <div id='strong-selection'>
+                  </div>
+                  <Collapse isOpened={!this.state.open}>
+                  <div className="well">
                     <p> Strong Acid/Base </p>
                     <div><Checkbox id='strong' options={this.state.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
@@ -339,6 +341,7 @@ var Index = createReactClass({
                     </div>
                     <Reset onClick={this.restartLab}/>
                   </div>
+                  </Collapse>
                 </div>
               </div>
             </div>  
