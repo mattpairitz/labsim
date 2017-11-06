@@ -156,7 +156,7 @@ var Index = createReactClass({
 
   getIntermediatePH(a, b){
     return (-(a+Ka) + Math.sqrt(Math.pow((a+Ka), 2)+ 4*b*Ka))/2
-  }
+  },
 
   getFinal(imol){
     return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format(imol/(this.getTotalVolume()*.001));
