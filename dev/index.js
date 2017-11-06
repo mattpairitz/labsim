@@ -68,11 +68,6 @@ var Index = createReactClass({
     this.checkValidity();
   },
 
-  changeStrongVolume(value){
-    this.calculatePH();
-    this.setState({strongAmount: value});
-  },
-
   checkValidity(){
     let volumes = this.state.volumes;
     let H, A, strong;
@@ -131,10 +126,10 @@ var Index = createReactClass({
   },
 
   getTotalVolume(){
-    let v1 = this.state.HAmount;
-    let v2 = this.state.AAmount;
-    let v3 = this.state.strongAmount;
-    return v1+v2+v3;
+    let volumes = this.state.volumes
+    let H, A, strong;
+    ({H, A, strong} = volumes);
+    return H+A+strong;
   },
 
   getMolarity(volume){
@@ -144,15 +139,24 @@ var Index = createReactClass({
   getPH(HA, A, Ka, Kb){
     var pH;
     var total = this.getTotalVolume()
-    let x = (-(A+Ka) + Math.sqrt(Math.pow((A+Ka), 2)+ 4*HA*Ka))/2
-    HA = HA-x
-    A = A+x
-    HA = HA/total;
-    A = A/total;
-    var Hplus = Ka*HA/A
+    var x;
+    if(HA>=A){
+      x = this.getIntermediatePH(A, HA)
+      HA = HA-x
+      A = A+x
+      HA = HA/total;
+      A = A/total;
+      var Hplus = Ka*HA/A
     pH = -(Math.log(Hplus)/Math.log(10))
-    return pH
+    } else {
+      x = this.getIntermediatePH(HA, A) 
+    }    
+    return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format((pH));
   },
+
+  getIntermediatePH(a, b){
+    return (-(a+Ka) + Math.sqrt(Math.pow((a+Ka), 2)+ 4*b*Ka))/2
+  }
 
   getFinal(imol){
     return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format(imol/(this.getTotalVolume()*.001));
@@ -162,9 +166,13 @@ var Index = createReactClass({
     let buffer = this.state.buffer;
     let [buffer_left, buffer_right] = buffer.split(" ");
     let viewControl = this.state.viewControl;
+
+    let volumes = this.state.volumes;
+    let H, A, strong;
+    ({H, A, strong} = volumes);
     
-    var imoleHA = this.getMolarity(this.state.HAmount);
-    var imoleA = this.getMolarity(this.state.AAmount);
+    var imoleHA = this.getMolarity(H);
+    var imoleA = this.getMolarity(A);
     var Ka = 0.00001 
     var Kb = 0.00000000000001
 
@@ -196,7 +204,7 @@ var Index = createReactClass({
                   <div><h3>Graph View</h3>
                     <div id="viz">
                       <div>
-                         <div><Graph volume1={this.state.HAmount} volume2={this.state.AAmount} volume3={this.state.strongAmount} 
+                         <div><Graph volume1={H} volume2={A} volume3={strong} 
                                 buffer={this.state.buffer} strong={this.state.strong}/></div>
                       </div>
                     </div>
@@ -222,6 +230,7 @@ var Index = createReactClass({
              
               <div>
                 <p>pH: {this.getPH(parseFloat(imoleHA), parseFloat(imoleA), Ka, Kb)}</p>
+                <p>[HA] : </p>
               </div>
             </div>
 
@@ -243,14 +252,14 @@ var Index = createReactClass({
                       <div className="well" id='HA-slider'>
                           <div>
                             <p> Volume 1 </p>
-                            <SlideBar min={1} max={1000} step={1} buffer={buffer_left} amount={this.state.HAmount} onChange={this.changeHAVolume}/>
+                            <SlideBar min={1} max={1000} step={1} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
                           </div>
                       </div>
 
                       <div className="well" id='A-slider'>
                         <div>
                           <p> Volume 2 </p>
-                          <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={this.state.AAmount} onChange={this.changeAVolume}/>
+                          <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
                       </div>
                         <button id= "btn" type="button" className="btn btn-success btn-block" onClick={this.buttonPress}>Confirm</button>
@@ -262,7 +271,7 @@ var Index = createReactClass({
                     <p> Strong Acid/Base </p>
                     <div><Checkbox id='strong' options={this.props.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
-                      <SlideBar min={1} max={200} step={1} buffer={this.state.strong} amount={this.state.strongAmount} onChange={this.changeStrongVolume} />
+                      <SlideBar min={1} max={200} step={1} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
                     </div>
                     <Reset onClick={this.restartLab}/>
                   </div>
