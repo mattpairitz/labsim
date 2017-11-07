@@ -78,24 +78,12 @@ var Index = createReactClass({
     ({H, A, strong} = volumes);
     if (H == 0 || A == 0){
       this.setState({validity: false, warning: this.state.warnings[1]});
-      this.buttonCheck();
     }
     else if (H * 10 < A || H * .1 > A){
       this.setState({validity: false, warning: this.state.warnings[2]});
-      this.buttonCheck();
     }
     else {
       this.setState({validity: true, warning: this.state.warnings[0]});
-      this.buttonCheck();
-    }
-  },
-
-  buttonCheck(){
-    if(this.state.validity == false){
-      document.getElementById("btn").disabled = true;
-    }
-    else{
-      document.getElementById("btn").disabled = false;
     }
   },
 
@@ -324,7 +312,9 @@ var Index = createReactClass({
                           <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
                       </div>
-                        <button type="button" id="btn" className="btn btn-primary" onClick={() => this.setState({open: false})}>Next <span className="glyphicon glyphicon-arrow-right"></span></button>
+                        <div className={this.state.validity ? '' : 'hidden'}>
+                          <button type="button" id="btn" className="btn btn-primary" onClick={() => this.setState({open: false})}>Next <span className="glyphicon glyphicon-arrow-right"></span></button>
+                        </div>
                         <p id="warning-message">{this.state.warning}</p> 
                       </div>
                     
