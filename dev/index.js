@@ -300,10 +300,10 @@ var Index = createReactClass({
             <div className="col-sm-2 sidenav">
               <div className="panel panel-default">
                 <div className="panel-body"></div>
-                  <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView}/>
+                  <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView} />
                   <br/>
                     <div id='buffer-selection'>
-                    <Collapse isOpened={this.state.open}>
+                    <div className={!this.state.open ? 'hidden' : ''}>
                       <div className="well">
                         <div>
                           <p> Buffer </p>
@@ -323,25 +323,31 @@ var Index = createReactClass({
                           <p> Volume 2 </p>
                           <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
-
                       </div>
-                        <button id= "btn" type="button" className="btn btn-success btn-block" onClick={() => this.setState({open: false})}>Continue</button>
+                        <button type="button" id="btn" className="btn btn-primary" onClick={() => this.setState({open: false})}>Next <span className="glyphicon glyphicon-arrow-right"></span></button>
                         <p id="warning-message">{this.state.warning}</p> 
-                      </Collapse>
+                      </div>
                     
 
               <div id='strong-selection'>
                   </div>
-                  <Collapse isOpened={!this.state.open}>
+                  <div className={this.state.open ? 'hidden' : ''}>
                   <div className="well">
                     <p> Strong Acid/Base </p>
                     <div><Checkbox id='strong' options={this.state.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
                       <SlideBar min={1} max={200} step={1} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
                     </div>
+                    <br/>
+
+                    
+                    <button type="button" className="btn btn-primary" onClick={() => this.setState({open: true})}>
+                      <span className="glyphicon glyphicon-arrow-left"></span>Back
+                    </button>
+                    <br/>
                     <Reset onClick={this.restartLab}/>
+                    </div>
                   </div>
-                  </Collapse>
                 </div>
               </div>
             </div>  
