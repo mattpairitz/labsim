@@ -335,8 +335,8 @@ var Index = createReactClass({
                       <span className="glyphicon glyphicon-arrow-left"></span>Back
                     </button>
                     <br/>
-                    <Reset onClick={this.restartLab}/>
                     </div>
+                    <div className="well"><Reset onClick={this.restartLab}/></div>
                   </div>
                 </div>
               </div>
