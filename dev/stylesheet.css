@@ -39,6 +39,10 @@
       width: 400px;
     }
 
+    #strong-label {
+      display: inline;
+    }
+
     #strong-selection {
       display: none;
     }
