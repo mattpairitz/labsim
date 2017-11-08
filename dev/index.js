@@ -301,14 +301,14 @@ var Index = createReactClass({
 
                       <div className="well" id='HA-slider'>
                           <div>
-                            <p> Volume 1 </p>
+                            <p> {buffer_left} Volume </p>
                             <SlideBar min={1} max={1000} step={1} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
                           </div>
                       </div>
 
                       <div className="well" id='A-slider'>
                         <div>
-                          <p> Volume 2 </p>
+                          <p> {buffer_right} Volume </p>
                           <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
                       </div>
@@ -323,10 +323,11 @@ var Index = createReactClass({
                   </div>
                   <div className={this.state.open ? 'hidden' : ''}>
                   <div className="well">
-                    <p> Strong Acid/Base </p>
+                    <p id= "strong-label" className={this.state.strong=="None" ? 'hidden' : ''}>{this.state.strong}</p>
+                    <p id= "strong-label"> Volume</p>
                     <div><Checkbox id='strong' options={this.state.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
-                      <SlideBar min={1} max={200} step={1} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
+                      <SlideBar min={0} max={200} step={1} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
                     </div>
                     <br/>
 
