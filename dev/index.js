@@ -151,7 +151,6 @@ var Index = createReactClass({
     } else {
       x = this.getIntermediatePH(HA, A, Kb) 
     }
-    
     return pH;
   },
 
@@ -227,12 +226,11 @@ var Index = createReactClass({
                  <Collapse isOpened={viewControl['beaker']}>
                  <h3>Beaker View</h3><br/>
                   <Canvas volume1={H} volume2={A} volume3={strong} pH={this.state.pH}/>
-                  <Equation equation={this.state.equation} reaction={this.state.reaction} />
+                  <Equation equation={this.state.equation} reaction={this.state.reaction}/>
                 </Collapse>
               </div></div>           
               
               <br/>
-            
             </div>
 
             <div className="col-sm-2 sidenav">
