@@ -47,6 +47,10 @@
       display: none;
     }
 
+    #back-btn {
+      margin-bottom: 15px;
+    }
+
     #warning-message {
       color: red;
       font-size: 10;

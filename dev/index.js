@@ -71,6 +71,7 @@ var Index = createReactClass({
     let H, A, strong;
     ({H, A, strong} = volumes);
     if (H == 0 || A == 0){
+
       this.setState({validity: false, warning: this.state.warnings[1]});
     }
     else if (H * 10 < A || H * .1 > A){
@@ -253,19 +254,19 @@ var Index = createReactClass({
                   <div className="well">
                     <p id= "strong-label" className={this.state.strong=="None" ? 'hidden' : ''}>{this.state.strong}</p>
                     <p id= "strong-label"> Volume</p>
-                    <div><Checkbox id='strong' options={this.state.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
+                    <div><Checkbox id='strong' options={this.props.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
                       <SlideBar min={0} max={200} step={1} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
                     </div>
                     <br/>
 
                     
-                    <button type="button" className="btn btn-primary" onClick={() => this.setState({open: true})}>
+                    <button type="button" id="back-btn" className="btn btn-primary" onClick={() => this.setState({open: true})}>
                       <span className="glyphicon glyphicon-arrow-left"></span>Back
                     </button>
                     <br/>
+                    <Reset onClick={this.restartLab}/>
                     </div>
-                    <div className="well"><Reset onClick={this.restartLab}/></div>
                   </div>
                 </div>
               </div>
