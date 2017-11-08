@@ -9,3 +9,5 @@ node_modules
 # Builds
 
 build
+
+output/Index.js
