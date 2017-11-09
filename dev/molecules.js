@@ -19,7 +19,7 @@ export var Molecules = createReactClass ({
     },
 
     componentWillReceiveProps(nextProps) {
-        /* Split inoming equations into Molecule types */
+        /* Split incoming equations into Molecule types */
         var buffer = nextProps.buffer;
         var [buff1, buff2] = buffer.split(" ");
         var strong = nextProps.strong;
