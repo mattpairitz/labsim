@@ -19,7 +19,7 @@ export var Molecules = createReactClass ({
     },
 
     componentWillReceiveProps(nextProps) {
-        /* Split inoming equations into Molecule types */
+        /* Split incoming equations into Molecule types */
         var buffer = nextProps.buffer;
         var [buff1, buff2] = buffer.split(" ");
         var strong = nextProps.strong;
@@ -34,8 +34,6 @@ export var Molecules = createReactClass ({
     },
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log("Current Strong: " + this.props.strong);
-        console.log("Next Strong: " + nextProps.strong);
         return (nextProps.buffer !== this.props.buffer || nextState.strong !== this.state.strong);
     },
     
