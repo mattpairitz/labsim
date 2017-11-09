@@ -6,28 +6,18 @@ var createReactClass = require('create-react-class');
 
 export var Strong = createReactClass ({
 	getIntialState() {
-		return {strong: this.props.strong, rotation: new THREE.Euler()}
+		return {strong: this.props.strong, rotation: this.props.rotation}
 	},
 
 	componentWillMount() {
         this.setState({strong: this.props.strong})
+        this.setState({rotation: this.props.rotation})
         this.randomizePositions(1);
-
-       /* SIMPLE ANIMATION FUNCTION 
-        this._onAnimate = () => {
-           this.setState({
-                rotation: new THREE.Euler(
-                0,
-                0,
-                this.state.rotation.z + 0.0075
-                ),
-            });
-        };
-        */
     },
 
     componentWillReceiveProps(nextProps) {
         this.setState({strong: nextProps.strong});
+        this.setState({rotation: nextProps.rotation});
     },
 
     randomizePositions(num) {
@@ -41,7 +31,8 @@ export var Strong = createReactClass ({
                 0
             );
 
-        }	return (this.moleculePositions);
+        }	
+        return (this.moleculePositions);
     },
 
 /*********** Draw Scene with HCl *********/
@@ -51,10 +42,11 @@ export var Strong = createReactClass ({
                             this.moleculePositions[0].y,
                             this.moleculePositions[0].z);
 
-    	return (<group>
+    	return (<group
+                    rotation = {this.state.rotation}
+                >
                     <mesh
                         position = {this.moleculePositions[0]}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.25}
@@ -69,7 +61,6 @@ export var Strong = createReactClass ({
                     </mesh>  
                     <mesh
                         position = {pos1}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -98,10 +89,11 @@ export var Strong = createReactClass ({
                             this.moleculePositions[0].y,
                             this.moleculePositions[0].z);
 
-    	return (<group>
+    	return (<group
+                    rotation = {this.state.rotation}
+                >
     			<mesh
                         position = {this.moleculePositions[0]}
-                        //rotation={this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -116,7 +108,6 @@ export var Strong = createReactClass ({
                     </mesh>
                     <mesh
                         position = {pos1}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -131,7 +122,6 @@ export var Strong = createReactClass ({
                     </mesh>
 	                <mesh
 	                    position = {pos2}
-	                   //rotation = {this.state.rotation}
 	                >
 	                    <circleGeometry
 	                        radius = {0.25}
