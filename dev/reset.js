@@ -36,7 +36,7 @@ export var Reset  = createReactClass({
         </Modal>
 
         <button
-          className='btn btn-primary'
+          className='btn btn-danger'
           onClick={() => this.setState({ open: true }) }
         >
           Reset

@@ -39,7 +39,7 @@ export var SlideBar = createReactClass({
       <div><Slider min={min} max={max} step={step}
        onChange={this.props.onChange} value={amount} disabled={this.disableOnNone()}/></div>
 	    <span>{this.props.buffer} </span>
-	      <input className='slider' disabled={this.disableOnNone()} type="number" value={amount} onChange={this.overwriteAmount}/>
+	      <input className='slider' disabled="true" type="number" value={amount} onChange={this.overwriteAmount}/>
 	    <span> mL</span>  
     </div>    
     );

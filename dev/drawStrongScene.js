@@ -24,8 +24,6 @@ export var Strong = createReactClass ({
             });
         };
         */
-
-        console.log("Intial State: " + this.props.strong);
     },
 
     componentWillReceiveProps(nextProps) {
