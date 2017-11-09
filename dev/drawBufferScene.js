@@ -44,7 +44,6 @@ export var DrawBufferScene = createReactClass ({
     },
 
     componentWillReceiveProps(nextProps) {
-        this.moleculePositions = this.randomizePositions(7);
         this.setState({strong: nextProps.strong});
 
     },
@@ -93,8 +92,7 @@ export var DrawBufferScene = createReactClass ({
             }
     */
         }
-
-        console.log(this.moleculePositions);
+        
         return (this.moleculePositions);
     },
 
@@ -331,7 +329,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group>
-                    <Strong strong={this.state.strong}/>
+                    <Strong strong={this.state.strong} rotation={this.state.rotation}/>
                 </group>
               </scene>
             </React3>)
@@ -508,7 +506,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group>
-                    <Strong strong={this.state.strong}/>
+                    <Strong strong={this.state.strong} rotation={this.state.rotation}/>
                 </group>
               </scene>
             </React3>)
@@ -704,7 +702,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group>
-                    <Strong strong={this.state.strong}/>
+                    <Strong strong={this.state.strong} rotation={this.state.rotation}/>
                 </group>
               </scene>
             </React3>)
@@ -942,7 +940,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group>
-                    <Strong strong={this.state.strong}/>
+                    <Strong strong={this.state.strong} rotation={this.state.rotation}/>
                 </group>
               </scene>
             </React3>)
