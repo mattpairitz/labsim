@@ -18,7 +18,6 @@ getInitialState() {
     var strong = this.state.strong;
 
     this.drawGroups(buff1, ctx);
-    //this.drawStrong(buff1, strong, ctx);
  },
 
  componentWillReceiveProps(nextProps) {
@@ -103,7 +102,7 @@ getInitialState() {
         case "None":
             break;
 
-        case "HCl":
+        case "HCL":
             if (buff1 == "HA") {
                 this.drawH(pos1.x, pos1.y, smRadius, true, ctx);
                 this.drawA(pos2.x, pos2.y, lgRadius, ctx);
