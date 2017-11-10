@@ -17,7 +17,7 @@ getInitialState() {
     var buff1 = this.state.buff1;
     var strong = this.state.strong;
 
-    this.drawGroups(buff1, ctx);
+    //this.drawGroups(buff1, ctx);
  },
 
  componentWillReceiveProps(nextProps) {
@@ -30,7 +30,7 @@ getInitialState() {
 
     ctx.clearRect(0, 0, 400, 100);
 
-    this.drawGroups(buff1, ctx);
+    //this.drawGroups(buff1, ctx);
     this.drawStrong(buff1, strong, ctx);
  },
 
