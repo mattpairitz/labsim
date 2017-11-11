@@ -5,40 +5,45 @@ var createReactClass = require('create-react-class');
 export var DrawMolecules = createReactClass ({
 
 getInitialState() {
-     return {buff1: this.props.buff1, strong: this.props.strong}
+     return {buff1: this.props.buff1, strong: this.props.strong, canvas: this.props.canvas}
  },
 
  componentDidMount() {
-    const canvas = this.refs.canvas
-    const ctx = canvas.getContext("2d")
-
+    const canvas = this.refs.canvas;
+    const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, 400, 100);
 
     var buff1 = this.state.buff1;
     var strong = this.state.strong;
+    var c = this.state.canvas;
 
-    //this.drawGroups(buff1, ctx);
+    if (c == 1) {
+        this.drawGroups(buff1, ctx);
+    } else if (c == 2) {
+        this.drawStrong(buff1, strong, ctx);
+    }
  },
 
  componentWillReceiveProps(nextProps) {
-    const canvas = this.refs.canvas
-    const ctx = canvas.getContext("2d")
-
-    /* Split inoming equations into Molecule types */
-    var buff1 = nextProps.buff1;
-    var strong = nextProps.strong;
-
+    const canvas = this.refs.canvas;
+    const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, 400, 100);
 
-    //this.drawGroups(buff1, ctx);
-    this.drawStrong(buff1, strong, ctx);
+    var buff1 = nextProps.buff1;
+    var strong = nextProps.strong;
+    var c = this.state.canvas;
+
+    if (c == 1) {
+        this.drawGroups(buff1, ctx);
+    } else if (c == 2) {
+        this.drawStrong(buff1, strong, ctx);
+    }
  },
 
  /******* UPDATE BUFFER SELECTION *********/
     updateState(buff1, buff2, strong){
-        this.setState({buff1: buff1})
-        this.setState({buff2: buff2})
-        this.setState({strong: strong})    
+        this.setState({buff1: buff1});
+        this.setState({strong: strong});    
     },
 
  /***************************** FIND + DRAW GROUPS OF MOLES *********/
@@ -66,7 +71,7 @@ getInitialState() {
             this.drawF(pos1.x + total, pos1.y, lgRadius, ctx);
             this.drawH2O(pos2.x, pos2.y, ctx);
             this.drawH3O(pos3.x, pos3.y, ctx);
-            this.drawA(pos4.x, pos4.y, lgRadius, ctx);
+            this.drawF(pos4.x, pos4.y, lgRadius, ctx);
             break;
 
         case "HClO":
