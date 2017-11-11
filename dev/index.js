@@ -171,7 +171,7 @@ var Index = createReactClass({
                  <Collapse isOpened={viewControl['beaker']}>
                  <h3>Beaker View</h3><br/>
                   <Canvas volume1={H} volume2={A} volume3={strong} pH={this.state.pH}/>
-                  <Equation equation={this.state.equation} reaction={this.state.reaction}/>
+                  <Equation equation={this.state.equation} reaction={this.state.reaction} buffer={this.state.buffer} strong={this.state.strong}/>
                 </Collapse>
               </div></div>           
               
