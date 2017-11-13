@@ -92,12 +92,6 @@ export var DrawBufferScene = createReactClass ({
             }
     */
         }
-<<<<<<< HEAD
-
-        //console.log(this.moleculePositions);
-=======
-        
->>>>>>> e6323d4e23b740258f49982d9a0499f1a4a38d6b
         return (this.moleculePositions);
     },
 
