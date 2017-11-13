@@ -5,9 +5,8 @@ var createReactClass = require('create-react-class');
 export var Calculations = createReactClass ({
 
   getInitialState(){
-    return {volumes: this.props.volumes, 
-            constants: {"HA NaA": 0.00001, "HF NaF": 0.00035,  "HClO NaClO": 0.000000029, "NH\u2084Cl NH\u2083": 0.000000000568},
-
+    return {
+            constants: {"HA NaA": 0.00001, "HF NaF": 0.00035,  "HClO NaClO": 0.000000029, "NH\u2084Cl NH\u2083": 0.000000000568}
           }
         
   },
@@ -18,7 +17,7 @@ export var Calculations = createReactClass ({
 
   getPH(HA, A, Ka, Kb){
     var pH;
-    var total = this.state.volumes['total']
+    var total = this.props.volumes['total']
     var x, Hplus;
     if(HA>=A){
       x = this.getIntermediatePH(A, HA, Ka)
@@ -33,7 +32,7 @@ export var Calculations = createReactClass ({
     A = A/total;
     Hplus = Ka*HA/A
     pH = -(Math.log(Hplus)/Math.log(10))
-    return pH;
+    return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format((pH));
   },
 
   getIntermediatePH(a, b, K){
@@ -41,7 +40,7 @@ export var Calculations = createReactClass ({
   },
 
   render(){
-    let volumes = this.state.volumes;
+    let volumes = this.props.volumes;
     let buffer = this.props.buffer;
     let strong = this.props.strong;
     let Hmoles = this.getMolarity(volumes['H']);
@@ -50,7 +49,7 @@ export var Calculations = createReactClass ({
     let Kb = 0.00000000000001/Ka
     return (
       <div>
-      <p>pH: {this.getPH(Hmoles, Amoles, Ka, Kb)}</p>
+      <p>pH: {this.getPH(Hmoles, Amoles, Ka, Kb)}</p> <p>Ka: {Ka}</p>
       </div>
       )
   }

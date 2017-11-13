@@ -32,7 +32,7 @@ var Index = createReactClass({
     return {equation: this.props.equations['HA NaA'], reaction: this.props.reactions['None'],
             buffer: this.props.buffers[0], strong: this.props.strongs[0],
             warning: this.props.warnings[0], volumes: {'H': 500, 'A': 500, 'strong': 0 , 'total': 1000}, 
-            validity: true, viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 7, open: true};
+            validity: true, viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 5, open: true};
   },
 
   getTotalVolume(){
@@ -44,12 +44,13 @@ var Index = createReactClass({
 
   restartLab(event){
     this.setState({viewControl: {'graph': true, 'anim': true, 'beaker': true}});
-    this.setState({volumes: {'H': 500, 'A': 500, 'strong': 0 }})
+    this.setState({volumes: {'H': 500, 'A': 500, 'strong': 0 , 'total': 1000}})
     this.setState({equation: this.props.equations['HA NaA']});
     this.setState({reaction: this.props.reactions['None']});
     this.setState({buffer: this.props.buffers[0]});
     this.setState({strong: this.props.strongs[0]});
-    this.setState({pH: 7});
+    this.setState({warning: this.props.warnings[0]});
+    this.setState({pH: 5});
     this.setState({open: true});
   },
 
@@ -82,13 +83,13 @@ var Index = createReactClass({
     ({H, A, strong} = volumes);
     if (H == 0 || A == 0){
 
-      this.setState({validity: false, warning: this.state.warnings[1]});
+      this.setState({validity: false, warning: this.props.warnings[1]});
     }
     else if (H * 10 < A || H * .1 > A){
-      this.setState({validity: false, warning: this.state.warnings[2]});
+      this.setState({validity: false, warning: this.props.warnings[2]});
     }
     else {
-      this.setState({validity: true, warning: this.state.warnings[0]});
+      this.setState({validity: true, warning: this.props.warnings[0]});
     }
   },
 
@@ -148,6 +149,22 @@ var Index = createReactClass({
         <div className="container-fluid text-center">    
           <div className="row content">
             <div className="col-sm-10 text-center"> 
+
+            <div><div className="view" >
+                 <Collapse isOpened={viewControl['beaker']}>
+                 <h3>Beaker View</h3><br/>
+                  <Canvas volume1={H} volume2={A} volume3={strong} pH={this.state.pH}/>
+                  <Equation equation={this.state.equation} reaction={this.state.reaction}/>
+                </Collapse>
+              </div></div>  
+
+              <div><div className="view" >
+                <Collapse isOpened={viewControl['anim']}>
+                  <h3>Molecule View</h3><br/>  
+                    <div><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
+                </Collapse>
+              </div></div>         
+              
               <div className="view" >
               <Collapse isOpened={viewControl['graph']}>
                   <div><h3>Graph View</h3>
@@ -160,22 +177,6 @@ var Index = createReactClass({
                 </div>
                 </Collapse>
               </div>
-              <div><div className="view" >
-                <Collapse isOpened={viewControl['anim']}>
-                  <h3>Molecule View</h3><br/>  
-                    <div><Molecules buffer={this.state.buffer} strong={this.state.strong}/></div>
-                </Collapse>
-              </div></div>
-            
-              <div><div className="view" >
-                 <Collapse isOpened={viewControl['beaker']}>
-                 <h3>Beaker View</h3><br/>
-                  <Canvas volume1={H} volume2={A} volume3={strong} pH={this.state.pH}/>
-                  <Equation equation={this.state.equation} reaction={this.state.reaction}/>
-                </Collapse>
-              </div></div>           
-              
-              <br/>
             </div>
 
             <div className="col-sm-2 sidenav">

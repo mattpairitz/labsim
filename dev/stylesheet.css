@@ -11,7 +11,7 @@
     .sidenav {
       padding-top: 5px;
       background-color: #f1f1f1;
-      height: 75%;
+      height: 100%;
     }
     
     /* Set black background color, white text and some padding */
@@ -34,8 +34,8 @@
     }
 
     #viz {
-      height: 500px;
-      width: 400px;
+      height: 400px;
+      width: 250px;
     }
 
     #strong-label {
@@ -47,7 +47,7 @@
     }
 
     #back-btn {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     #warning-message {
@@ -118,7 +118,7 @@
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
-      padding: 15px;
+      padding: 10px;
     }
 
   html, body {

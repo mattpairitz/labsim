@@ -94,7 +94,7 @@ export var DrawBufferScene = createReactClass ({
     */
         }
 
-        console.log(this.moleculePositions);
+        //console.log(this.moleculePositions);
         return (this.moleculePositions);
     },
 

@@ -81,7 +81,7 @@ export var Canvas = createReactClass ({
     render(){
         return(
           <div>
-            <canvas ref="canvas" width={300} height={300} />
+            <canvas ref="canvas" width={270} height={270} />
           </div>
         )
       }
