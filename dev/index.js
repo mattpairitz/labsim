@@ -249,7 +249,7 @@ ReactDOM.render(<div><Index
   "HClO NaClOHCL": "Reaction: H\u207A + ClO\u207B \u21CC HClO", "NH\u2084Cl NH\u2083HCL": "Reaction: H\u207A + NH\u2083 \u21CC NH\u2084\u207A",
   "HA NaANaOH": "Reaction: OH\u207B + HA \u21CC H\u2082O + A\u207B", "HF NaFNaOH": "Reaction: OH\u207B + HF \u21CC H\u2082O + F\u207B",
   "HClO NaClONaOH": "Reaction: OH\u207B + HClO \u21CC H\u2082O + ClO\u207B", "NH\u2084Cl NH\u2083NaOH": "Reaction: OH\u207B + NH\u2084\u207A \u21CC H\u2082O + NH\u2083"}}
-  equations={{"HA NaA": "HA + H\u2082O \u21CC H\u2083O\u207A + A\u207B", "HF NaF":"HF + H\u2082O \u21CC H\u2083O\u207A + A\u207B",
+  equations={{"HA NaA": "HA + H\u2082O \u21CC H\u2083O\u207A + A\u207B", "HF NaF":"HF + H\u2082O \u21CC H\u2083O\u207A + F\u207B",
   "HClO NaClO": "HClO + H\u2082O \u21CC H\u2083O\u207A + ClO\u207B", "NH\u2084Cl NH\u2083": "NH\u2083 + H\u2082O \u21CC OH\u207B + NH\u2084\u207A"}}
   buffers={["HA NaA", "HF NaF",  "HClO NaClO", "NH\u2084Cl NH\u2083"]}
   strongs ={['None', 'HCL', 'NaOH']}

@@ -187,7 +187,7 @@ export var DrawBufferScene = createReactClass ({
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width = {width}
                 height = {height}
-                clearColor = {0xCCFFE5}
+                clearColor = {0x3daee2}
 
                 onAnimate={this._onAnimate}
             >
@@ -342,7 +342,7 @@ export var DrawBufferScene = createReactClass ({
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
-                clearColor = {0xCCFFE5}
+                clearColor = {0x3daee2}
 
                 onAnimate={this._onAnimate}
             >
@@ -519,7 +519,7 @@ export var DrawBufferScene = createReactClass ({
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
-                clearColor = {0xCCFFE5}
+                clearColor = {0x3daee2}
 
                 onAnimate={this._onAnimate}
             >
@@ -718,7 +718,7 @@ export var DrawBufferScene = createReactClass ({
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
-                clearColor = {0xCCFFE5}
+                clearColor = {0x3daee2}
 
                 onAnimate={this._onAnimate}
             >
