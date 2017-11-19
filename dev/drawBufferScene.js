@@ -10,14 +10,13 @@ export var DrawBufferScene = createReactClass ({
 
     getInitialState() {
        return {buff1: this.props.buff1, strong: this.props.strong, 
-                    rotation: new THREE.Euler(), rotation2: new THREE.Euler(),
-                    transform: new THREE.Vector3()}
+                    rotation: new THREE.Euler()}
     },
 
     componentWillMount() {
         this.setState({buff1: this.props.buff1})
         this.setState({strong: this.props.strong})
-        this.randomizePositions(5);
+        this.randomizePositions(7);
         //this.addPositions(this.moleculePositions);
 
         this.cameraPosition = new THREE.Vector3(0, 0, 5);
@@ -32,19 +31,12 @@ export var DrawBufferScene = createReactClass ({
                 this.state.rotation.z + 0.005
                 ),
             });
-
-            this.setState({
-                rotation2: new THREE.Euler(
-                0,
-                0,
-                this.state.rotation2.z - 0.0075
-                ),
-            });
         };
     },
 
     componentWillReceiveProps(nextProps) {
         this.setState({strong: nextProps.strong});
+        this.updatePositions(this.moleculePositions, 3, 5);
     },
 
     /********* Randomize Molecule Locations On Canvas **********/
@@ -63,19 +55,21 @@ export var DrawBufferScene = createReactClass ({
         return (this.moleculePositions);
     },
 
-    addPositions(positions) {
-        this.moleculeAnimation = [];
-        this.moleculeAnimation.length = positions.length;
+    updatePositions(positions, pos1, pos2) {
+        var radius = 0.6;
 
         for (var i = 0; i < positions.length; i++) {
-            this.moleculeAnimation[i] = new THREE.Euler(
-                    positions[i].x, 
-                    positions[i].y,
-                    0);
+            if (i == pos1) {
+                positions[i] = new THREE.Vector3(0, 0, 0); 
+            
+            } else if (i == pos2) {
+                positions[i] = new THREE.Vector3(radius, 0, 0);
+            }
         }
+        console.log(positions);
+
+        return (positions);
     },
-
-
 
 /********* CALCULATE POSITIONS OF HYDROGENS for NH4 & NH3 & H2O **********/
     addHydrogen(molecule, num) {
@@ -303,7 +297,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group>
-                    <Strong strong={this.state.strong} rotation={this.state.rotation}/>
+                    <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]}/>
                 </group>
               </scene>
             </React3>)

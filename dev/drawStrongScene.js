@@ -6,18 +6,23 @@ var createReactClass = require('create-react-class');
 
 export var Strong = createReactClass ({
 	getIntialState() {
-		return {strong: this.props.strong, rotation: this.props.rotation}
+		return {strong: this.props.strong, rotation: this.props.rotation,
+                    pos1: this.state.pos1, pos2: this.state.pos2}
 	},
 
 	componentWillMount() {
         this.setState({strong: this.props.strong})
         this.setState({rotation: this.props.rotation})
-        this.randomizePositions(3);
+        this.setState({pos1: this.props.pos1})
+        this.setState({pos2: this.props.pos2})
+        //this.randomizePositions(3);
     },
 
     componentWillReceiveProps(nextProps) {
         this.setState({strong: nextProps.strong});
         this.setState({rotation: nextProps.rotation});
+        this.setState({pos1: nextProps.pos1});
+        this.setState({pos2: nextProps.pos2});
     },
 
     randomizePositions(num) {
@@ -37,11 +42,11 @@ export var Strong = createReactClass ({
 
 /*********** Draw Scene with HCl *********/
     drawAcid() {
-    	return (<group
+        var acidMolecules = (<group
                     rotation = {this.state.rotation}
                 >
                     <mesh
-                        position = {this.moleculePositions[0]}
+                        position = {this.state.pos1}
                     >
                         <circleGeometry
                             radius = {0.25}
@@ -55,7 +60,7 @@ export var Strong = createReactClass ({
                         />
                     </mesh>  
                     <mesh
-                        position = {this.moleculePositions[1]}
+                        position = {this.state.pos2}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -68,12 +73,13 @@ export var Strong = createReactClass ({
                             side = {THREE.DoubleSide}
                         />
                     </mesh>
-            </group>
-        )
+            </group>);
+
+    	return (acidMolecules);
     },
 
     /********* Draw Scene with NaOH ********/
-    drawBase() {
+/*    drawBase() {
     	return (<group
                     rotation = {this.state.rotation}
                 >
@@ -122,7 +128,7 @@ export var Strong = createReactClass ({
             </group>
         )
     },
-
+*/
 	render() {
         var scene;
 
@@ -130,7 +136,7 @@ export var Strong = createReactClass ({
             scene = this.drawAcid();
 
         } else if (this.state.strong === "NaOH") {
-            scene = this.drawBase();
+           // scene = this.drawBase();
         } else {
             scene = null;
         }
