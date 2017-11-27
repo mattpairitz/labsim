@@ -11,7 +11,6 @@
     .sidenav {
       padding-top: 5px;
       background-color: #ADD8E6;
-      height: 100%;
     }
     
     /* Set black background color, white text and some padding */
@@ -34,7 +33,7 @@
     }
 
     #viz {
-      height: 400px;
+      height: 314px;
       width: 250px;
     }
 

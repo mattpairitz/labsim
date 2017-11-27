@@ -110,6 +110,8 @@ export var Canvas = createReactClass ({
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext("2d");
 
+        ctx.clearRect(220, 5, 40, 20);
+
         /* Draw pH graphic with dynamic text */
         ctx.strokeStyle = "#000000";
         ctx.beginPath();
@@ -119,8 +121,7 @@ export var Canvas = createReactClass ({
         ctx.stroke();
         ctx.rect(220, 5, 40, 20);
         ctx.stroke();
-        ctx.strokeText(pH, 240, 17);
-        ctx.closePath();
+        ctx.strokeText(pH, 230, 17);
     },
         
     render(){
