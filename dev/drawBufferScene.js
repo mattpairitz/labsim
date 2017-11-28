@@ -870,8 +870,8 @@ export var DrawBufferScene = createReactClass ({
         var height = 300;
         var scene = this.drawBufferScene(width, height);
 
-        return(
-                <button type="button" id="btn" className="btn btn-primary">Reaction</button>
-            );
+        //<button type="button" id="btn" className="btn btn-primary">Reaction</button>
+
+        return(scene);
     }
 });
