@@ -10,8 +10,7 @@ export var DrawBufferScene = createReactClass ({
 
     getInitialState() {
        return {buff1: this.props.buff1, strong: this.props.strong, 
-                    rotation: new THREE.Euler(), rotation2: new THREE.Euler(),
-                    transform: new THREE.Vector3()}
+                    rotation: new THREE.Euler()}
     },
 
     componentWillMount() {
@@ -32,24 +31,15 @@ export var DrawBufferScene = createReactClass ({
                 this.state.rotation.z + 0.005
                 ),
             });
-
-            this.setState({
-                rotation2: new THREE.Euler(
-                0,
-                0,
-                this.state.rotation2.z - 0.0075
-                ),
-            });
         };
     },
 
     componentWillReceiveProps(nextProps) {
         this.setState({strong: nextProps.strong});
-
+        //this.updatePositions(this.moleculePositions, 3, 5);
     },
 
     /********* Randomize Molecule Locations On Canvas **********/
-    //TO DO: Fix issues with constant randomization of any props.
     randomizePositions(num) {
         this.moleculePositions = [];
         this.moleculePositions.length = num;
@@ -60,54 +50,26 @@ export var DrawBufferScene = createReactClass ({
                 (Math.random() * 5) - 2,
                 0
             );
-
-/*
-            for (let j = 0; j < i; j++) {
-
-                //Obj1 = Current Randomized Object, Obj2 = Comparison Object
-                var obj1 = this.moleculePositions[i];
-                var obj2 = this.moleculePositions[j];
-                var radius = 0.5;
-
-                //Find area of circle for overlap
-                var x_min = obj2.x - radius;
-                var x_max = obj2.x + radius;
-                var y_min = obj2.y - radius;
-                var y_max = obj2.y + radius;
-
-                //Find overlap of obj1 in comparision to range of obj2
-                if (obj1.x > x_min && obj1.x < x_max) {
-                    console.log("X OVERLAPS");
-
-                    if (obj1.y > y_min && obj1.y < y_max) {
-
-                        console.log("COLLISION")
-                        console.log("OBJ1 at Position: " + i);
-                        console.log("OBJ2 at Position: " + j);
-
-                        obj1.x + (radius * 2);
-                        obj1.y + (radius);
-                    }
-                }
-            }
-    */
         }
+        
         return (this.moleculePositions);
     },
 
-    addPositions(positions) {
-        this.moleculeAnimation = [];
-        this.moleculeAnimation.length = positions.length;
+    updatePositions(positions, pos1, pos2) {
+        var radius = 0.6;
 
         for (var i = 0; i < positions.length; i++) {
-            this.moleculeAnimation[i] = new THREE.Euler(
-                    positions[i].x, 
-                    positions[i].y,
-                    0);
+            if (i == pos1) {
+                positions[i] = new THREE.Vector3(0, 0, 0); 
+            
+            } else if (i == pos2) {
+                positions[i] = new THREE.Vector3(radius, 0, 0);
+            }
         }
+        console.log(positions);
+
+        return (positions);
     },
-
-
 
 /********* CALCULATE POSITIONS OF HYDROGENS for NH4 & NH3 & H2O **********/
     addHydrogen(molecule, num) {
@@ -163,6 +125,21 @@ export var DrawBufferScene = createReactClass ({
         }
     },
 
+/********* ATTATCH MOLECULES TOGETHER *********/
+    attachMolecules(molecule, num) {
+        this.newPosition = [];
+        var radius = 0.6;
+
+        for (var i = 0; i < num; i++) {
+            this.newPosition.push(new THREE.Vector3(
+                molecule.x + (radius * (i + 1)),
+                molecule.y,
+                molecule.z));
+        }
+
+        return (this.newPosition);
+    },
+
     /********* DRAW BUFFER SCENE **********/
     drawBufferScene(width, height) {
         var buffer = this.props.buff1;
@@ -181,13 +158,14 @@ export var DrawBufferScene = createReactClass ({
     
 /********** BUFFER SCENE 1: HA and NaA ***********/
     drawBuffer1(width, height) {
+        var newPos1 = this.attachMolecules(this.moleculePositions[0], 1);
         var hydroPos1 = this.addHydrogen(this.moleculePositions[4], 2);
 
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width = {width}
                 height = {height}
-                clearColor = {0x3daee2}
+                clearColor = {0x3DAEE2}
 
                 onAnimate={this._onAnimate}
             >
@@ -202,7 +180,6 @@ export var DrawBufferScene = createReactClass ({
                     position={this.cameraPosition}
                 />
                 <group
-                    position = {this.moleculePositions[0]}
                     rotation = {this.state.rotation}
                 >
                     <mesh
@@ -219,14 +196,8 @@ export var DrawBufferScene = createReactClass ({
                             side = {THREE.DoubleSide}
                         />
                     </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[1]}
-                    rotation = {this.state.rotation}
-                > 
                     <mesh
-                        position = {this.moleculePositions[1]}
-                        //rotation = {this.state.rotation}
+                        position = {newPos1[0]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -246,7 +217,6 @@ export var DrawBufferScene = createReactClass ({
                 >  
                     <mesh
                         position = {this.moleculePositions[2]}
-                        //rotation={this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -266,7 +236,6 @@ export var DrawBufferScene = createReactClass ({
                 >    
                     <mesh
                         position = {this.moleculePositions[3]}
-                        //rotation={this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -328,7 +297,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group>
-                    <Strong strong={this.state.strong} rotation={this.state.rotation}/>
+                    <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]}/>
                 </group>
               </scene>
             </React3>)
@@ -336,13 +305,14 @@ export var DrawBufferScene = createReactClass ({
 
     /********** BUFFER SCENE 2: HF and NaF ***********/
     drawBuffer2(width, height) {
-        var hydroPos1 = this.addHydrogen(this.moleculePositions[4], 2);
+        var newPos1 = this.attachMolecules(this.moleculePositions[0], 1);
+        var hydroPos1 = this.addHydrogen(this.moleculePositions[3], 2);
 
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
-                clearColor = {0x3daee2}
+                clearColor = {0x3DAEE2}
 
                 onAnimate={this._onAnimate}
             >
@@ -357,12 +327,10 @@ export var DrawBufferScene = createReactClass ({
                     position={this.cameraPosition}
                 />
                 <group
-                    position = {this.moleculePositions[0]}
                     rotation = {this.state.rotation}
                 >
                     <mesh
                         position = {this.moleculePositions[0]}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.25}
@@ -375,15 +343,9 @@ export var DrawBufferScene = createReactClass ({
                             side = {THREE.DoubleSide}
 
                         />
-                    </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[0]}
-                    rotation = {this.state.rotation2}
-                >    
+                    </mesh> 
                     <mesh
-                        position = {this.moleculePositions[1]}
-                        //rotation = {this.state.rotation}
+                        position = {newPos1[0]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -398,12 +360,30 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group
+                    //position = {this.moleculePositions[1]}
+                    rotation = {this.state.rotation}
+                >    
+                    <mesh
+                        position = {this.moleculePositions[1]}
+                    >
+                        <circleGeometry
+                            radius = {0.5}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xAB5CF2}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                </group>
+                <group
                     position = {this.moleculePositions[2]}
-                    rotation = {this.state.rotation2}
+                    rotation = {this.state.rotation}
                 >
                     <mesh
                         position = {this.moleculePositions[2]}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -419,46 +399,6 @@ export var DrawBufferScene = createReactClass ({
                 </group>
                 <group
                     position = {this.moleculePositions[3]}
-                    rotation = {this.state.rotation2}
-                >
-                    <mesh
-                        position = {this.moleculePositions[2]}
-                        //rotation = {this.state.rotation}
-                    >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0x90E050}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[2]}
-                    rotation = {this.state.rotation}
-                >    
-                    <mesh
-                        position = {this.moleculePositions[3]}
-                        //rotation = {this.state.rotation}
-                    >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0xAB5CF2}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[4]}
                     rotation = {this.state.rotation}
                 > 
                     <mesh
@@ -490,7 +430,7 @@ export var DrawBufferScene = createReactClass ({
                         />
                     </mesh>
                     <mesh
-                        position = {this.moleculePositions[4]}
+                        position = {this.moleculePositions[3]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -513,13 +453,15 @@ export var DrawBufferScene = createReactClass ({
 
     /********** BUFFER SCENE 3: HClO and NaClO ***********/
     drawBuffer3(width, height) {
-        var hydroPos1 = this.addHydrogen(this.moleculePositions[6], 2);
+        var newPos1 = this.attachMolecules(this.moleculePositions[0], 2);
+        var newPos2 = this.attachMolecules(this.moleculePositions[2], 1);
+        var hydroPos1 = this.addHydrogen(this.moleculePositions[3], 2);
 
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
-                clearColor = {0x3daee2}
+                clearColor = {0x3DAEE2}
 
                 onAnimate={this._onAnimate}
             >
@@ -539,7 +481,6 @@ export var DrawBufferScene = createReactClass ({
                 >
                     <mesh
                         position = {this.moleculePositions[0]}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.25}
@@ -552,34 +493,8 @@ export var DrawBufferScene = createReactClass ({
                             side = {THREE.DoubleSide}
                         />
                     </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[0]}
-                    rotation = {this.state.rotation}
-                >    
                     <mesh
-                        position = {this.moleculePositions[1]}
-                        //rotation = {this.state.rotation}
-                    >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0x1FF01F}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[1]}
-                    rotation = {this.state.rotation}
-                >    
-                    <mesh
-                        position = {this.moleculePositions[2]}
-                        //rotation = {this.state.rotation}
+                        position = {newPos1[1]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -591,15 +506,28 @@ export var DrawBufferScene = createReactClass ({
                             color={0xFF0D0D}
                             side = {THREE.DoubleSide}
                         />
-                    </mesh>
+                    </mesh>  
+                    <mesh
+                        position = {newPos1[0]}
+                    >
+                        <circleGeometry
+                            radius = {0.5}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0x1FF01F}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>  
                 </group>
                 <group
-                    position = {this.moleculePositions[2]}
+                    position = {this.moleculePositions[1]}
                     rotation = {this.state.rotation}
                 >
                     <mesh
-                        position = {this.moleculePositions[3]}
-                        //rotation = {this.state.rotation}
+                        position = {this.moleculePositions[1]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -614,12 +542,10 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group
-                    position = {this.moleculePositions[3]}
                     rotation = {this.state.rotation}
                 >    
                     <mesh
-                        position = {this.moleculePositions[4]}
-                        //rotation = {this.state.rotation}
+                        position = {this.moleculePositions[2]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -631,15 +557,9 @@ export var DrawBufferScene = createReactClass ({
                             color={0x1FF01F}
                             side = {THREE.DoubleSide}
                         />
-                    </mesh>
-                </group> 
-                <group
-                    position = {this.moleculePositions[4]}
-                    rotation = {this.state.rotation}
-                >   
+                    </mesh> 
                     <mesh
-                        position = {this.moleculePositions[5]}
-                        //rotation = {this.state.rotation}
+                        position = {newPos2[0]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -654,7 +574,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group
-                    position = {this.moleculePositions[6]}
+                    position = {this.moleculePositions[3]}
                     rotation = {this.state.rotation}
                 > 
                     <mesh
@@ -686,7 +606,7 @@ export var DrawBufferScene = createReactClass ({
                         />
                     </mesh>
                     <mesh
-                        position = {this.moleculePositions[6]}
+                        position = {this.moleculePositions[3]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -718,7 +638,7 @@ export var DrawBufferScene = createReactClass ({
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
-                clearColor = {0x3daee2}
+                clearColor = {0x3DAEE2}
 
                 onAnimate={this._onAnimate}
             >
@@ -950,6 +870,8 @@ export var DrawBufferScene = createReactClass ({
         var height = 300;
         var scene = this.drawBufferScene(width, height);
 
-        return(scene);
+        return(
+                <button type="button" id="btn" className="btn btn-primary">Reaction</button>
+            );
     }
 });

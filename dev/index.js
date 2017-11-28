@@ -213,7 +213,7 @@ var Index = createReactClass({
                     </div>
                   </div>
                   <div>
-                    <Equation equation={this.state.equation} reaction={this.state.reaction}/>
+                    <Equation equation={this.state.equation} reaction={this.state.reaction} buffer={this.state.buffer} strong={this.state.strong}/>
                   </div>
                 </Collapse>
               </div>
