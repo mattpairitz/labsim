@@ -175,6 +175,8 @@ export var DrawBufferScene = createReactClass ({
         var newPos1 = this.attachMolecules(this.moleculePositions[0], 1);
         var hydroPos1 = this.addHydrogen(this.moleculePositions[4], 2);
 
+        var strongPos3 = this.attachMolecules(this.moleculePositions[6], 1);
+
         return (
             <div>
                 <React3
@@ -313,7 +315,7 @@ export var DrawBufferScene = createReactClass ({
                         </mesh>
                     </group>
                     <group>
-                        <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]}/>
+                        <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]} pos3={strongPos3[0]}/>
                     </group>
                   </scene>
                 </React3>
@@ -327,6 +329,8 @@ export var DrawBufferScene = createReactClass ({
     drawBuffer2(width, height) {
         var newPos1 = this.attachMolecules(this.moleculePositions[0], 1);
         var hydroPos1 = this.addHydrogen(this.moleculePositions[3], 2);
+
+        var strongPos3 = this.attachMolecules(this.moleculePositions[6], 1);
 
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
@@ -465,7 +469,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group>
-                    <Strong strong={this.state.strong} rotation={this.state.rotation}/>
+                    <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]} pos3={strongPos3[0]}/>
                 </group>
               </scene>
             </React3>)
@@ -476,6 +480,8 @@ export var DrawBufferScene = createReactClass ({
         var newPos1 = this.attachMolecules(this.moleculePositions[0], 2);
         var newPos2 = this.attachMolecules(this.moleculePositions[2], 1);
         var hydroPos1 = this.addHydrogen(this.moleculePositions[3], 2);
+
+        var strongPos3 = this.attachMolecules(this.moleculePositions[6], 1);
 
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
@@ -641,7 +647,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group>
-                    <Strong strong={this.state.strong} rotation={this.state.rotation}/>
+                    <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]} pos3={strongPos3[0]}/>
                 </group>
               </scene>
             </React3>)
@@ -653,6 +659,7 @@ export var DrawBufferScene = createReactClass ({
         var hydroPos2 = this.addHydrogen(this.moleculePositions[1], 3);
         var hydroPos3 = this.addHydrogen(this.moleculePositions[3], 2);
 
+        var strongPos3 = this.attachMolecules(this.moleculePositions[6], 1);
 
         return (<React3
                 mainCamera="camera" // this points to the perspectiveCamera below
@@ -879,7 +886,7 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group>
-                    <Strong strong={this.state.strong} rotation={this.state.rotation}/>
+                   <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]} pos3={strongPos3[0]}/>
                 </group>
               </scene>
             </React3>)
