@@ -49,10 +49,10 @@ getInitialState() {
  /***************************** FIND + DRAW GROUPS OF MOLES *********/
  drawGroups(buff1, ctx) {
 
-    var pos1 = {x: 50, y: 50};
-    var pos2 = {x: 150, y: 50};
-    var pos3 = {x: 250, y: 50};
-    var pos4 = {x: 350, y: 50};
+    var pos1 = {x: 100, y: 50};
+    var pos2 = {x: 200, y: 75};
+    var pos3 = {x: 280, y: 50};
+    var pos4 = {x: 340, y: 75};
     var smRadius = 10;
     var lgRadius = 20;
     var total = smRadius + lgRadius;
@@ -85,19 +85,19 @@ getInitialState() {
             break;
 
         case "NH\u2084Cl":
-            this.drawNH3(pos1.x, pos1.y, ctx);
-            this.drawH2O(pos2.x, pos2.y, ctx);
-            this.drawO(pos3.x, pos3.y, lgRadius, "negative", ctx);
-            this.drawH(pos3.x + total, pos3.y, smRadius, false, ctx);
-            this.drawNH4(pos4.x, pos4.y, ctx);
+            this.drawNH3(pos1.x + 20, pos1.y - 20, ctx);
+            this.drawH2O(pos2.x + 10, pos2.y - 25, ctx);
+            this.drawO(pos3.x, pos3.y + total, lgRadius, "negative", ctx);
+            this.drawH(pos3.x + total, pos3.y + total, smRadius, false, ctx);
+            this.drawNH4(pos4.x + 20, pos4.y - 25, ctx);
             break;
     }
  },
 
  drawStrong(buff1, strong, ctx) {
-    var pos1 = {x: 50, y: 50};
+    var pos1 = {x: 80, y: 50};
     var pos2 = {x: 150, y: 50};
-    var pos3 = {x: 250, y: 50};
+    var pos3 = {x: 280, y: 50};
     var pos4 = {x: 350, y: 50};
     var smRadius = 10;
     var lgRadius = 20;
@@ -165,9 +165,9 @@ getInitialState() {
             } else {
                 this.drawO(pos1.x, pos1.y, lgRadius, "negative", ctx);
                 this.drawH(pos1.x + total, pos1.y, smRadius, false, ctx);
-                this.drawNH4(pos2.x, pos2.y, ctx);
+                this.drawNH4(pos2.x + 20, pos2.y, ctx);
                 this.drawH2O(pos3.x, pos3.y, ctx);
-                this.drawNH3(pos4.x, pos4.y, ctx);
+                this.drawNH3(pos4.x + 10, pos4.y, ctx);
 
             }
             break;
