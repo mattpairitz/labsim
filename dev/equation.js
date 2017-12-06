@@ -31,11 +31,15 @@ export var Equation = createReactClass ({
 
    render(){
        return(
-       <div>
-           <DrawMolecules buff1={this.state.buff1} canvas={1}/>
-           <h3>Buffer: {this.props.equation}</h3>
-           <DrawMolecules buff1={this.state.buff1} strong={this.state.strong} canvas={2}/>
-           <h3>{this.props.reaction}</h3>
+       <div id="equation" className="col-sm-12">
+           <div id="buffer-display">
+             <DrawMolecules buff1={this.state.buff1} canvas={1}/>
+             <h3>Buffer: {this.props.equation}</h3>
+           </div>
+           <div id="reaction-display">
+             <DrawMolecules buff1={this.state.buff1} strong={this.state.strong} canvas={2}/>
+             <h3>{this.props.reaction}</h3>
+           </div>
        </div>
        );
    }

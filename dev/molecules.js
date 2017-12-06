@@ -38,7 +38,7 @@ export var Molecules = createReactClass ({
     },
     
     render() {
-        var width = 300;
+        var width = 270;
         var height = 300;
         
         return(

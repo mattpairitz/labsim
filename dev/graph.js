@@ -41,20 +41,31 @@ export var Graph = createReactClass({
     let molarity2 = this.getMolarity(volume2)
     let molarity3 = this.getMolarity(volume3)
 
-    let array = this.state.config;
+    let data_array=[];
     if(strong!=='None'){
-      array[2] = {id: strong, x: strong, y: molarity3};
+      data_array[2] = {id: strong, x: strong, y: molarity3};
     } else {
-      array.pop();
+      data_array.pop();
     }
-    array[0] = {id: b_left, x: b_left, y: molarity1};
-    array[1] = {id: b_right, x: b_right, y: molarity2};
+    data_array[0] = {id: b_left, x: b_left, y: molarity1};
+    data_array[1] = {id: b_right, x: b_right, y: molarity2};
 
-    this.setState({config: array});
+    const methods = {
+      label: d => parseFloat(Math.round(d.y * 10000) / 10000).toFixed(3),
+      xConfig: {
+        title: "Substrate"
+      },
+      yConfig: {
+        title: "Molarity"
+      },
+      data: data_array,
+    };
+
+    this.setState({config: methods});
   },
 
   render(){  
    let data = this.state.config;         
-   return (<div><BarChart config={{data}} /></div>);
+   return (<div><BarChart config={data} /></div>);
  }
 });
