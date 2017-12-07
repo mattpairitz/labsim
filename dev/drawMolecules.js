@@ -107,7 +107,7 @@ getInitialState() {
         case "None":
             break;
 
-        case "HCL":
+        case "HCl":
             if (buff1 == "HA") {
                 this.drawH(pos1.x, pos1.y, smRadius, true, ctx);
                 this.drawA(pos2.x, pos2.y, lgRadius, ctx);
