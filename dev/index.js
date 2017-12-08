@@ -176,7 +176,7 @@ var Index = createReactClass({
       </div>
       </nav>
       <div className="row">
-        <div className="col-sm-3 col-md-2 sidebar">
+        <div className="col-sm-3 col-md-2 sidebar text-center">
           <div className="panel panel-default">
             <div className="panel-body"></div>
               <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView} />
@@ -196,14 +196,14 @@ var Index = createReactClass({
                       <div className="well" id='HA-slider'>
                         <div>
                           <p> {buffer_left} Volume </p>
-                            <SlideBar min={1} max={1000} step={1} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
+                            <SlideBar min={0} max={1000} step={5} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
                         </div>
                       </div>
 
                       <div className="well" id='A-slider'>
                         <div>
                           <p> {buffer_right} Volume </p>
-                          <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
+                          <SlideBar min={0} max={1000} step={5  } buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
                       </div>
                         <div className={this.state.validity ? '' : 'hidden'}>
@@ -221,7 +221,7 @@ var Index = createReactClass({
                     <p id= "strong-label"> Volume</p>
                     <div><Checkbox id='strong' options={this.props.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
-                      <SlideBar min={0} max={200} step={1} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
+                      <SlideBar min={0} max={200} step={5} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
                     </div>
                     <br/>
 
@@ -276,7 +276,7 @@ var Index = createReactClass({
 
             <br/>
             <div>
-              <Equation equation={this.state.equation} reaction={this.state.reaction} buffer={this.state.buffer}/>
+              <Equation equation={this.state.equation} reaction={this.state.reaction} buffer={this.state.buffer} strong={this.state.strong}/>
             </div>
           </div>
 
@@ -295,7 +295,7 @@ ReactDOM.render(<div><Index
   equations={{"HA NaA": "HA + H\u2082O \u21CC H\u2083O\u207A + A\u207B", "HF NaF":"HF + H\u2082O \u21CC H\u2083O\u207A + F\u207B",
   "HClO NaClO": "HClO + H\u2082O \u21CC H\u2083O\u207A + ClO\u207B", "NH\u2084Cl NH\u2083": "NH\u2083 + H\u2082O \u21CC OH\u207B + NH\u2084\u207A"}}
   buffers={["HA NaA", "HF NaF",  "HClO NaClO", "NH\u2084Cl NH\u2083"]}
-  strongs ={['None', 'HCl', 'NaOH']}
+  strongs ={['None', 'HCL', 'NaOH']}
   warnings ={['', 'Buffer must contain both an acid and base!', 'Both components must be within 10x of each other in volume!']}/></div>,
   document.getElementById("container"))
 
