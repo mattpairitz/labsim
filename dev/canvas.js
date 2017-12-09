@@ -39,7 +39,6 @@ export var Canvas = createReactClass ({
         ctx.strokeText("2500mL", 12, 85);
         ctx.stroke();
         ctx.closePath();
-        // console.log("drew labels");
 
         this.drawCanvas();
         this.drawDropper(this.state.pH);
@@ -116,7 +115,7 @@ export var Canvas = createReactClass ({
         ctx.strokeStyle = "#000000";
         ctx.beginPath();
         ctx.moveTo(220, 10);
-        ctx.lineTo(220, 225);
+        ctx.lineTo(220, 240);
         ctx.lineCap = 'round';
         ctx.stroke();
         ctx.rect(220, 5, 40, 20);

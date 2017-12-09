@@ -122,7 +122,7 @@ export var Strong = createReactClass ({
     render() {
         var scene;
 
-        if (this.state.strong === "HCL") {
+        if (this.state.strong === "HCl") {
             scene = this.drawAcid();
 
         } else if (this.state.strong === "NaOH") {
