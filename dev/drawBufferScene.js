@@ -10,12 +10,13 @@ export var DrawBufferScene = createReactClass ({
 
     getInitialState() {
        return {buff1: this.props.buff1, strong: this.props.strong, 
-                    rotation: new THREE.Euler()}
+                    rotation: new THREE.Euler(), react: false}
     },
 
     componentWillMount() {
         this.setState({buff1: this.props.buff1})
         this.setState({strong: this.props.strong})
+        this.setState({react: this.props.react})
         this.randomizePositions(7);
         this.cameraPosition = new THREE.Vector3(0, 0, 5);
 
@@ -30,10 +31,18 @@ export var DrawBufferScene = createReactClass ({
                 ),
             });
         };
+
+        console.log(this.state.react);
     },
 
     componentWillReceiveProps(nextProps) {
         this.setState({strong: nextProps.strong});
+
+        if (nextProps.strong !== "None") {
+            this.setState({react: true});
+        } else {
+            this.setState({react: false});
+        }
     },
 
     /********* Randomize Molecule Locations On Canvas **********/
@@ -69,15 +78,32 @@ export var DrawBufferScene = createReactClass ({
     },
 
 /********* UPDATE POSITIONS OF REACTION MOLECULES ********/
-    updatePositions(positions, pos1, pos2) {
-        var radius = 0.6;
+    updatePositions(positions, buffer, strong) {
 
-        for (var i = 0; i < positions.length; i++) {
-            if (i == pos1) {
-                positions[i] = new THREE.Vector3(0, 0, 0); 
-                            
-            } else if (i == pos2) {
-                positions[i] = new THREE.Vector3(radius, 0, 0);
+        if (strong === "HCl") {
+            var radius = 0.6;
+            var pos1;
+            var pos2;
+
+            switch (buffer) {
+                case 1:
+                    pos1 = 3;
+                    pos2 = 5;
+                    break;
+
+                case 2:
+                    pos1 = 2;
+                    pos2 = 5;
+                    break;
+            }
+
+            for (var i = 0; i < positions.length; i++) {
+                if (i == pos1) {
+                    positions[i] = new THREE.Vector3(0, 0, 0); 
+                                
+                } else if (i == pos2) {
+                    positions[i] = new THREE.Vector3(radius, 0, 0);
+                }
             }
         }
     },
@@ -317,8 +343,8 @@ export var DrawBufferScene = createReactClass ({
                   </scene>
                 </React3>
 
-                <button type="button" id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 3, 5)}>React</button>
-                <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 3, 5)}>UNReact</button>
+                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 1, this.state.strong)}>React</button>
+                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 2, 5)}>UNReact</button>
             </div>)
     },
 
@@ -472,7 +498,7 @@ export var DrawBufferScene = createReactClass ({
                   </scene>
                 </React3>
 
-                <button type="button" id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 2, 5)}>React</button>
+                <button type="button" id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 2, this.state.strong)}>React</button>
                 <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 2, 5)}>UNReact</button>
             </div>)
     },
@@ -895,8 +921,6 @@ export var DrawBufferScene = createReactClass ({
         var width = 270;
         var height = 300;
         var scene = this.drawBufferScene(width, height);
-
-        //<button type="button" id="btn" className="btn btn-primary">Reaction</button>
 
         return(scene);
     }
