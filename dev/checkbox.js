@@ -9,10 +9,15 @@ export var Checkbox = createReactClass({
    let [left, right] = option.split(" ");
    let label = null;
    if(this.props.id==="strong"){
-        label = <label htmlFor={'radio-'+index}> {left}</label>
+        if (left === "None") {
+          label = <label htmlFor={'radio-'+index}> {left}</label>
+        } else {
+          label = <label htmlFor={'radio-'+index}> 0.10M {left}</label>
+        }
       } else {
         label = <label htmlFor={'radio-'+index}> 0.10M {left} + 0.10M {right} </label>
       }
+
      return (
       <div className="input-row" key={index}>
       <input id={this.props.id} type="radio" name={option}

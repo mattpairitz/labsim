@@ -892,7 +892,7 @@ export var DrawBufferScene = createReactClass ({
     },
 
     render() {
-        var width = 300;
+        var width = 270;
         var height = 300;
         var scene = this.drawBufferScene(width, height);
 

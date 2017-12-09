@@ -32,21 +32,61 @@ export var Calculations = createReactClass ({
     let Hmoles = this.getMolarity(volumes['H']);
     let Amoles = this.getMolarity(volumes['A']);
     let strongMoles = this.getMolarity(volumes['strong']);
+    let total = volumes['total'];
     let Ka = this.state.constants[buffer];
     let Kb = 0.00000000000001/Ka
 
-    if (strong != 'None' && strong == 'HCL' && volumes['strong'] != 0){
-      if(strongMoles <= Amoles){
-        Amoles = Amoles - strongMoles;
-        Hmoles = Hmoles + strongMoles;
+    console.log("imol HA: " + Hmoles + "\timol NaA: " + Amoles + "\timol Strong: " + strongMoles)
+
+    // strong present
+    if (strong != 'None' && volumes['strong'] != 0){
+      // HCL Present
+      if(strong == 'HCL'){
+        // imolHCl <= imolA
+        if(strongMoles <= Amoles){
+          Amoles -= strongMoles;
+          Hmoles += strongMoles;
+          console.log("imol HA: " + Hmoles + "\timol NaA: " + Amoles + "\timol Strong: " + strongMoles)
+          pH = this.props.getBufferPh(Hmoles, Amoles, Ka, Kb)
+          // imolHCl > imolA
+        } else {
+          Hmoles += Amoles;
+          strongMoles -= Amoles;
+          Amoles = 0;
+          console.log("fmol HA: " + Hmoles + "\timol NaA: " + Amoles + "\timol Strong: " + strongMoles)
+          let x = (-(strongMoles+Ka) + Math.sqrt(Math.pow((strongMoles+Ka), 2)+ 4*Hmoles*Ka))/2
+          strongMoles += x;
+          strongMoles = strongMoles/(total*.001);
+          console.log("[strong]: "+ strongMoles)
+          pH = -(Math.log(strongMoles)/Math.log(10))
+          pH = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format((pH));
+        }
+      // NaOH present
+      } else {
+        if(strongMoles <= Hmoles){
+          Amoles += strongMoles;
+          Hmoles -= strongMoles;
+          console.log("imol HA: " + Hmoles + "\timol NaA: " + Amoles + "\timol Strong: " + strongMoles)
+          pH = this.props.getBufferPh(Hmoles, Amoles, Ka, Kb)
+          // imolHCl > imolA
+        } else {
+          Amoles += Hmoles;
+          strongMoles -= Hmoles;
+          Hmoles = 0;
+          console.log("fmol HA: " + Hmoles + "\timol NaA: " + Amoles + "\timol Strong: " + strongMoles)
+          let x = (-(strongMoles+Kb) + Math.sqrt(Math.pow((strongMoles+Kb), 2)+ 4*Amoles*Kb))/2
+          strongMoles += x;
+          let OHneg = strongMoles/(total*.001);
+          console.log("[strong]: "+ OHneg);
+          let Hplus = .00000000000001/OHneg
+          pH = -(Math.log(Hplus)/Math.log(10))
+          pH = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format((pH));
+        }
       }
-    } else if (strong != 'None' && strong == 'NaOH' && volumes['strong'] != 0){
-      Amoles = Amoles + strongMoles;
-      Hmoles = Hmoles - strongMoles;
+    // no strong present
+    } else {
+      pH = this.props.getBufferPh(Hmoles, Amoles, Ka, Kb)
     }
-
-
-    pH = this.props.getBufferPh(Hmoles, Amoles, Ka, Kb)
 
     if(this.state.pH != pH){
       this.setState({pH: pH})
@@ -61,13 +101,39 @@ export var Calculations = createReactClass ({
   },
 
   render(){
+    let volumes = this.props.volumes;
     let buffer = this.props.buffer;
     let Ka = this.state.constants[buffer];
+    let pKa = -(Math.log(Ka)/Math.log(10))
+    let base = this.getMolarity(volumes['A']);
+    let acid = this.getMolarity(volumes['H']);
+    let strong = this.getMolarity(volumes['strong']);
     return (
-      <div class="text-center">
-      <p>pH: {this.state.pH}</p> <p>Ka: {Ka}</p>
-      </div>
-      )
+    <div>
+      <table className="table">
+        <thead>
+        <tr>
+          <th>pH</th>
+          <th>Ka</th>
+          <th>pKa</th>
+          <th>Weak Acid</th>
+          <th>Conjugate Base</th>
+          <th>Strong</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{this.state.pH}</td>
+          <td>{Ka}</td> 
+          <td>{pKa}</td> 
+          <td>{base} mol/L</td> 
+          <td>{acid} mol/L</td> 
+          <td>{strong} mol/L</td>  
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    )
   }
 });
 

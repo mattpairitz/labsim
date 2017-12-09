@@ -31,7 +31,7 @@ var Index = createReactClass({
   getInitialState(){
     return {equation: this.props.equations['HA NaA'], reaction: this.props.reactions['None'],
             buffer: this.props.buffers[0], strong: this.props.strongs[0],
-            warning: this.props.warnings[0], volumes: {'H': 500, 'A': 500, 'strong': 0 , 'total': 1000}, 
+            warning: this.props.warnings[0], volumes: {'H': 50, 'A': 200, 'strong': 0 , 'total': 250}, 
             validity: true, viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 5, open: true};
   },
 
@@ -156,72 +156,27 @@ var Index = createReactClass({
     ({H, A, strong} = volumes);
 
     return (
-      <div className="app">
-        <nav className="navbar navbar-inverse">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>                        
-              </button>
-                <a className="navbar-brand" href="#"></a>
-              </div>
-              <div className="collapse navbar-collapse" id="myNavbar">
-              <ul className="nav navbar-nav">
-              <li className="active"><a href="#">LabSim</a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-
-        <div className="container-fluid text-center">    
-          <div className="row content"> 
-            <div className="col-sm-10">
-              <div class="row">
-               <div class="col-md-6">
-                <div>
-                  <div className="view" >
-                    <Collapse isOpened={viewControl['anim']}> 
-                      <div>
-                        <Molecules buffer={this.state.buffer} strong={this.state.strong}/>
-                      </div>
-                    </Collapse>
-                  </div>
-                </div>  
-              <div>
-                <div className="view" >
-                 <Collapse isOpened={viewControl['beaker']}>
-                  <Canvas volume1={H} volume2={A} volume3={strong} pH={this.state.pH}/>
-                </Collapse>
-                </div>  
-              </div> 
-            </div>
-          </div>       
-          <div class="row">
-            <div class="col-md-6">
-              <div className="view" >
-                <Collapse isOpened={viewControl['graph']}>
-                  <div>
-                    <div id="viz">
-                      <div>
-                         <div>
-                          <Graph volume1={H} volume2={A} volume3={strong} 
-                                buffer={this.state.buffer} strong={this.state.strong}/>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <Equation equation={this.state.equation} reaction={this.state.reaction} buffer={this.state.buffer} strong={this.state.strong}/>
-                  </div>
-                </Collapse>
-              </div>
-            </div>
-          </div>
+      <div className="container-fluid">
+      <nav className="navbar navbar-inverse navbar-fixed-top">
+      <div className="container-fluid">
+        <div className="navbar-header">
+          <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span className="sr-only">Toggle navigation</span>
+            <span className="icon-bar">Options</span>
+            <span className="icon-bar"></span>
+            <span className="icon-bar"></span>
+          </button>
+          <a className="navbar-brand" href="#">LabSim</a>
         </div>
-          
-        <div className="col-sm-2 sidenav">
+        <div id="navbar" className="navbar-collapse collapse">
+          <ul className="nav navbar-nav navbar-right">
+            <li><a href="#">Help</a></li>
+          </ul>
+        </div>
+      </div>
+      </nav>
+      <div className="row">
+        <div className="col-sm-3 col-md-2 sidebar text-center">
           <div className="panel panel-default">
             <div className="panel-body"></div>
               <ControlPanel viewControl={this.state.viewControl} onClick={this.toggleComponentView} />
@@ -241,14 +196,14 @@ var Index = createReactClass({
                       <div className="well" id='HA-slider'>
                         <div>
                           <p> {buffer_left} Volume </p>
-                            <SlideBar min={1} max={1000} step={1} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
+                            <SlideBar min={0} max={1000} step={5} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
                         </div>
                       </div>
 
                       <div className="well" id='A-slider'>
                         <div>
                           <p> {buffer_right} Volume </p>
-                          <SlideBar min={1} max={1000} step={1} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
+                          <SlideBar min={0} max={1000} step={5  } buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
                       </div>
                         <div className={this.state.validity ? '' : 'hidden'}>
@@ -266,7 +221,7 @@ var Index = createReactClass({
                     <p id= "strong-label"> Volume</p>
                     <div><Checkbox id='strong' options={this.props.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
-                      <SlideBar min={0} max={200} step={1} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
+                      <SlideBar min={0} max={200} step={5} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
                     </div>
                     <br/>
 
@@ -282,24 +237,65 @@ var Index = createReactClass({
               </div>
             </div>  
           </div>
-        </div>
-          <div>
-            <footer><Calculations buffer={this.state.buffer} strong={this.state.strong} volumes={volumes} getBufferPh={this.getBufferPh} getBasePh={this.getBasePh} updatepH={this.setPH}/></footer>
-          </div>
-      </div>
+        <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <div className="row placeholders">
 
+          <div className="col-xs-6 col-sm-3 placeholder">
+              <h4>Beaker</h4>
+              <div className="view" >
+                 <Collapse isOpened={viewControl['beaker']}>
+                  <Canvas volume1={H} volume2={A} volume3={strong} pH={this.state.pH}/>
+                </Collapse>
+              </div>  
+              <span className="text-muted">Something else</span>
+            </div>
+
+            <div className="col-xs-6 col-sm-3 placeholder">
+              <h4>Animation</h4>
+              <div className="view" >
+                <Collapse isOpened={viewControl['anim']}> 
+                  <div>
+                    <Molecules buffer={this.state.buffer} strong={this.state.strong}/>
+                  </div>
+                </Collapse>
+              </div>
+              <span className="text-muted">Something else</span>
+            </div>
+          
+            <div className="col-xs-6 col-sm-3 placeholder">
+              <h4>Graph</h4>
+              <div className="view" >
+                <Collapse isOpened={viewControl['graph']}>
+                  <div id="viz">
+                    <Graph volume1={H} volume2={A} volume3={strong} buffer={this.state.buffer} strong={this.state.strong}/>
+                  </div> 
+                </Collapse>
+              </div>
+              <span className="text-muted"></span>
+            </div>
+
+            <br/>
+            <div>
+              <Equation equation={this.state.equation} reaction={this.state.reaction} buffer={this.state.buffer} strong={this.state.strong}/>
+            </div>
+          </div>
+
+          <h2 className="sub-header">Output</h2>
+            <Calculations buffer={this.state.buffer} strong={this.state.strong} volumes={volumes} getBufferPh={this.getBufferPh} getBasePh={this.getBasePh} updatepH={this.setPH}/>
+        </div>
+      </div>
       );
   }
 });
 ReactDOM.render(<div><Index
-  reactions={{"None": " ", "HA NaAHCL": "Reaction: H\u207A + A\u207B \u21CC HA", "HF NaFHCL": "Reaction: H\u207A + F\u207B \u21CC HF",
-  "HClO NaClOHCL": "Reaction: H\u207A + ClO\u207B \u21CC HClO", "NH\u2084Cl NH\u2083HCL": "Reaction: H\u207A + NH\u2083 \u21CC NH\u2084\u207A",
+  reactions={{"None": " ", "HA NaAHCl": "Reaction: H\u207A + A\u207B \u21CC HA", "HF NaFHCl": "Reaction: H\u207A + F\u207B \u21CC HF",
+  "HClO NaClOHCl": "Reaction: H\u207A + ClO\u207B \u21CC HClO", "NH\u2084Cl NH\u2083HCl": "Reaction: H\u207A + NH\u2083 \u21CC NH\u2084\u207A",
   "HA NaANaOH": "Reaction: OH\u207B + HA \u21CC H\u2082O + A\u207B", "HF NaFNaOH": "Reaction: OH\u207B + HF \u21CC H\u2082O + F\u207B",
   "HClO NaClONaOH": "Reaction: OH\u207B + HClO \u21CC H\u2082O + ClO\u207B", "NH\u2084Cl NH\u2083NaOH": "Reaction: OH\u207B + NH\u2084\u207A \u21CC H\u2082O + NH\u2083"}}
   equations={{"HA NaA": "HA + H\u2082O \u21CC H\u2083O\u207A + A\u207B", "HF NaF":"HF + H\u2082O \u21CC H\u2083O\u207A + F\u207B",
   "HClO NaClO": "HClO + H\u2082O \u21CC H\u2083O\u207A + ClO\u207B", "NH\u2084Cl NH\u2083": "NH\u2083 + H\u2082O \u21CC OH\u207B + NH\u2084\u207A"}}
   buffers={["HA NaA", "HF NaF",  "HClO NaClO", "NH\u2084Cl NH\u2083"]}
-  strongs ={['None', 'HCL', 'NaOH']}
+  strongs ={['None', 'HCl', 'NaOH']}
   warnings ={['', 'Buffer must contain both an acid and base!', 'Both components must be within 10x of each other in volume!']}/></div>,
   document.getElementById("container"))
 
