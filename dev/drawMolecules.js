@@ -121,17 +121,17 @@ getInitialState() {
                 this.drawF(pos3.x + total, pos3.y, lgRadius, ctx);
 
             } else if (buff1 == "HClO") {
-                this.drawH(pos1.x, pos1.y, smRadius, true, ctx);
-                this.drawO(pos2.x + total, pos2.y, lgRadius, "none", ctx);
-                this.drawCl(pos2.x, pos2.y, lgRadius, ctx);
+                this.drawH(pos1.x - 25, pos1.y, smRadius, true, ctx);
+                this.drawO((pos2.x - 25) + total, pos2.y, lgRadius, "none", ctx);
+                this.drawCl(pos2.x - 25, pos2.y, lgRadius, ctx);
                 this.drawH(pos3.x, pos3.y, smRadius, true, ctx);
                 this.drawO(pos3.x + (2 * total), pos3.y, lgRadius, "none", ctx);
                 this.drawCl(pos3.x + total, pos3.y, lgRadius, ctx);
 
             } else {
-                this.drawH(pos1.x, pos1.y, smRadius, true, ctx);
-                this.drawNH3(pos2.x, pos2.y, ctx);
-                this.drawNH4(pos3.x, pos3.y, ctx);
+                this.drawH(pos1.x - 25, pos1.y + 20, smRadius, true, ctx);
+                this.drawNH3(pos2.x - 10, pos2.y - 10, ctx);
+                this.drawNH4(pos3.x + 25, pos3.y, ctx);
             }
             break;
 

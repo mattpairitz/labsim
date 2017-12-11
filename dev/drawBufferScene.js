@@ -38,7 +38,7 @@ export var DrawBufferScene = createReactClass ({
     componentWillReceiveProps(nextProps) {
         this.setState({strong: nextProps.strong});
 
-        if (nextProps.strong !== "None") {
+        if (nextProps.strong !== "None" /*&& nextProps.strong !== "NaOH"*/) {
             this.setState({react: true});
         } else {
             this.setState({react: false});
@@ -62,7 +62,33 @@ export var DrawBufferScene = createReactClass ({
     },
 
 /******* RANDOMIZE SPECIFIC POSITIONS *******/
-    randomize(positions, pos1, pos2) {
+    randomize(positions, buffer, strong) {
+        var pos1;
+        var pos2 = 5;
+
+        if (strong === "HCl") {
+            switch (buffer) {
+                case 1:
+                    pos1 = 3;
+                    break;
+
+                case 2:
+                    pos1 = 2;
+                    break;
+
+                case 3:
+                    pos1 = 2;
+                    break;
+
+                case 4:
+                    pos1 = 1;
+                    break;
+            }
+
+        } else if (strong === "NaOH") {
+            pos1 = 0;
+            pos2 = 6;
+        }
 
         positions[pos1] = new THREE.Vector3(
                 (Math.random() * 5) - 2,
@@ -79,31 +105,70 @@ export var DrawBufferScene = createReactClass ({
 
 /********* UPDATE POSITIONS OF REACTION MOLECULES ********/
     updatePositions(positions, buffer, strong) {
+        var radius = 0.6;
+        var pos1;
+        var pos2;
 
         if (strong === "HCl") {
-            var radius = 0.6;
-            var pos1;
-            var pos2;
-
             switch (buffer) {
                 case 1:
                     pos1 = 3;
                     pos2 = 5;
+
+                    positions[pos1] = new THREE.Vector3(0, 0, 0); 
+                    positions[pos2] = new THREE.Vector3(radius, 0, 0);
                     break;
 
                 case 2:
                     pos1 = 2;
                     pos2 = 5;
+
+                    positions[pos1] = new THREE.Vector3(0, 0, 0); 
+                    positions[pos2] = new THREE.Vector3(radius, 0, 0);
+                    break;
+
+                case 3:
+                    pos1 = 2;
+                    pos2 = 5;
+                    
+                    positions[pos1] = new THREE.Vector3(0, 0, 0); 
+                    positions[pos2] = new THREE.Vector3(-radius, 0, 0);
+                    break;
+
+                case 4:
+                    pos1 = 1;
+                    pos2 = 5;
+
+                    positions[pos1] = new THREE.Vector3(0, 0, 0); 
+                    positions[pos2] = new THREE.Vector3(0, 0.75, 0);
                     break;
             }
 
-            for (var i = 0; i < positions.length; i++) {
-                if (i == pos1) {
-                    positions[i] = new THREE.Vector3(0, 0, 0); 
-                                
-                } else if (i == pos2) {
-                    positions[i] = new THREE.Vector3(radius, 0, 0);
-                }
+        } else if (strong === "NaOH") {
+            pos1 = 0;
+            pos2 = 6;
+
+            switch (buffer) {
+
+                case 1:
+                    positions[pos1] = new THREE.Vector3(0, (-radius), 0);
+                    positions[pos2] = new THREE.Vector3(0, 0, 0);
+                    break;
+
+                case 2:
+                    positions[pos1] = new THREE.Vector3(0, (-radius), 0);
+                    positions[pos2] = new THREE.Vector3(0, 0, 0);
+                    break;
+
+                case 3:
+                    positions[pos1] = new THREE.Vector3((-radius), 0, 0);
+                    positions[pos2] = new THREE.Vector3(0, 0, 0);
+                    break;
+
+                case 4:
+                    positions[pos1] = new THREE.Vector3(0, 0.75, 0);
+                    positions[pos2] = new THREE.Vector3(0, 0, 0);
+                    break;
             }
         }
     },
@@ -344,7 +409,7 @@ export var DrawBufferScene = createReactClass ({
                 </React3>
 
                 <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 1, this.state.strong)}>React</button>
-                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 2, 5)}>UNReact</button>
+                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 1, this.state.strong)}>UNReact</button>
                 <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
             </div>)
     },
@@ -499,8 +564,8 @@ export var DrawBufferScene = createReactClass ({
                   </scene>
                 </React3>
 
-                <button type="button" id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 2, this.state.strong)}>React</button>
-                <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 2, 5)}>UNReact</button>
+                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 2, this.state.strong)}>React</button>
+                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 2, this.state.strong)}>UNReact</button>
                 <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
             </div>)
     },
@@ -683,6 +748,8 @@ export var DrawBufferScene = createReactClass ({
               </scene>
             </React3>
 
+            <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 3, this.state.strong)}>React</button>
+            <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 3, this.state.strong)}>UNReact</button>
             <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
 
             </div>)
@@ -791,12 +858,11 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group> 
                 <group
-                    position = {this.moleculePositions[0]}
+                    position = {this.moleculePositions[1]}
                     rotation = {this.state.rotation}
                 > 
                     <mesh
                         position = {hydroPos2[0]}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.25}
@@ -924,6 +990,8 @@ export var DrawBufferScene = createReactClass ({
               </scene>
             </React3>
 
+            <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 4, this.state.strong)}>React</button>
+            <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 4, this.state.strong)}>UNReact</button>
             <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
 
             </div>)
