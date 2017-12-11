@@ -38,7 +38,7 @@ export var DrawBufferScene = createReactClass ({
     componentWillReceiveProps(nextProps) {
         this.setState({strong: nextProps.strong});
 
-        if (nextProps.strong !== "None") {
+        if (nextProps.strong !== "None" && nextProps.strong !== "NaOH") {
             this.setState({react: true});
         } else {
             this.setState({react: false});
@@ -79,12 +79,11 @@ export var DrawBufferScene = createReactClass ({
 
 /********* UPDATE POSITIONS OF REACTION MOLECULES ********/
     updatePositions(positions, buffer, strong) {
-
-        if (strong === "HCl") {
-            var radius = 0.6;
+        var radius = 0.6;
             var pos1;
             var pos2;
 
+        if (strong === "HCl") {
             switch (buffer) {
                 case 1:
                     pos1 = 3;
@@ -105,6 +104,8 @@ export var DrawBufferScene = createReactClass ({
                     positions[i] = new THREE.Vector3(radius, 0, 0);
                 }
             }
+        } else if (strong === "NaOH") {
+            this.setState({react: false});  
         }
     },
 
@@ -344,7 +345,7 @@ export var DrawBufferScene = createReactClass ({
                 </React3>
 
                 <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 1, this.state.strong)}>React</button>
-                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 2, 5)}>UNReact</button>
+                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 3, 5)}>UNReact</button>
                 <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
             </div>)
     },
