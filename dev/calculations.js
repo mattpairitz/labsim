@@ -40,8 +40,8 @@ export var Calculations = createReactClass ({
 
     // strong present
     if (strong != 'None' && volumes['strong'] != 0){
-      // HCL Present
-      if(strong == 'HCL'){
+      // HCl Present
+      if(strong == 'HCl'){
         // imolHCl <= imolA
         if(strongMoles <= Amoles){
           Amoles -= strongMoles;
@@ -59,7 +59,7 @@ export var Calculations = createReactClass ({
           strongMoles = strongMoles/(total*.001);
           console.log("[strong]: "+ strongMoles)
           pH = -(Math.log(strongMoles)/Math.log(10))
-          pH = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format((pH));
+          pH = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 }).format((pH));
         }
       // NaOH present
       } else {
@@ -80,7 +80,7 @@ export var Calculations = createReactClass ({
           console.log("[strong]: "+ OHneg);
           let Hplus = .00000000000001/OHneg
           pH = -(Math.log(Hplus)/Math.log(10))
-          pH = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format((pH));
+          pH = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 }).format((pH));
         }
       }
     // no strong present
@@ -104,7 +104,7 @@ export var Calculations = createReactClass ({
     let volumes = this.props.volumes;
     let buffer = this.props.buffer;
     let Ka = this.state.constants[buffer];
-    let pKa = -(Math.log(Ka)/Math.log(10))
+    let pKa = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 }).format((-(Math.log(Ka)/Math.log(10))));
     let base = this.getMolarity(volumes['A']);
     let acid = this.getMolarity(volumes['H']);
     let strong = this.getMolarity(volumes['strong']);
@@ -126,8 +126,8 @@ export var Calculations = createReactClass ({
           <td>{this.state.pH}</td>
           <td>{Ka}</td> 
           <td>{pKa}</td> 
-          <td>{base} mol/L</td> 
           <td>{acid} mol/L</td> 
+          <td>{base} mol/L</td> 
           <td>{strong} mol/L</td>  
         </tr>
         </tbody>

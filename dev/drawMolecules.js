@@ -209,8 +209,8 @@ drawNH4(xPos, yPos, ctx) {
     this.drawH(xPos, yPos - 30, 10, false, ctx);
 },
 
-/****************************** HCL MOLECULE *********/
-drawHCL(xPos, yPos, ctx) {
+/****************************** HCl MOLECULE *********/
+drawHCl(xPos, yPos, ctx) {
     this.drawH(xPos, yPos, 10, true, ctx);
     this.drawCl(xPos + 30, yPos, 20, ctx);
 },

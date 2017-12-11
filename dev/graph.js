@@ -36,10 +36,10 @@ export var Graph = createReactClass({
   },
 
   makeGraphConfig(b_left, b_right, strong, volume1, volume2, volume3){
-
-    let molarity1 = this.getMolarity(volume1)
-    let molarity2 = this.getMolarity(volume2)
-    let molarity3 = this.getMolarity(volume3)
+    let total = (volume1 + volume2 + volume3)/1000;
+    let molarity1 = this.getMolarity(volume1/total)
+    let molarity2 = this.getMolarity(volume2/total)
+    let molarity3 = this.getMolarity(volume3/total)
 
     let data_array=[];
     if(strong!=='None'){
@@ -51,7 +51,7 @@ export var Graph = createReactClass({
     data_array[1] = {id: b_right, x: b_right, y: molarity2};
 
     const methods = {
-      label: d => parseFloat(Math.round(d.y * 10000) / 10000).toFixed(3),
+      label: d => d.x,
       xConfig: {
         title: "Substrate"
       },

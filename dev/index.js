@@ -31,7 +31,7 @@ var Index = createReactClass({
   getInitialState(){
     return {equation: this.props.equations['HA NaA'], reaction: this.props.reactions['None'],
             buffer: this.props.buffers[0], strong: this.props.strongs[0],
-            warning: this.props.warnings[0], volumes: {'H': 50, 'A': 200, 'strong': 0 , 'total': 250}, 
+            warning: this.props.warnings[0], volumes: {'H': 500, 'A': 500, 'strong': 0 , 'total': 1000}, 
             validity: true, viewControl: {'graph': true, 'anim': true, 'beaker': true}, pH: 5, open: true};
   },
 
@@ -71,7 +71,7 @@ var Index = createReactClass({
     A = A/total;
     Hplus = Ka*HA/A
     pH = -(Math.log(Hplus)/Math.log(10))
-    pH = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format((pH));
+    pH = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 }).format((pH));
     return pH;
   },
 
@@ -92,8 +92,9 @@ var Index = createReactClass({
       }
     },
 
-  changeVolume(id, value){
+  changeVolume(id){
     // Use id as dict key to change volume state
+    let value = this.refs[id].state.temp
     let volumes = this.state.volumes;
     let total = volumes['total'] + value - volumes[id];
     volumes[id] = value;
@@ -196,14 +197,14 @@ var Index = createReactClass({
                       <div className="well" id='HA-slider'>
                         <div>
                           <p> {buffer_left} Volume </p>
-                            <SlideBar min={0} max={1000} step={5} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
+                            <SlideBar ref={'H'} min={1} max={1000} step={5} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
                         </div>
                       </div>
 
                       <div className="well" id='A-slider'>
                         <div>
                           <p> {buffer_right} Volume </p>
-                          <SlideBar min={0} max={1000} step={5  } buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
+                          <SlideBar ref={'A'} min={1} max={1000} step={5} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
                       </div>
                         <div className={this.state.validity ? '' : 'hidden'}>
@@ -221,7 +222,7 @@ var Index = createReactClass({
                     <p id= "strong-label"> Volume</p>
                     <div><Checkbox id='strong' options={this.props.strongs} currentOption={this.state.strong} onClick={this.changeCheckbox}/></div>
                     <div><br/>
-                      <SlideBar min={0} max={200} step={5} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
+                      <SlideBar ref={'strong'} min={0} max={500} step={5} buffer={this.state.strong} amount={strong} onChange={this.changeVolume.bind(this, 'strong')} />
                     </div>
                     <br/>
 
@@ -241,17 +242,16 @@ var Index = createReactClass({
           <div className="row placeholders">
 
           <div className="col-xs-6 col-sm-3 placeholder">
-              <h4>Beaker</h4>
+              <br/>
               <div className="view" >
                  <Collapse isOpened={viewControl['beaker']}>
                   <Canvas volume1={H} volume2={A} volume3={strong} pH={this.state.pH}/>
                 </Collapse>
-              </div>  
-              <span className="text-muted">Something else</span>
+              </div>
             </div>
 
             <div className="col-xs-6 col-sm-3 placeholder">
-              <h4>Animation</h4>
+              <br/>
               <div className="view" >
                 <Collapse isOpened={viewControl['anim']}> 
                   <div>
@@ -259,11 +259,10 @@ var Index = createReactClass({
                   </div>
                 </Collapse>
               </div>
-              <span className="text-muted">Something else</span>
             </div>
           
             <div className="col-xs-6 col-sm-3 placeholder">
-              <h4>Graph</h4>
+              <br/>
               <div className="view" >
                 <Collapse isOpened={viewControl['graph']}>
                   <div id="viz">
@@ -271,7 +270,6 @@ var Index = createReactClass({
                   </div> 
                 </Collapse>
               </div>
-              <span className="text-muted"></span>
             </div>
 
             <br/>
@@ -280,7 +278,7 @@ var Index = createReactClass({
             </div>
           </div>
 
-          <h2 className="sub-header">Output</h2>
+          <h2 className="sub-header">Results</h2>
             <Calculations buffer={this.state.buffer} strong={this.state.strong} volumes={volumes} getBufferPh={this.getBufferPh} getBasePh={this.getBasePh} updatepH={this.setPH}/>
         </div>
       </div>
