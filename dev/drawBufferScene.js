@@ -345,6 +345,7 @@ export var DrawBufferScene = createReactClass ({
 
                 <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 1, this.state.strong)}>React</button>
                 <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 2, 5)}>UNReact</button>
+                <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
             </div>)
     },
 
@@ -500,6 +501,7 @@ export var DrawBufferScene = createReactClass ({
 
                 <button type="button" id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 2, this.state.strong)}>React</button>
                 <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 2, 5)}>UNReact</button>
+                <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
             </div>)
     },
 
@@ -511,7 +513,8 @@ export var DrawBufferScene = createReactClass ({
 
         var strongPos3 = this.attachMolecules(this.moleculePositions[6], 1);
 
-        return (<React3
+        return (<div>
+            <React3
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
@@ -678,7 +681,11 @@ export var DrawBufferScene = createReactClass ({
                     <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]} pos3={strongPos3[0]}/>
                 </group>
               </scene>
-            </React3>)
+            </React3>
+
+            <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
+
+            </div>)
     },
 
     /********** BUFFER SCENE 4: NH4Cl and NH3 ***********/
@@ -689,7 +696,8 @@ export var DrawBufferScene = createReactClass ({
 
         var strongPos3 = this.attachMolecules(this.moleculePositions[6], 1);
 
-        return (<React3
+        return (<div>
+            <React3
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
@@ -914,7 +922,11 @@ export var DrawBufferScene = createReactClass ({
                    <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]} pos3={strongPos3[0]}/>
                 </group>
               </scene>
-            </React3>)
+            </React3>
+
+            <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
+
+            </div>)
     },
 
     render() {
