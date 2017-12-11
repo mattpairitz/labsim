@@ -95,10 +95,10 @@ getInitialState() {
  },
 
  drawStrong(buff1, strong, ctx) {
-    var pos1 = {x: 80, y: 50};
-    var pos2 = {x: 150, y: 50};
-    var pos3 = {x: 280, y: 50};
-    var pos4 = {x: 350, y: 50};
+    var pos1 = {x: 200, y: 50};
+    var pos2 = {x: 250, y: 50};
+    var pos3 = {x: 300, y: 50};
+    var pos4 = {x: 370, y: 50};
     var smRadius = 10;
     var lgRadius = 20;
     var total = smRadius + lgRadius;
@@ -137,37 +137,37 @@ getInitialState() {
 
         case "NaOH":
             if (buff1 == "HA") {
-                this.drawO(pos1.x, pos1.y, lgRadius, "negative", ctx);
-                this.drawH(pos1.x + total, pos1.y, smRadius, false, ctx);
-                this.drawH(pos2.x, pos2.y, smRadius, true, ctx);
-                this.drawA(pos2.x + total, pos2.y, lgRadius, ctx);
+                this.drawO((pos1.x - 55), pos1.y, lgRadius, "negative", ctx);
+                this.drawH((pos1.x - 55) + total, pos1.y, smRadius, false, ctx);
+                this.drawH((pos2.x - 45), pos2.y, smRadius, true, ctx);
+                this.drawA((pos2.x - 45) + total, pos2.y, lgRadius, ctx);
                 this.drawH2O(pos3.x, pos3.y, ctx);
                 this.drawA(pos4.x, pos4.y, lgRadius, ctx);
 
             } else if (buff1 == "HF") {
-                this.drawO(pos1.x, pos1.y, lgRadius, "negative", ctx);
-                this.drawH(pos1.x + total, pos1.y, smRadius, false, ctx);
-                this.drawH(pos2.x, pos2.y, smRadius, true, ctx);
-                this.drawF(pos2.x + total, pos2.y, lgRadius, ctx);
+                this.drawO((pos1.x - 55), pos1.y, lgRadius, "negative", ctx);
+                this.drawH((pos1.x - 55) + total, pos1.y, smRadius, false, ctx);
+                this.drawH((pos2.x - 45), pos2.y, smRadius, true, ctx);
+                this.drawF((pos2.x - 45) + total, pos2.y, lgRadius, ctx);
                 this.drawH2O(pos3.x, pos3.y, ctx);
                 this.drawF(pos4.x, pos4.y, lgRadius, ctx);
 
             } else if (buff1 == "HClO") {
-                this.drawO(pos1.x, pos1.y, lgRadius, "negative", ctx);
-                this.drawH(pos1.x + total, pos1.y, smRadius, false, ctx);
-                this.drawH(pos2.x, pos2.y, smRadius, true, ctx);
-                this.drawO(pos2.x + (2 * total), pos2.y, lgRadius, "none", ctx);
-                this.drawCl(pos2.x + total, pos2.y, lgRadius, ctx);
-                this.drawH2O(pos3.x, pos3.y, ctx);
-                this.drawO(pos4.x + total, pos4.y, lgRadius, "none", ctx);
-                this.drawCl(pos4.x, pos4.y, lgRadius, ctx);
+                this.drawO((pos1.x - 75), pos1.y, lgRadius, "negative", ctx);
+                this.drawH((pos1.x - 75) + total, pos1.y, smRadius, false, ctx);
+                this.drawH((pos2.x - 80), pos2.y + 30, smRadius, true, ctx);
+                this.drawO((pos2.x - 80) + (2 * total), pos2.y + 30, lgRadius, "none", ctx);
+                this.drawCl((pos2.x - 80) + total, pos2.y + 30, lgRadius, ctx);
+                this.drawH2O(pos3.x - 10, pos3.y - 10, ctx);
+                this.drawO((pos4.x - 25) + total, pos4.y + 30, lgRadius, "none", ctx);
+                this.drawCl((pos4.x - 25), pos4.y + 30, lgRadius, ctx);
 
             } else {
-                this.drawO(pos1.x, pos1.y, lgRadius, "negative", ctx);
-                this.drawH(pos1.x + total, pos1.y, smRadius, false, ctx);
-                this.drawNH4(pos2.x + 20, pos2.y, ctx);
-                this.drawH2O(pos3.x, pos3.y, ctx);
-                this.drawNH3(pos4.x + 10, pos4.y, ctx);
+                this.drawO((pos1.x - 75), pos1.y + 25, lgRadius, "negative", ctx);
+                this.drawH((pos1.x - 75) + total, pos1.y + 25, smRadius, false, ctx);
+                this.drawNH4(pos2.x - 50, pos2.y, ctx);
+                this.drawH2O(pos3.x - 20, pos3.y + 25, ctx);
+                this.drawNH3(pos4.x - 20, pos4.y, ctx);
 
             }
             break;
