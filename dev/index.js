@@ -67,12 +67,12 @@ var Index = createReactClass({
       HA = HA+x
       A = A-x
     }
-    HA = HA/total;
-    A = A/total;
-    Hplus = Ka*HA/A
+    Hplus = Ka*(HA/total)/(A/total)
     pH = -(Math.log(Hplus)/Math.log(10))
     pH = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 }).format((pH));
-    return pH;
+    HA = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format((HA));
+    A = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format((A));
+    return [pH, HA, A];
   },
 
   getIntermediatePH(a, b, K){
@@ -197,14 +197,14 @@ var Index = createReactClass({
                       <div className="well" id='HA-slider'>
                         <div>
                           <p> {buffer_left} Volume </p>
-                            <SlideBar ref={'H'} min={1} max={1000} step={5} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
+                            <SlideBar ref={'H'} min={0} max={1000} step={5} buffer={buffer_left} amount={H} onChange={this.changeVolume.bind(this, 'H')}/>
                         </div>
                       </div>
 
                       <div className="well" id='A-slider'>
                         <div>
                           <p> {buffer_right} Volume </p>
-                          <SlideBar ref={'A'} min={1} max={1000} step={5} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
+                          <SlideBar ref={'A'} min={0} max={1000} step={5} buffer={buffer_right} amount={A} onChange={this.changeVolume.bind(this, 'A')}/>
                         </div>
                       </div>
                         <div className={this.state.validity ? '' : 'hidden'}>

@@ -21,14 +21,12 @@
     "animate.css": "^3.5.2",
     "babel-core": "^6.26.0",
     "create-react-class": "^15.6.0",
-    "jquery-ui": "^1.12.1",
     "package": "^1.0.1",
     "react-bootstrap-modal": "^3.0.1",
     "react-collapse": "^4.0.3",
     "react-dom": "^15.5.3",
     "react-motion": "^0.5.2",
-    "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-jquery-ui": "^1.0.0"
+    "webpack-bundle-analyzer": "^2.9.0"
   },
   "babel": {
     "presets": [
@@ -48,7 +46,6 @@
     "css-loader": "^0.28.7",
     "d3plus": "^1.9.8",
     "d3plus-react": "^0.2.15",
-    "jquery": "^3.2.1",
     "json-loader": "^0.5.7",
     "rc-slider": "^8.3.1",
     "react": "^15.6.2",

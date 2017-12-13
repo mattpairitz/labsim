@@ -36,6 +36,9 @@ export var Graph = createReactClass({
   },
 
   makeGraphConfig(b_left, b_right, strong, volume1, volume2, volume3){
+    let colors = {"HCl": "#FFFFFF", "NaOH": "#AB5CF2", "HA": "#FF1493", "NaA": "#AB5CF2",
+                  "HF": "#90E050", "NaF": "#AB5CF2",  "HClO": "#1FF01F", "NaClO": "#FF0D0D",
+                  "NH\u2084Cl": "#1FF01F", "NH\u2083": "#3050F8" }
     let total = (volume1 + volume2 + volume3)/1000;
     let molarity1 = this.getMolarity(volume1/total)
     let molarity2 = this.getMolarity(volume2/total)
@@ -43,12 +46,12 @@ export var Graph = createReactClass({
 
     let data_array=[];
     if(strong!=='None'){
-      data_array[2] = {id: strong, x: strong, y: molarity3};
+      data_array[2] = {id: strong, x: strong, y: molarity3, color: colors[strong]};
     } else {
       data_array.pop();
     }
-    data_array[0] = {id: b_left, x: b_left, y: molarity1};
-    data_array[1] = {id: b_right, x: b_right, y: molarity2};
+    data_array[0] = {id: b_left, x: b_left, y: molarity1, color: colors[b_left]};
+    data_array[1] = {id: b_right, x: b_right, y: molarity2, color: colors[b_right]};
 
     const methods = {
       label: d => d.x,
@@ -57,6 +60,9 @@ export var Graph = createReactClass({
       },
       yConfig: {
         title: "Molarity"
+      },
+      shapeConfig: {
+        fill: function(d) {return d.color}
       },
       data: data_array,
     };
