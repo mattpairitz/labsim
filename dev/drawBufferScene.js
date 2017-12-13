@@ -10,43 +10,42 @@ export var DrawBufferScene = createReactClass ({
 
     getInitialState() {
        return {buff1: this.props.buff1, strong: this.props.strong, 
-                    rotation: new THREE.Euler(), rotation2: new THREE.Euler()}
+                    rotation: new THREE.Euler(), react: false}
     },
 
     componentWillMount() {
         this.setState({buff1: this.props.buff1})
         this.setState({strong: this.props.strong})
-        this.randomizePositions(5);
-        this.addPositions(this.moleculePositions);
-
+        this.setState({react: this.props.react})
+        this.randomizePositions(7);
         this.cameraPosition = new THREE.Vector3(0, 0, 5);
 
        /* SIMPLE ANIMATION FUNCTION */
         this._onAnimate = () => {
+
            this.setState({
                 rotation: new THREE.Euler(
                 0,
                 0,
-                this.state.rotation.z + 0.0075
-                ),
-            });
-
-            this.setState({
-                rotation2: new THREE.Euler(
-                0,
-                0,
-                this.state.rotation2.z - 0.0075
+                this.state.rotation.z + 0.005
                 ),
             });
         };
+
+        console.log(this.state.react);
     },
 
     componentWillReceiveProps(nextProps) {
-        this.moleculePositions = this.randomizePositions(5);
+        this.setState({strong: nextProps.strong});
+
+        if (nextProps.strong !== "None" /*&& nextProps.strong !== "NaOH"*/) {
+            this.setState({react: true});
+        } else {
+            this.setState({react: false});
+        }
     },
 
     /********* Randomize Molecule Locations On Canvas **********/
-    //TO DO: Fix issues with constant randomization of any props.
     randomizePositions(num) {
         this.moleculePositions = [];
         this.moleculePositions.length = num;
@@ -57,93 +56,191 @@ export var DrawBufferScene = createReactClass ({
                 (Math.random() * 5) - 2,
                 0
             );
-
-/*
-            for (let j = 0; j < i; j++) {
-
-                //Obj1 = Current Randomized Object, Obj2 = Comparison Object
-                var obj1 = this.moleculePositions[i];
-                var obj2 = this.moleculePositions[j];
-                var radius = 0.5;
-
-                //Find area of circle for overlap
-                var x_min = obj2.x - radius;
-                var x_max = obj2.x + radius;
-                var y_min = obj2.y - radius;
-                var y_max = obj2.y + radius;
-
-                //Find overlap of obj1 in comparision to range of obj2
-                if (obj1.x > x_min && obj1.x < x_max) {
-                    console.log("X OVERLAPS");
-
-                    if (obj1.y > y_min && obj1.y < y_max) {
-
-                        console.log("COLLISION")
-                        console.log("OBJ1 at Position: " + i);
-                        console.log("OBJ2 at Position: " + j);
-
-                        obj1.x + (radius * 2);
-                        obj1.y + (radius);
-                    }
-                }
-            }
-    */
         }
-
-        //console.log(this.moleculePositions);
-
+        
         return (this.moleculePositions);
     },
 
-    addPositions(positions) {
-        this.moleculeAnimation = [];
-        this.moleculeAnimation.length = positions.length;
+/******* RANDOMIZE SPECIFIC POSITIONS *******/
+    randomize(positions, buffer, strong) {
+        var pos1;
+        var pos2 = 5;
 
-        for (var i = 0; i < positions.length; i++) {
-            this.moleculeAnimation[i] = new THREE.Euler(
-                    positions[i].x, 
-                    positions[i].y,
-                    0);
+        if (strong === "HCl") {
+            switch (buffer) {
+                case 1:
+                    pos1 = 3;
+                    break;
+
+                case 2:
+                    pos1 = 2;
+                    break;
+
+                case 3:
+                    pos1 = 2;
+                    break;
+
+                case 4:
+                    pos1 = 1;
+                    break;
+            }
+
+        } else if (strong === "NaOH") {
+            pos1 = 0;
+            pos2 = 6;
+        }
+
+        positions[pos1] = new THREE.Vector3(
+                (Math.random() * 5) - 2,
+                (Math.random() * 5) - 2,
+                0
+            );
+
+        positions[pos2] = new THREE.Vector3(
+                (Math.random() * 5) - 2,
+                (Math.random() * 5) - 2,
+                0
+            );
+    },
+
+/********* UPDATE POSITIONS OF REACTION MOLECULES ********/
+    updatePositions(positions, buffer, strong) {
+        var radius = 0.6;
+        var pos1;
+        var pos2;
+
+        if (strong === "HCl") {
+            switch (buffer) {
+                case 1:
+                    pos1 = 3;
+                    pos2 = 5;
+
+                    positions[pos1] = new THREE.Vector3(0, 0, 0); 
+                    positions[pos2] = new THREE.Vector3(radius, 0, 0);
+                    break;
+
+                case 2:
+                    pos1 = 2;
+                    pos2 = 5;
+
+                    positions[pos1] = new THREE.Vector3(0, 0, 0); 
+                    positions[pos2] = new THREE.Vector3(radius, 0, 0);
+                    break;
+
+                case 3:
+                    pos1 = 2;
+                    pos2 = 5;
+                    
+                    positions[pos1] = new THREE.Vector3(0, 0, 0); 
+                    positions[pos2] = new THREE.Vector3(-radius, 0, 0);
+                    break;
+
+                case 4:
+                    pos1 = 1;
+                    pos2 = 5;
+
+                    positions[pos1] = new THREE.Vector3(0, 0, 0); 
+                    positions[pos2] = new THREE.Vector3(0, 0.75, 0);
+                    break;
+            }
+
+        } else if (strong === "NaOH") {
+            pos1 = 0;
+            pos2 = 6;
+
+            switch (buffer) {
+
+                case 1:
+                    positions[pos1] = new THREE.Vector3(0, (-radius), 0);
+                    positions[pos2] = new THREE.Vector3(0, 0, 0);
+                    break;
+
+                case 2:
+                    positions[pos1] = new THREE.Vector3(0, (-radius), 0);
+                    positions[pos2] = new THREE.Vector3(0, 0, 0);
+                    break;
+
+                case 3:
+                    positions[pos1] = new THREE.Vector3((-radius), 0, 0);
+                    positions[pos2] = new THREE.Vector3(0, 0, 0);
+                    break;
+
+                case 4:
+                    positions[pos1] = new THREE.Vector3(0, 0.75, 0);
+                    positions[pos2] = new THREE.Vector3(0, 0, 0);
+                    break;
+            }
         }
     },
 
-
-
-/********* CALCULATE POSITIONS OF HYDROGENS for NH4 & NH3 **********/
+/********* CALCULATE POSITIONS OF HYDROGENS for NH4 & NH3 & H2O **********/
     addHydrogen(molecule, num) {
         this.hydroPosition = [];
         var radius = 0.75;
 
-        //LEFT CIRCLE
-        this.hydroPosition.push(new THREE.Vector3(
-                molecule.x - radius,
-                molecule.y,
-                molecule.z));
-
-        //RIGHT CIRCLE
-        this.hydroPosition.push(new THREE.Vector3(
-                molecule.x + radius,
-                molecule.y,
-                molecule.z));
-
-        //DOWN CIRCLE
-        this.hydroPosition.push(new THREE.Vector3(
-                molecule.x,
-                molecule.y - radius,
-                molecule.z));
-
-        //UP CIRCLE
-        if (num == 4) {
+        if (num == 3 || num == 4) {
+            //LEFT CIRCLE
             this.hydroPosition.push(new THREE.Vector3(
-                molecule.x,
-                molecule.y + radius,
+                    molecule.x - radius,
+                    molecule.y,
+                    molecule.z));
+
+            //RIGHT CIRCLE
+            this.hydroPosition.push(new THREE.Vector3(
+                    molecule.x + radius,
+                    molecule.y,
+                    molecule.z));
+
+            //DOWN CIRCLE
+            this.hydroPosition.push(new THREE.Vector3(
+                    molecule.x,
+                    molecule.y - radius,
+                    molecule.z));
+
+            //UP CIRCLE
+            if (num == 4) {
+                this.hydroPosition.push(new THREE.Vector3(
+                    molecule.x,
+                    molecule.y + radius,
+                    molecule.z));
+            }
+
+            return (this.hydroPosition);
+
+        } else if (num == 2) {
+            //LEFT CIRCLE
+            this.hydroPosition.push(new THREE.Vector3(
+                    molecule.x - (radius / 2),
+                    molecule.y - (radius / 2),
+                    molecule.z));
+
+            //RIGHT CIRCLE
+            this.hydroPosition.push(new THREE.Vector3(
+                    molecule.x + (radius / 2),
+                    molecule.y - (radius / 2),
+                    molecule.z));
+
+            return (this.hydroPosition);
+
+        } else { 
+            return (this.hydroPosition);
+        }
+    },
+
+/********* ATTATCH MOLECULES TOGETHER *********/
+    attachMolecules(molecule, num) {
+        this.newPosition = [];
+        var radius = 0.6;
+
+        for (var i = 0; i < num; i++) {
+            this.newPosition.push(new THREE.Vector3(
+                molecule.x + (radius * (i + 1)),
+                molecule.y,
                 molecule.z));
         }
 
-        return (this.hydroPosition);
+        return (this.newPosition);
     },
-
-
 
     /********* DRAW BUFFER SCENE **********/
     drawBufferScene(width, height) {
@@ -163,243 +260,330 @@ export var DrawBufferScene = createReactClass ({
     
 /********** BUFFER SCENE 1: HA and NaA ***********/
     drawBuffer1(width, height) {
+        var newPos1 = this.attachMolecules(this.moleculePositions[0], 1);
+        var hydroPos1 = this.addHydrogen(this.moleculePositions[4], 2);
 
-        return (<React3
-                mainCamera="camera" // this points to the perspectiveCamera below
-                width = {width}
-                height = {height}
-                clearColor = {0xCCFFE5}
+        var strongPos3 = this.attachMolecules(this.moleculePositions[6], 1);
 
-                onAnimate={this._onAnimate}
-            >
-            <scene>
-                <perspectiveCamera
-                    name = "camera"
-                    fov = {75}
-                    aspect = {width / height}
-                    near={0.1}
-                    far={1000}
+        return (
+            <div>
+                <React3
+                    mainCamera="camera"
+                    width = {width}
+                    height = {height}
+                    clearColor = {0x3DAEE2}
 
-                    position={this.cameraPosition}
-                />
-                <group
-                    position = {this.moleculePositions[0]}
-                    rotation = {this.state.rotation}
+                    onAnimate={this._onAnimate}
                 >
-                    <mesh
-                        position = {this.moleculePositions[0]}
+                <scene>
+                    <perspectiveCamera
+                        name = "camera"
+                        fov = {75}
+                        aspect = {width / height}
+                        near={0.1}
+                        far={1000}
+
+                        position={this.cameraPosition}
+                    />
+                    <group
                         rotation = {this.state.rotation}
                     >
-                        <circleGeometry
-                            radius = {0.25}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0xFFFFFF}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>
-                <group
-                    //THIS ONE IS ROTATING AROUND ANOTHER MOVING MOLECULE
-                    position = {this.moleculePositions[0]}
-                    rotation = {this.state.rotation}
-                > 
-                    <mesh
-                        position = {this.moleculePositions[1]}
-                        //rotation = {this.state.rotation}
-                    >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0xFF1493}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>  
-                <group
-                    position = {this.moleculePositions[3]}
-                    rotation = {this.state.rotation}
-                >  
-                    <mesh
+                        <mesh
+                            position = {this.moleculePositions[0]}
+                        >
+                            <circleGeometry
+                                radius = {0.25}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xFFFFFF}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                        <mesh
+                            position = {newPos1[0]}
+                        >
+                            <circleGeometry
+                                radius = {0.5}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xFF1493}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                    </group>  
+                    <group
                         position = {this.moleculePositions[2]}
-                        //rotation={this.state.rotation}
-                    >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0xAB5CF2}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[2]}
-                    rotation = {this.state.rotation}
-                >    
-                    <mesh
+                        rotation = {this.state.rotation}
+                    >  
+                        <mesh
+                            position = {this.moleculePositions[2]}
+                        >
+                            <circleGeometry
+                                radius = {0.5}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xAB5CF2}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                    </group>
+                    <group
                         position = {this.moleculePositions[3]}
-                        //rotation={this.state.rotation}
-                    >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0xFF1493}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group> 
-                <Strong strong={this.state.strong}/>
-              </scene>
-            </React3>)
+                        rotation = {this.state.rotation}
+                    >    
+                        <mesh
+                            position = {this.moleculePositions[3]}
+                        >
+                            <circleGeometry
+                                radius = {0.5}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xFF1493}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                    </group> 
+                    <group
+                        position = {this.moleculePositions[4]}
+                        rotation = {this.state.rotation}
+                    > 
+                        <mesh
+                            position = {hydroPos1[0]}
+                        >
+                            <circleGeometry
+                                radius = {0.25}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xFFFFFF}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                        <mesh
+                            position = {hydroPos1[1]}
+                        >
+                            <circleGeometry
+                                radius = {0.25}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xFFFFFF}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                        <mesh
+                            position = {this.moleculePositions[4]}
+                        >
+                            <circleGeometry
+                                radius = {0.5}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xFF0D0D}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                    </group>
+                    <group>
+                        <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]} pos3={strongPos3[0]}/>
+                    </group>
+                  </scene>
+                </React3>
+
+                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 1, this.state.strong)}>React</button>
+                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 1, this.state.strong)}>UNReact</button>
+                <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
+            </div>)
     },
 
     /********** BUFFER SCENE 2: HF and NaF ***********/
     drawBuffer2(width, height) {
-        return (<React3
-                mainCamera="camera" // this points to the perspectiveCamera below
-                width={width}
-                height={height}
-                clearColor = {0xCCFFE5}
+        var newPos1 = this.attachMolecules(this.moleculePositions[0], 1);
+        var hydroPos1 = this.addHydrogen(this.moleculePositions[3], 2);
 
-                onAnimate={this._onAnimate}
-            >
-            <scene>
-                <perspectiveCamera
-                    name="camera"
-                    fov={75}
-                    aspect={width / height}
-                    near={0.1}
-                    far={1000}
+        var strongPos3 = this.attachMolecules(this.moleculePositions[6], 1);
 
-                    position={this.cameraPosition}
-                />
-                <group
-                    position = {this.moleculePositions[0]}
-                    rotation = {this.state.rotation}
+        return (
+            <div>
+                <React3
+                    mainCamera="camera" // this points to the perspectiveCamera below
+                    width={width}
+                    height={height}
+                    clearColor = {0x3DAEE2}
+
+                    onAnimate={this._onAnimate}
                 >
-                    <mesh
-                        position = {this.moleculePositions[0]}
-                        //rotation = {this.state.rotation}
-                    >
-                        <circleGeometry
-                            radius = {0.25}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0xFFFFFF}
-                            side = {THREE.DoubleSide}
+                <scene>
+                    <perspectiveCamera
+                        name="camera"
+                        fov={75}
+                        aspect={width / height}
+                        near={0.1}
+                        far={1000}
 
-                        />
-                    </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[0]}
-                    rotation = {this.state.rotation2}
-                >    
-                    <mesh
-                        position = {this.moleculePositions[1]}
-                        //rotation = {this.state.rotation}
+                        position={this.cameraPosition}
+                    />
+                    <group
+                        rotation = {this.state.rotation}
                     >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0x90E050}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[2]}
-                    rotation = {this.state.rotation2}
-                >
-                    <mesh
+                        <mesh
+                            position = {this.moleculePositions[0]}
+                        >
+                            <circleGeometry
+                                radius = {0.25}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xFFFFFF}
+                                side = {THREE.DoubleSide}
+
+                            />
+                        </mesh> 
+                        <mesh
+                            position = {newPos1[0]}
+                        >
+                            <circleGeometry
+                                radius = {0.5}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0x90E050}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                    </group>
+                    <group
+                        rotation = {this.state.rotation}
+                    >    
+                        <mesh
+                            position = {this.moleculePositions[1]}
+                        >
+                            <circleGeometry
+                                radius = {0.5}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xAB5CF2}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                    </group>
+                    <group
                         position = {this.moleculePositions[2]}
-                        //rotation = {this.state.rotation}
+                        rotation = {this.state.rotation}
                     >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0x90E050}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[3]}
-                    rotation = {this.state.rotation2}
-                >
-                    <mesh
-                        position = {this.moleculePositions[2]}
-                        //rotation = {this.state.rotation}
-                    >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0x90E050}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[2]}
-                    rotation = {this.state.rotation}
-                >    
-                    <mesh
+                        <mesh
+                            position = {this.moleculePositions[2]}
+                        >
+                            <circleGeometry
+                                radius = {0.5}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0x90E050}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                    </group>
+                    <group
                         position = {this.moleculePositions[3]}
-                        //rotation = {this.state.rotation}
-                    >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0xAB5CF2}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>
-              </scene>
-            </React3>)
+                        rotation = {this.state.rotation}
+                    > 
+                        <mesh
+                            position = {hydroPos1[0]}
+                        >
+                            <circleGeometry
+                                radius = {0.25}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xFFFFFF}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                        <mesh
+                            position = {hydroPos1[1]}
+                        >
+                            <circleGeometry
+                                radius = {0.25}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xFFFFFF}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                        <mesh
+                            position = {this.moleculePositions[3]}
+                        >
+                            <circleGeometry
+                                radius = {0.5}
+                                segments = {20}
+                                thetaStart = {0}
+                                thetaLength = {Math.PI * 2}
+                            />
+                            <meshBasicMaterial
+                                color={0xFF0D0D}
+                                side = {THREE.DoubleSide}
+                            />
+                        </mesh>
+                    </group>
+                    <group>
+                        <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]} pos3={strongPos3[0]}/>
+                    </group>
+                  </scene>
+                </React3>
+
+                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 2, this.state.strong)}>React</button>
+                <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 2, this.state.strong)}>UNReact</button>
+                <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
+            </div>)
     },
 
     /********** BUFFER SCENE 3: HClO and NaClO ***********/
     drawBuffer3(width, height) {
-        return (<React3
+        var newPos1 = this.attachMolecules(this.moleculePositions[0], 2);
+        var newPos2 = this.attachMolecules(this.moleculePositions[2], 1);
+        var hydroPos1 = this.addHydrogen(this.moleculePositions[3], 2);
+
+        var strongPos3 = this.attachMolecules(this.moleculePositions[6], 1);
+
+        return (<div>
+            <React3
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
-                clearColor = {0xCCFFE5}
+                clearColor = {0x3DAEE2}
 
                 onAnimate={this._onAnimate}
             >
@@ -419,7 +603,6 @@ export var DrawBufferScene = createReactClass ({
                 >
                     <mesh
                         position = {this.moleculePositions[0]}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.25}
@@ -432,34 +615,8 @@ export var DrawBufferScene = createReactClass ({
                             side = {THREE.DoubleSide}
                         />
                     </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[0]}
-                    rotation = {this.state.rotation}
-                >    
                     <mesh
-                        position = {this.moleculePositions[1]}
-                        //rotation = {this.state.rotation}
-                    >
-                        <circleGeometry
-                            radius = {0.5}
-                            segments = {20}
-                            thetaStart = {0}
-                            thetaLength = {Math.PI * 2}
-                        />
-                        <meshBasicMaterial
-                            color={0x1FF01F}
-                            side = {THREE.DoubleSide}
-                        />
-                    </mesh>
-                </group>
-                <group
-                    position = {this.moleculePositions[1]}
-                    rotation = {this.state.rotation}
-                >    
-                    <mesh
-                        position = {this.moleculePositions[2]}
-                        //rotation = {this.state.rotation}
+                        position = {newPos1[1]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -471,15 +628,28 @@ export var DrawBufferScene = createReactClass ({
                             color={0xFF0D0D}
                             side = {THREE.DoubleSide}
                         />
-                    </mesh>
+                    </mesh>  
+                    <mesh
+                        position = {newPos1[0]}
+                    >
+                        <circleGeometry
+                            radius = {0.5}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0x1FF01F}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>  
                 </group>
                 <group
-                    position = {this.moleculePositions[2]}
+                    position = {this.moleculePositions[1]}
                     rotation = {this.state.rotation}
                 >
                     <mesh
-                        position = {this.moleculePositions[3]}
-                        //rotation = {this.state.rotation}
+                        position = {this.moleculePositions[1]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -494,12 +664,10 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group>
                 <group
-                    position = {this.moleculePositions[3]}
                     rotation = {this.state.rotation}
                 >    
                     <mesh
-                        position = {this.moleculePositions[4]}
-                        //rotation = {this.state.rotation}
+                        position = {this.moleculePositions[2]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -511,15 +679,9 @@ export var DrawBufferScene = createReactClass ({
                             color={0x1FF01F}
                             side = {THREE.DoubleSide}
                         />
-                    </mesh>
-                </group> 
-                <group
-                    position = {this.moleculePositions[4]}
-                    rotation = {this.state.rotation}
-                >   
+                    </mesh> 
                     <mesh
-                        position = {this.moleculePositions[5]}
-                        //rotation = {this.state.rotation}
+                        position = {newPos2[0]}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -533,21 +695,80 @@ export var DrawBufferScene = createReactClass ({
                         />
                     </mesh>
                 </group>
+                <group
+                    position = {this.moleculePositions[3]}
+                    rotation = {this.state.rotation}
+                > 
+                    <mesh
+                        position = {hydroPos1[0]}
+                    >
+                        <circleGeometry
+                            radius = {0.25}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xFFFFFF}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                    <mesh
+                        position = {hydroPos1[1]}
+                    >
+                        <circleGeometry
+                            radius = {0.25}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xFFFFFF}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                    <mesh
+                        position = {this.moleculePositions[3]}
+                    >
+                        <circleGeometry
+                            radius = {0.5}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xFF0D0D}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                </group>
+                <group>
+                    <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]} pos3={strongPos3[0]}/>
+                </group>
               </scene>
-            </React3>)
+            </React3>
+
+            <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 3, this.state.strong)}>React</button>
+            <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 3, this.state.strong)}>UNReact</button>
+            <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
+
+            </div>)
     },
 
     /********** BUFFER SCENE 4: NH4Cl and NH3 ***********/
     drawBuffer4(width, height) {
         var hydroPos1 = this.addHydrogen(this.moleculePositions[0], 4);
         var hydroPos2 = this.addHydrogen(this.moleculePositions[1], 3);
+        var hydroPos3 = this.addHydrogen(this.moleculePositions[3], 2);
 
+        var strongPos3 = this.attachMolecules(this.moleculePositions[6], 1);
 
-        return (<React3
+        return (<div>
+            <React3
                 mainCamera="camera" // this points to the perspectiveCamera below
                 width={width}
                 height={height}
-                clearColor = {0xCCFFE5}
+                clearColor = {0x3DAEE2}
 
                 onAnimate={this._onAnimate}
             >
@@ -637,12 +858,11 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                 </group> 
                 <group
-                    position = {this.moleculePositions[0]}
+                    position = {this.moleculePositions[1]}
                     rotation = {this.state.rotation}
                 > 
                     <mesh
                         position = {hydroPos2[0]}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.25}
@@ -657,7 +877,6 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                     <mesh
                         position = {hydroPos2[1]}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.25}
@@ -672,7 +891,6 @@ export var DrawBufferScene = createReactClass ({
                     </mesh>
                     <mesh
                         position = {hydroPos2[2]}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.25}
@@ -687,7 +905,6 @@ export var DrawBufferScene = createReactClass ({
                     </mesh> 
                     <mesh
                         position = {this.moleculePositions[1]}
-                        //rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -707,7 +924,6 @@ export var DrawBufferScene = createReactClass ({
                 >
                     <mesh
                         position = {this.moleculePositions[2]}
-                        rotation = {this.state.rotation}
                     >
                         <circleGeometry
                             radius = {0.5}
@@ -721,12 +937,68 @@ export var DrawBufferScene = createReactClass ({
                         />
                     </mesh>
                 </group>
+                <group
+                    position = {this.moleculePositions[3]}
+                    rotation = {this.state.rotation}
+                > 
+                    <mesh
+                        position = {hydroPos3[0]}
+                    >
+                        <circleGeometry
+                            radius = {0.25}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xFFFFFF}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                    <mesh
+                        position = {hydroPos3[1]}
+                    >
+                        <circleGeometry
+                            radius = {0.25}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xFFFFFF}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                    <mesh
+                        position = {this.moleculePositions[3]}
+                    >
+                        <circleGeometry
+                            radius = {0.5}
+                            segments = {20}
+                            thetaStart = {0}
+                            thetaLength = {Math.PI * 2}
+                        />
+                        <meshBasicMaterial
+                            color={0xFF0D0D}
+                            side = {THREE.DoubleSide}
+                        />
+                    </mesh>
+                </group>
+                <group>
+                   <Strong strong={this.state.strong} rotation={this.state.rotation} pos1={this.moleculePositions[5]} pos2={this.moleculePositions[6]} pos3={strongPos3[0]}/>
+                </group>
               </scene>
-            </React3>)
+            </React3>
+
+            <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.updatePositions(this.moleculePositions, 4, this.state.strong)}>React</button>
+            <button type="button" disabled={!this.state.react} id="btn" className="btn btn-primary" onClick={() => this.randomize(this.moleculePositions, 4, this.state.strong)}>UNReact</button>
+            <button type="button" id="btn" className="btn btn-primary" onClick={() => this.randomizePositions(7)}>Randomize</button>
+
+            </div>)
     },
 
     render() {
-        var width = 300;
+        var width = 270;
         var height = 300;
         var scene = this.drawBufferScene(width, height);
 

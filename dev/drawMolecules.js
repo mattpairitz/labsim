@@ -5,147 +5,213 @@ var createReactClass = require('create-react-class');
 export var DrawMolecules = createReactClass ({
 
 getInitialState() {
-     return {mole1: this.props.mole1, mole2: this.props.mole2, mole3: this.props.mole3}
+     return {buff1: this.props.buff1, strong: this.props.strong, canvas: this.props.canvas}
  },
 
  componentDidMount() {
-    const canvas = this.refs.canvas
-    const ctx = canvas.getContext("2d")
+    const canvas = this.refs.canvas;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, 400, 100);
 
-    ctx.clearRect(0, 0, 300, 300);
+    var buff1 = this.state.buff1;
+    var strong = this.state.strong;
+    var c = this.state.canvas;
 
-    var mole1 = this.state.mole1;
-    var mole2 = this.state.mole2;
-    var mole3 = this.state.mole3;
-
-    this.drawGroups(mole1, mole2, mole3, ctx);
+    if (c == 1) {
+        this.drawGroups(buff1, ctx);
+    } else if (c == 2) {
+        this.drawStrong(buff1, strong, ctx);
+    }
  },
 
  componentWillReceiveProps(nextProps) {
-    const canvas = this.refs.canvas
-    const ctx = canvas.getContext("2d")
+    const canvas = this.refs.canvas;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, 400, 100);
 
-    /* Split inoming equations into Molecule types */
-    var mole1 = nextProps.mole1;
-    var mole2 = nextProps.mole2;
-    var mole3 = nextProps.mole3;
+    var buff1 = nextProps.buff1;
+    var strong = nextProps.strong;
+    var c = this.state.canvas;
 
-    ctx.clearRect(0, 0, 300, 300);
-    this.drawGroups(mole1, mole2, mole3, ctx);
+    if (c == 1) {
+        this.drawGroups(buff1, ctx);
+    } else if (c == 2) {
+        this.drawStrong(buff1, strong, ctx);
+    }
  },
+
+ /******* UPDATE BUFFER SELECTION *********/
+    updateState(buff1, buff2, strong){
+        this.setState({buff1: buff1});
+        this.setState({strong: strong});    
+    },
 
  /***************************** FIND + DRAW GROUPS OF MOLES *********/
- drawGroups(mole1, mole2, mole3, ctx) {
+ drawGroups(buff1, ctx) {
 
-    switch (mole1) {
+    var pos1 = {x: 100, y: 50};
+    var pos2 = {x: 200, y: 75};
+    var pos3 = {x: 280, y: 50};
+    var pos4 = {x: 340, y: 75};
+    var smRadius = 10;
+    var lgRadius = 20;
+    var total = smRadius + lgRadius;
+
+    switch (buff1) {
         case "HA":
-            this.drawH(70, 100, 10, ctx);
-            this.drawA(100, 100, 20, ctx);
-
-        break;
+            this.drawH(pos1.x, pos1.y, smRadius, true, ctx);
+            this.drawA(pos1.x + total, pos1.y, lgRadius, ctx);
+            this.drawH2O(pos2.x, pos2.y, ctx);
+            this.drawH3O(pos3.x, pos3.y, ctx);
+            this.drawA(pos4.x, pos4.y, lgRadius, ctx);
+            break;
 
         case "HF":
-            this.drawH(70, 100, 10, ctx);
-            this.drawF(100, 100, 20, ctx);
-
-        break;
+            this.drawH(pos1.x, pos1.y, smRadius, true, ctx);
+            this.drawF(pos1.x + total, pos1.y, lgRadius, ctx);
+            this.drawH2O(pos2.x, pos2.y, ctx);
+            this.drawH3O(pos3.x, pos3.y, ctx);
+            this.drawF(pos4.x, pos4.y, lgRadius, ctx);
+            break;
 
         case "HClO":
-            this.drawH(70, 100, 10, ctx);
-            this.drawO(130, 100, 20, ctx);
-            this.drawCl(100, 100, 20, ctx);
-
-        break;
+            this.drawH(pos1.x, pos1.y, smRadius, true, ctx);
+            this.drawO(pos1.x + (2 * total), pos1.y, lgRadius, "none", ctx);
+            this.drawCl(pos1.x + total, pos1.y, lgRadius, ctx);
+            this.drawH2O(pos2.x, pos2.y, ctx);
+            this.drawH3O(pos3.x, pos3.y, ctx);
+            this.drawO(pos4.x + total, pos4.y, lgRadius, "none", ctx);
+            this.drawCl(pos4.x, pos4.y, lgRadius, ctx);
+            break;
 
         case "NH\u2084Cl":
-            const numH = 4;
-
-            const xPos = [70, 100, 130, 100];
-            const yPos = [100, 130, 100, 70];
-
-            for (var i = 0; i < numH; i++) {
-                this.drawH(xPos[i], yPos[i], 10, ctx);
-            }
-
-            this.drawN(100, 100, 20, ctx);
-            this.drawCl(180, 100, 20, ctx);
-
-        break;
+            this.drawNH3(pos1.x + 20, pos1.y - 20, ctx);
+            this.drawH2O(pos2.x + 10, pos2.y - 25, ctx);
+            this.drawO(pos3.x, pos3.y + total, lgRadius, "negative", ctx);
+            this.drawH(pos3.x + total, pos3.y + total, smRadius, false, ctx);
+            this.drawNH4(pos4.x + 20, pos4.y - 25, ctx);
+            break;
     }
+ },
 
-    switch (mole2) {
-        case "NaA":
-            this.drawNa(120, 210, 20, ctx);
-            this.drawA(160, 210, 20, ctx);
+ drawStrong(buff1, strong, ctx) {
+    var pos1 = {x: 200, y: 50};
+    var pos2 = {x: 250, y: 50};
+    var pos3 = {x: 300, y: 50};
+    var pos4 = {x: 370, y: 50};
+    var smRadius = 10;
+    var lgRadius = 20;
+    var total = smRadius + lgRadius;
 
-        break;
-
-        case "NaF":
-            this.drawNa(120, 210, 20, ctx);
-            this.drawF(160, 210, 20, ctx);
-
-        break;
-
-        case "NaClO":
-            this.drawNa(120, 210, 20, ctx);
-            this.drawO(210, 210, 20, ctx);
-            this.drawCl(180, 210, 20, ctx);
-
-        break;
-
-        case "NH\u2083":
-            const numH = 3;
-
-            const xPos = [120, 150, 180];
-            const yPos = [180, 210, 180];
-
-            for (var i = 0; i < numH; i++) {
-                this.drawH(xPos[i], yPos[i], 10, ctx);
-            }
-
-            this.drawN(150, 180, 20, ctx);
-
-        break;
-    }
-
-    switch (mole3) {
+    switch (strong) {
         case "None":
-            this.drawH20(250, 50, ctx);
-        break;
+            break;
 
-        case "HCL":
-            this.drawHCL(200, 150, ctx);
+        case "HCl":
+            if (buff1 == "HA") {
+                this.drawH(pos1.x, pos1.y, smRadius, true, ctx);
+                this.drawA(pos2.x, pos2.y, lgRadius, ctx);
+                this.drawH(pos3.x, pos3.y, smRadius, true, ctx);
+                this.drawA(pos3.x + total, pos3.y, lgRadius, ctx);
 
-        break;
+            } else if (buff1 == "HF") {
+                this.drawH(pos1.x, pos1.y, smRadius, true, ctx);
+                this.drawF(pos2.x, pos2.y, lgRadius, ctx);
+                this.drawH(pos3.x, pos3.y, smRadius, true, ctx);
+                this.drawF(pos3.x + total, pos3.y, lgRadius, ctx);
+
+            } else if (buff1 == "HClO") {
+                this.drawH(pos1.x - 25, pos1.y, smRadius, true, ctx);
+                this.drawO((pos2.x - 25) + total, pos2.y, lgRadius, "none", ctx);
+                this.drawCl(pos2.x - 25, pos2.y, lgRadius, ctx);
+                this.drawH(pos3.x, pos3.y, smRadius, true, ctx);
+                this.drawO(pos3.x + (2 * total), pos3.y, lgRadius, "none", ctx);
+                this.drawCl(pos3.x + total, pos3.y, lgRadius, ctx);
+
+            } else {
+                this.drawH(pos1.x - 25, pos1.y + 20, smRadius, true, ctx);
+                this.drawNH3(pos2.x - 10, pos2.y - 10, ctx);
+                this.drawNH4(pos3.x + 25, pos3.y, ctx);
+            }
+            break;
 
         case "NaOH":
-            this.drawNaOH(50, 275, ctx);
-        break;
-    }
+            if (buff1 == "HA") {
+                this.drawO((pos1.x - 55), pos1.y, lgRadius, "negative", ctx);
+                this.drawH((pos1.x - 55) + total, pos1.y, smRadius, false, ctx);
+                this.drawH((pos2.x - 45), pos2.y, smRadius, true, ctx);
+                this.drawA((pos2.x - 45) + total, pos2.y, lgRadius, ctx);
+                this.drawH2O(pos3.x, pos3.y, ctx);
+                this.drawA(pos4.x, pos4.y, lgRadius, ctx);
 
-    //this.drawH30(250, 250, ctx);
+            } else if (buff1 == "HF") {
+                this.drawO((pos1.x - 55), pos1.y, lgRadius, "negative", ctx);
+                this.drawH((pos1.x - 55) + total, pos1.y, smRadius, false, ctx);
+                this.drawH((pos2.x - 45), pos2.y, smRadius, true, ctx);
+                this.drawF((pos2.x - 45) + total, pos2.y, lgRadius, ctx);
+                this.drawH2O(pos3.x, pos3.y, ctx);
+                this.drawF(pos4.x, pos4.y, lgRadius, ctx);
+
+            } else if (buff1 == "HClO") {
+                this.drawO((pos1.x - 75), pos1.y, lgRadius, "negative", ctx);
+                this.drawH((pos1.x - 75) + total, pos1.y, smRadius, false, ctx);
+                this.drawH((pos2.x - 80), pos2.y + 30, smRadius, true, ctx);
+                this.drawO((pos2.x - 80) + (2 * total), pos2.y + 30, lgRadius, "none", ctx);
+                this.drawCl((pos2.x - 80) + total, pos2.y + 30, lgRadius, ctx);
+                this.drawH2O(pos3.x - 10, pos3.y - 10, ctx);
+                this.drawO((pos4.x - 25) + total, pos4.y + 30, lgRadius, "none", ctx);
+                this.drawCl((pos4.x - 25), pos4.y + 30, lgRadius, ctx);
+
+            } else {
+                this.drawO((pos1.x - 75), pos1.y + 25, lgRadius, "negative", ctx);
+                this.drawH((pos1.x - 75) + total, pos1.y + 25, smRadius, false, ctx);
+                this.drawNH4(pos2.x - 50, pos2.y, ctx);
+                this.drawH2O(pos3.x - 20, pos3.y + 25, ctx);
+                this.drawNH3(pos4.x - 20, pos4.y, ctx);
+
+            }
+            break;
+    }
  },
 
 
- /***************************** H20 MOLECULE ********/
-drawH20(xPos, yPos, ctx) {
-    this.drawO(xPos, yPos, 20, ctx);
-    this.drawH(xPos - 25, yPos + 15, 10, ctx);
-    this.drawH(xPos + 25, yPos + 15, 10, ctx);
+ /***************************** H2O MOLECULE ********/
+drawH2O(xPos, yPos, ctx) {
+    this.drawO(xPos, yPos, 20, "none", ctx);
+    this.drawH(xPos - 25, yPos + 15, 10, false, ctx);
+    this.drawH(xPos + 25, yPos + 15, 10, false, ctx);
 },
 
-/****************************** H30 MOLECULE ********/
-drawH30(xPos, yPos, ctx) {
-    this.drawO(xPos, yPos, 20, ctx);
+/****************************** H3O MOLECULE ********/
+drawH3O(xPos, yPos, ctx) {
+    this.drawO(xPos, yPos, 20, "positive", ctx);
     this.drawPosCharge(xPos, yPos, ctx);
-    this.drawH(xPos - 30, yPos, 10, ctx);
-    this.drawH(xPos, yPos + 30, 10, ctx);
-    this.drawH(xPos + 30, yPos, 10, ctx);
+
+    this.drawH(xPos - 30, yPos, 10, false, ctx);
+    this.drawH(xPos, yPos + 30, 10, false, ctx);
+    this.drawH(xPos + 30, yPos, 10, false, ctx);
 },
 
-/****************************** HCL MOLECULE *********/
-drawHCL(xPos, yPos, ctx) {
-    this.drawH(xPos, yPos, 10, ctx);
+/****************************** NH3 MOLECULE ********/
+drawNH3(xPos, yPos, ctx) {
+    this.drawN(xPos, yPos, 20, false, ctx);
+    this.drawH(xPos - 30, yPos, 10, false, ctx);
+    this.drawH(xPos, yPos + 30, 10, false, ctx);
+    this.drawH(xPos + 30, yPos, 10, false, ctx);
+},
+
+/****************************** NH4 MOLECULE ********/
+drawNH4(xPos, yPos, ctx) {
+    this.drawN(xPos, yPos, 20, true, ctx);
+    this.drawH(xPos - 30, yPos, 10, false, ctx);
+    this.drawH(xPos, yPos + 30, 10, false, ctx);
+    this.drawH(xPos + 30, yPos, 10, false, ctx);
+    this.drawH(xPos, yPos - 30, 10, false, ctx);
+},
+
+/****************************** HCl MOLECULE *********/
+drawHCl(xPos, yPos, ctx) {
+    this.drawH(xPos, yPos, 10, true, ctx);
     this.drawCl(xPos + 30, yPos, 20, ctx);
 },
 
@@ -154,24 +220,27 @@ drawHCL(xPos, yPos, ctx) {
 drawNaOH(xPos, yPos, ctx) {
     this.drawNa(xPos, yPos, 20, ctx);
     this.drawO(xPos + 30, yPos, 20, ctx);
-    this.drawH(xPos + 60, yPos, 10, ctx);
+    this.drawH(xPos + 60, yPos, 10, false, ctx);
 },
 
 
 
  /***************************** H MOLECULE ***********/
- drawH(xPos, yPos, size, ctx) {
+ drawH(xPos, yPos, size, charge, ctx) {
     /* H Molecule */
     ctx.beginPath();
     ctx.arc(xPos, yPos, size, 0, 2 * Math.PI);
-    ctx.stroke();
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fill();
 
     /* Draw '+' sign */
-    this.drawPosCharge(xPos, yPos, ctx);
+    if (charge) {
+        this.drawPosCharge(xPos, yPos, ctx);
+    }
 },
 
 /***************************** O MOLECULE ***********/
-drawO(xPos, yPos, size, ctx) {
+drawO(xPos, yPos, size, charge, ctx) {
     /* O molecule */
     ctx.beginPath();
     ctx.arc(xPos, yPos, size, 0, 2 * Math.PI);
@@ -179,11 +248,18 @@ drawO(xPos, yPos, size, ctx) {
     ctx.fill();
 
     /* Draw '-' sign */
-    this.drawNegCharge(xPos, yPos, ctx); 
+    if (charge == "negative") {
+        this.drawNegCharge(xPos, yPos, ctx);
+
+    } else if (charge == "positive") {
+        this.drawPosCharge(xPos, yPos, ctx);
+    } else {
+
+    }
 },
 
 /***************************** N MOLECULE ***********/
-drawN(xPos, yPos, size, ctx) {
+drawN(xPos, yPos, size, charge, ctx) {
     /* A molecule */
     ctx.beginPath();
     ctx.arc(xPos, yPos, size, 0, 2 * Math.PI);
@@ -191,7 +267,9 @@ drawN(xPos, yPos, size, ctx) {
     ctx.fill();
 
     /* Draw '+' sign */
-    this.drawPosCharge(xPos, yPos, ctx); 
+    if (charge) {
+        this.drawPosCharge(xPos, yPos, ctx);
+    } 
 },
 
 /***************************** Cl MOLECULE ***********/
@@ -262,5 +340,13 @@ drawNegCharge(xPos, yPos, ctx) {
    // ctx.strokeStyle = "#FFFFFF";
     ctx.stroke();
 },
+
+render() {
+    return(
+          <div>
+            <canvas ref="canvas" width={400} height={100} />
+          </div>
+        )
+}
 
 });

@@ -19,7 +19,7 @@ export var Molecules = createReactClass ({
     },
 
     componentWillReceiveProps(nextProps) {
-        /* Split inoming equations into Molecule types */
+        /* Split incoming equations into Molecule types */
         var buffer = nextProps.buffer;
         var [buff1, buff2] = buffer.split(" ");
         var strong = nextProps.strong;
@@ -32,12 +32,15 @@ export var Molecules = createReactClass ({
         this.setState({buff2: buff2})
         this.setState({strong: strong})    
     },
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return (nextProps.buffer !== this.props.buffer || nextState.strong !== this.state.strong);
+    },
     
     render() {
-        var width = 300;
+        var width = 270;
         var height = 300;
-        //console.log(this.state.buff1);
-
+        
         return(
                 <div> 
                     <DrawBufferScene buff1={this.state.buff1} strong={this.state.strong}/>
