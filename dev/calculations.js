@@ -135,6 +135,7 @@ export var Calculations = createReactClass ({
           <th>pH</th>
           <th>Ka</th>
           <th>pKa</th>
+          <th>Final Molarities</th> 
           <th>Weak Acid</th>
           <th>Conjugate Base</th>
           <th>Strong</th>
@@ -145,6 +146,7 @@ export var Calculations = createReactClass ({
           <td>{this.state.pH}</td>
           <td>{Ka}</td> 
           <td>{pKa}</td> 
+          <td></td>
           <td>{acid} mol/L</td> 
           <td>{base} mol/L</td> 
           <td>{strong} mol/L</td>  

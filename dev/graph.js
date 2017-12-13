@@ -59,7 +59,7 @@ export var Graph = createReactClass({
         title: "Substrate"
       },
       yConfig: {
-        title: "Molarity"
+        title: "Initial Molarity"
       },
       shapeConfig: {
         fill: function(d) {return d.color}
