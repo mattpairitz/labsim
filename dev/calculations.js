@@ -93,7 +93,6 @@ export var Calculations = createReactClass ({
       }
     // no strong present
     } else {
-<<<<<<< HEAD
       let results = this.props.getBufferPh(Hmoles, Amoles, Ka, Kb)
       pH = results[0];
       Hmoles = results[1];
